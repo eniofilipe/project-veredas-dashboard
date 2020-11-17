@@ -86,3 +86,7 @@ export const Main = styled.main`
   height: 100vh;
   overflow: auto;
 `;
+
+export const Content = styled.div`
+  padding: 20px;
+`;

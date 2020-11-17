@@ -36,6 +36,7 @@ import {
   ToolbarCloseButton,
   AppSpaceBar,
   Main,
+  Content,
 } from './styles';
 
 const Default: React.FC = ({ children }) => {
@@ -131,7 +132,7 @@ const Default: React.FC = ({ children }) => {
                   <ListItemIcon>
                     <FaceIcon />
                   </ListItemIcon>
-                  <ListItemText primary={"Nome"} />
+                  <ListItemText primary="Nome" />
                 </ListItem>
                 <Divider />
                 <ListItem button onClick={() => signOut()}>
@@ -195,7 +196,9 @@ const Default: React.FC = ({ children }) => {
       </MenuDrawer>
       <Main>
         <AppSpaceBar />
-        {children}
+        <Content>
+          {children}
+        </Content>
       </Main>
 
     </Container>
