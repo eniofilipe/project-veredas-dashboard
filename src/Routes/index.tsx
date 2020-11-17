@@ -5,6 +5,7 @@ import Dashboard from '../Pages/Dashboard';
 import Categorias from '../Pages/Categorias';
 import Produtos from '../Pages/Produtos/ListaProdutos';
 import Pedidos from '../Pages/Pedidos/ListaPedidos';
+import Usuarios from '../Pages/Usuarios/ListaUsuarios';
 
 import Route from './route';
 
@@ -15,6 +16,7 @@ const index = () => (
     <Route path="/categorias" exact component={Categorias} isPrivate signed />
     <Route path="/produtos" exact component={Produtos} isPrivate signed />
     <Route path="/pedidos" exact component={Pedidos} isPrivate signed />
+    <Route path="/usuarios" exact component={Usuarios} isPrivate signed />
   </Switch>
 );
 
