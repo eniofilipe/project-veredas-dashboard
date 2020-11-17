@@ -4,11 +4,12 @@ module.exports = {
     es2020: true,
   },
   extends: [
-    'plugin:react/recommended',
+    'eslint:recommended',
     'airbnb',
+    'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
     'prettier/@typescript-eslint',
-    'airbnb-base',
+    'plugin:prettier/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -18,14 +19,11 @@ module.exports = {
     ecmaVersion: 11,
     sourceType: 'module',
   },
-  plugins: [
-    'react',
-    '@typescript-eslint',
-    'prettier',
-  ],
+  plugins: ['react', '@typescript-eslint', 'prettier'],
   rules: {
-    'react/jsx-filename-extension': [1, { extensions: ['.tsx'] }],
+    'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
+    'react/require-default-props': 'off',
     'import/extensions': [
       'error',
       'ignorePackages',
@@ -34,10 +32,15 @@ module.exports = {
         tsx: 'never',
       },
     ],
-    'react/jsx-props-no-spreading': [1, {
-      explicitSpread: 'ignore',
-    }],
+    'react/jsx-props-no-spreading': 'off',
     'import/prefer-default-export': 'off',
+    'prettier/prettier': 'error',
+    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.tsx'] }],
+    'no-use-before-define': 'off',
+    'react/jsx-one-expression-per-line': 'off',
+    'react/no-unescaped-entities': 'off',
+    'react/display-name': 'off',
+    'import/no-extraneous-dependencies': 'off',
   },
   settings: {
     'import/resolver': {

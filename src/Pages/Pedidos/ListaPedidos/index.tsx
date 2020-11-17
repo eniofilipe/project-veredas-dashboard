@@ -10,42 +10,41 @@ import {
   Paper,
   TextField,
 } from '@material-ui/core';
-import { Container, AddProductContainer } from './styles';
+import { Container, SearchOrderContainer } from './styles';
 
 const rows = [
   {
     id: '463',
     name: 'Alface',
-    description: 'Pacote de 300g',
-    category: ['Hortaliças', 'Verde'],
+    status: 'Pacote de 300g',
+    total: 10,
+    data: '10/10/2020',
     delete: () => <Button>Excluir</Button>,
   },
   {
     id: '430',
     name: 'Cebola',
-    description: 'Pacote de 500g',
-    category: ['Hortaliças', 'Essencial'],
+    status: 'Pacote de 500g',
+    total: 10,
+    data: '10/10/2020',
     delete: () => <Button>Excluir</Button>,
   },
 ];
-
 const index = () => (
   <Container>
-    <AddProductContainer>
-      <Button>Novo Produto</Button>
+    <SearchOrderContainer>
       <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
-    </AddProductContainer>
+    </SearchOrderContainer>
     <TableContainer component={Paper}>
       <Table>
         <TableHead>
           <TableRow>
             <TableCell>Cód</TableCell>
-            <TableCell>Nome</TableCell>
-            <TableCell>Descrição</TableCell>
-            <TableCell>Categorias</TableCell>
-            <TableCell>
-              <Button>Excluir</Button>
-            </TableCell>
+            <TableCell>Cliente</TableCell>
+            <TableCell>Status</TableCell>
+            <TableCell>Total</TableCell>
+            <TableCell>Data</TableCell>
+            <TableCell />
           </TableRow>
         </TableHead>
         <TableBody>
@@ -55,13 +54,15 @@ const index = () => (
 
               <TableCell>{item.name}</TableCell>
 
-              <TableCell>{item.description}</TableCell>
-
-              <TableCell>{item.category.map((category) => `${category},`)}</TableCell>
+              <TableCell>{item.status}</TableCell>
 
               <TableCell>
-                <Button>Excluir</Button>
+                {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.total)}
               </TableCell>
+
+              <TableCell>{item.data}</TableCell>
+
+              <TableCell>{item.delete()}</TableCell>
             </TableRow>
           ))}
           <TableRow />
