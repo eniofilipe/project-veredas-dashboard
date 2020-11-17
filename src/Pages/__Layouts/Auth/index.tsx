@@ -5,12 +5,10 @@ interface AuthLayoutProps {
   children?: React.ReactNode;
 }
 
-const AuthLayout = ({ children }: AuthLayoutProps) =>{ return (
+const AuthLayout = ({ children }: AuthLayoutProps) => (
   <Page>
-    <>
-    {children}
-    </>    
+    <>{children}</>
   </Page>
-)};
+);
 
 export default AuthLayout;

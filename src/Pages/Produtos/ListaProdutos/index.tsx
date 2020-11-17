@@ -1,4 +1,3 @@
-/* eslint-disable react/display-name */
 import React from 'react';
 import {
   Button,
@@ -11,34 +10,39 @@ import {
   Paper,
   TextField,
 } from '@material-ui/core';
-import { AddCategoryContainer } from './styles';
+import { Container, AddProductContainer } from './styles';
 
 const rows = [
   {
-    id: '#1',
-    category: 'Hortaliças',
+    id: '463',
+    name: 'Alface',
+    description: 'Pacote de 300g',
+    category: ['Hortaliças', 'Verde'],
     delete: () => <Button>Excluir</Button>,
   },
   {
-    id: '#2',
-    category: 'Veganos',
+    id: '430',
+    name: 'Cebola',
+    description: 'Pacote de 500g',
+    category: ['Hortaliças', 'Essencial'],
     delete: () => <Button>Excluir</Button>,
   },
 ];
 
 const index = () => (
-  <div style={{ width: '100%' }}>
-    <AddCategoryContainer>
-      <span>Categoria: </span>
-      <TextField id="outlined-basic" variant="outlined" />
-      <Button>Adicionar</Button>
-    </AddCategoryContainer>
+  <Container>
+    <AddProductContainer>
+      <Button>Novo Produto</Button>
+      <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
+    </AddProductContainer>
     <TableContainer component={Paper}>
       <Table>
         <TableHead>
           <TableRow>
             <TableCell>Cód</TableCell>
-            <TableCell>Categoria</TableCell>
+            <TableCell>Nome</TableCell>
+            <TableCell>Descrição</TableCell>
+            <TableCell>Categorias</TableCell>
             <TableCell>
               <Button>Excluir</Button>
             </TableCell>
@@ -49,7 +53,11 @@ const index = () => (
             <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
               <TableCell>{item.id}</TableCell>
 
-              <TableCell>{item.category}</TableCell>
+              <TableCell>{item.name}</TableCell>
+
+              <TableCell>{item.description}</TableCell>
+
+              <TableCell>{item.category.map((category) => `${category},`)}</TableCell>
 
               <TableCell>
                 <Button>Excluir</Button>
@@ -60,7 +68,7 @@ const index = () => (
         </TableBody>
       </Table>
     </TableContainer>
-  </div>
+  </Container>
 );
 
 export default index;

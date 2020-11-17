@@ -10,16 +10,7 @@ import {
   Face as FaceIcon,
 } from '@material-ui/icons';
 
-import {
-  Divider,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  CssBaseline,
-  Popover,
-  Paper,
-} from '@material-ui/core';
+import { Divider, List, ListItem, ListItemIcon, ListItemText, CssBaseline, Popover, Paper } from '@material-ui/core';
 import AuthContext from '../../../Contexts/auth';
 import History from '../../../Services/history';
 
@@ -36,6 +27,7 @@ import {
   ToolbarCloseButton,
   AppSpaceBar,
   Main,
+  Content,
 } from './styles';
 
 const Default: React.FC = ({ children }) => {
@@ -97,17 +89,12 @@ const Default: React.FC = ({ children }) => {
       <CssBaseline />
       <BarTools open={open} position="absolute">
         <ToolbarDashboard>
-          <ToogleButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={() => handleOpen()}
-            open={open}
-          >
+          <ToogleButton edge="start" color="inherit" aria-label="open drawer" onClick={() => handleOpen()} open={open}>
             <MenuIcon />
-
           </ToogleButton>
-          <Title variant="h6" color="inherit" noWrap>Veredas da Terra</Title>
+          <Title variant="h6" color="inherit" noWrap>
+            Veredas da Terra
+          </Title>
           <UserMenu aria-describedby={id} color="inherit" onClick={(e) => handleClick(e)}>
             <UserAvatar />
           </UserMenu>
@@ -131,7 +118,7 @@ const Default: React.FC = ({ children }) => {
                   <ListItemIcon>
                     <FaceIcon />
                   </ListItemIcon>
-                  <ListItemText primary={"Nome"} />
+                  <ListItemText primary="Nome" />
                 </ListItem>
                 <Divider />
                 <ListItem button onClick={() => signOut()}>
@@ -142,7 +129,6 @@ const Default: React.FC = ({ children }) => {
                 </ListItem>
               </List>
             </Paper>
-
           </Popover>
         </ToolbarDashboard>
       </BarTools>
@@ -151,7 +137,6 @@ const Default: React.FC = ({ children }) => {
           <ToolbarCloseButton onClick={() => handleOpen()}>
             <ChevronLeftIcon />
           </ToolbarCloseButton>
-
         </ToolbarClose>
         <Divider />
         <List>
@@ -195,9 +180,8 @@ const Default: React.FC = ({ children }) => {
       </MenuDrawer>
       <Main>
         <AppSpaceBar />
-        {children}
+        <Content>{children}</Content>
       </Main>
-
     </Container>
   );
 };

@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react';
-import { isNull } from 'util';
+
 import history from '../Services/history';
 /* import { Vendedor } from '../types/Vendedor';
 import { getVendedor } from '../resolvers/Vendedor'; */
@@ -18,9 +18,7 @@ const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 export const AuthProvider: React.FC = ({ children }) => {
   const [codigo, setCodigo] = useState<number>(0);
   const [vendedor, setVendedor] = useState<string | null>(
-    localStorage.getItem('vendedor')
-      ? JSON.parse(localStorage.getItem('vendedor') || '')
-      : null,
+    localStorage.getItem('vendedor') ? JSON.parse(localStorage.getItem('vendedor') || '') : null
   );
 
   async function signIn() {
@@ -34,12 +32,10 @@ export const AuthProvider: React.FC = ({ children }) => {
         history.push('/dashboard');
         setCodigo(0);
       } */
-      localStorage.setItem('vendedor', JSON.stringify("Entro"));
+      localStorage.setItem('vendedor', JSON.stringify('Entro'));
 
       history.push('/dashboard');
       setCodigo(0);
-
-
     } catch (error) {
       console.log(error);
     }

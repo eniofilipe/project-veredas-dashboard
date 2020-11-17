@@ -10,9 +10,7 @@ interface IRoute extends RouteProps {
   isPrivate: boolean;
 }
 
-const route: React.FC<IRoute> = ({
-  component, signed, isPrivate, ...rest
-}) => {
+const route: React.FC<IRoute> = ({ component, signed, isPrivate, ...rest }) => {
   if (isPrivate && !signed) {
     return <Redirect to="/" />;
   }
