@@ -1,48 +1,46 @@
 import React, { createContext, useState } from 'react';
 
 import history from '../Services/history';
-/* import { Vendedor } from '../types/Vendedor';
-import { getVendedor } from '../resolvers/Vendedor'; */
+import { getLogin } from '../Api/Login';
+import { Administrador, Login } from '../Types';
 
 interface IAuthContext {
   signed: boolean;
-  vendedor: string | null;
-  signIn(): Promise<void>;
-  signOut(): void;
-  codigo: number;
-  setCodigo: React.Dispatch<React.SetStateAction<number>>;
+  admin: Administrador | null;
+  signIn: (data: Login) => Promise<void>;
+  signOut: () => void;
 }
 
 const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 export const AuthProvider: React.FC = ({ children }) => {
-  const [codigo, setCodigo] = useState<number>(0);
-  const [vendedor, setVendedor] = useState<string | null>(
-    localStorage.getItem('vendedor') ? JSON.parse(localStorage.getItem('vendedor') || '') : null
+  const [admin, setAdmin] = useState<Administrador | null>(
+    localStorage.getItem('admin') ? JSON.parse(localStorage.getItem('admin') || '') : null
+  );
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem('token') ? localStorage.getItem('token') : null
   );
 
-  async function signIn() {
+  const signIn = async (data: Login) => {
     try {
-      /* const response = await getVendedor(codigo);
+      const response = await getLogin({
+        email: data.email,
+        password: data.password,
+      });
 
-      if (response.length > 0) {
-        setVendedor(response[0] as Vendedor);
-        localStorage.setItem('vendedor', JSON.stringify(response[0]));
-
-        history.push('/dashboard');
-        setCodigo(0);
-      } */
-      localStorage.setItem('vendedor', JSON.stringify('Entro'));
-
+      setAdmin(response.data.client);
+      localStorage.setItem('admin', JSON.stringify(response.data.client));
+      setToken(response.data.token);
+      localStorage.setItem('token', response.data.token);
       history.push('/dashboard');
-      setCodigo(0);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   function signOut() {
-    setVendedor(null);
+    setAdmin(null);
+    setToken(null);
     localStorage.clear();
     history.push('/');
   }
@@ -50,12 +48,10 @@ export const AuthProvider: React.FC = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        signed: !!vendedor,
-        vendedor,
+        signed: !!admin,
+        admin,
         signIn,
         signOut,
-        setCodigo,
-        codigo,
       }}
     >
       {children}

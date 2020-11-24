@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import React from 'react';
+
 import ReactDOM from 'react-dom';
 import App from './App';
 

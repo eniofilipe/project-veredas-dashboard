@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   Button,
@@ -12,26 +12,27 @@ import {
   TextField,
 } from '@material-ui/core';
 import { Container, AddProductContainer } from './styles';
+import { Produto } from '../../../Types';
 
-const rows = [
-  {
-    id: '463',
-    name: 'Alface',
-    description: 'Pacote de 300g',
-    category: ['Hortaliças', 'Verde'],
-    delete: () => <Button>Excluir</Button>,
-  },
-  {
-    id: '430',
-    name: 'Cebola',
-    description: 'Pacote de 500g',
-    category: ['Hortaliças', 'Essencial'],
-    delete: () => <Button>Excluir</Button>,
-  },
-];
+import { getProduto } from '../../../Api/Produtos';
 
 const index = () => {
+  const [produtos, setProdutos] = useState<Produto[]>([]);
   const history = useHistory();
+
+  const list = async () => {
+    try {
+      const response = await getProduto();
+
+      setProdutos(response.data.produtos);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    list();
+  }, []);
 
   return (
     <Container>
@@ -53,21 +54,22 @@ const index = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((item) => (
-              <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
-                <TableCell>{item.id}</TableCell>
+            {produtos.length >= 1 &&
+              produtos.map((prod) => (
+                <TableRow hover tabIndex={-1} key={`cod${prod.id}`}>
+                  <TableCell>{prod.id}</TableCell>
 
-                <TableCell>{item.name}</TableCell>
+                  <TableCell>{prod.nome}</TableCell>
 
-                <TableCell>{item.description}</TableCell>
+                  <TableCell>{prod.descricao}</TableCell>
 
-                <TableCell>{item.category.map((category) => `${category},`)}</TableCell>
+                  <TableCell>{prod.categorias.map((category) => `${category.nome},`)}</TableCell>
 
-                <TableCell>
-                  <Button>Excluir</Button>
-                </TableCell>
-              </TableRow>
-            ))}
+                  <TableCell>
+                    <Button>Excluir</Button>
+                  </TableCell>
+                </TableRow>
+              ))}
             <TableRow />
           </TableBody>
         </Table>
