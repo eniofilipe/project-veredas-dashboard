@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   Button,
   TableHead,
@@ -29,46 +30,50 @@ const rows = [
   },
 ];
 
-const index = () => (
-  <Container>
-    <AddProductContainer>
-      <Button>Novo Produto</Button>
-      <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
-    </AddProductContainer>
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Cód</TableCell>
-            <TableCell>Nome</TableCell>
-            <TableCell>Descrição</TableCell>
-            <TableCell>Categorias</TableCell>
-            <TableCell>
-              <Button>Excluir</Button>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((item) => (
-            <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
-              <TableCell>{item.id}</TableCell>
+const index = () => {
+  const history = useHistory();
 
-              <TableCell>{item.name}</TableCell>
-
-              <TableCell>{item.description}</TableCell>
-
-              <TableCell>{item.category.map((category) => `${category},`)}</TableCell>
-
+  return (
+    <Container>
+      <AddProductContainer>
+        <Button onClick={() => history.push('/produtos/novo')}>Novo Produto</Button>
+        <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
+      </AddProductContainer>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Cód</TableCell>
+              <TableCell>Nome</TableCell>
+              <TableCell>Descrição</TableCell>
+              <TableCell>Categorias</TableCell>
               <TableCell>
                 <Button>Excluir</Button>
               </TableCell>
             </TableRow>
-          ))}
-          <TableRow />
-        </TableBody>
-      </Table>
-    </TableContainer>
-  </Container>
-);
+          </TableHead>
+          <TableBody>
+            {rows.map((item) => (
+              <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
+                <TableCell>{item.id}</TableCell>
+
+                <TableCell>{item.name}</TableCell>
+
+                <TableCell>{item.description}</TableCell>
+
+                <TableCell>{item.category.map((category) => `${category},`)}</TableCell>
+
+                <TableCell>
+                  <Button>Excluir</Button>
+                </TableCell>
+              </TableRow>
+            ))}
+            <TableRow />
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Container>
+  );
+};
 
 export default index;
