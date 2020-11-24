@@ -4,6 +4,7 @@ import Login from '../Pages/Login';
 import Dashboard from '../Pages/Dashboard';
 import Categorias from '../Pages/Categorias';
 import Produtos from '../Pages/Produtos/ListaProdutos';
+import NovoProduto from '../Pages/Produtos/NovoProduto';
 import Pedidos from '../Pages/Pedidos/ListaPedidos';
 import Usuarios from '../Pages/Usuarios/ListaUsuarios';
 import Ofertas from '../Pages/Ofertas/ListaOfertas';
@@ -16,6 +17,7 @@ const index = () => (
     <Route path="/dashboard" exact component={Dashboard} isPrivate signed />
     <Route path="/categorias" exact component={Categorias} isPrivate signed />
     <Route path="/produtos" exact component={Produtos} isPrivate signed />
+    <Route path="/produtos/novo" exact component={NovoProduto} isPrivate signed />
     <Route path="/pedidos" exact component={Pedidos} isPrivate signed />
     <Route path="/usuarios" exact component={Usuarios} isPrivate signed />
     <Route path="/ofertas" exact component={Ofertas} isPrivate signed />
