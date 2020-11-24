@@ -30,6 +30,7 @@ const rows = [
     delete: () => <Button>Excluir</Button>,
   },
 ];
+
 const index = () => (
   <Container>
     <SearchUsersContainer>

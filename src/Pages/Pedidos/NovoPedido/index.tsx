@@ -10,60 +10,60 @@ import {
   Paper,
   TextField,
 } from '@material-ui/core';
-import { Container, SearchOrderContainer } from './styles';
+import { Container, AddOrderContainer } from './styles';
 
 const rows = [
   {
+    quantity: '4',
     id: '463',
     name: 'Alface',
     status: 'Pacote de 300g',
-    total: 10,
-    data: '10/10/2020',
+    category: 'Hortaliças',
+    price: 19,
     delete: () => <Button>Excluir</Button>,
   },
   {
+    quantity: '1',
     id: '430',
     name: 'Cebola',
     status: 'Pacote de 500g',
-    total: 10,
-    data: '10/10/2020',
+    category: 'Hortaliças',
+    price: 10,
     delete: () => <Button>Excluir</Button>,
   },
 ];
 
 const index = () => (
   <Container>
-    <SearchOrderContainer>
-      <Button>Novo Pedido</Button>
-      <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
-    </SearchOrderContainer>
+    <AddOrderContainer>
+      <span>Cliente: </span>
+      <TextField id="outlined-basic" variant="outlined" disabled="disabled" />
+      <Button>Adicionar Cliente </Button>
+      <Button>Adicionar Produto </Button>
+    </AddOrderContainer>
     <TableContainer component={Paper}>
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Cód</TableCell>
-            <TableCell>Cliente</TableCell>
-            <TableCell>Status</TableCell>
-            <TableCell>Total</TableCell>
-            <TableCell>Data</TableCell>
-            <TableCell />
+            <TableCell>Quantidade</TableCell>
+            <TableCell>Código</TableCell>
+            <TableCell>Nome</TableCell>
+            <TableCell>Descrição</TableCell>
+            <TableCell>Categorias</TableCell>
+            <TableCell>Preço</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((item) => (
             <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
+              <TableCell>{item.quantity}</TableCell>
               <TableCell>{item.id}</TableCell>
-
               <TableCell>{item.name}</TableCell>
-
               <TableCell>{item.status}</TableCell>
-
+              <TableCell>{item.category}</TableCell>
               <TableCell>
-                {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.total)}
+                {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price)}
               </TableCell>
-
-              <TableCell>{item.data}</TableCell>
-
               <TableCell>{item.delete()}</TableCell>
             </TableRow>
           ))}
@@ -71,6 +71,8 @@ const index = () => (
         </TableBody>
       </Table>
     </TableContainer>
+    <Button>Voltar </Button>
+    <Button>Salvar </Button>
   </Container>
 );
 
