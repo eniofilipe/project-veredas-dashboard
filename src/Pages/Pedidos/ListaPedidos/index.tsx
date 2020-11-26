@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Button,
+  ButtonGroup,
   TableHead,
   TableRow,
   TableCell,
@@ -10,6 +11,7 @@ import {
   Paper,
   TextField,
 } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import { Container, SearchOrderContainer } from './styles';
 
 const rows = [
@@ -31,10 +33,17 @@ const rows = [
   },
 ];
 
+const options = ['Dinheiro', 'Cartão de Débito'];
+
 const index = () => (
   <Container>
     <SearchOrderContainer>
-      <Button>Novo Pedido</Button>
+      <Button component={Link} to="/pedidos/novo">
+        Novo Pedido
+      </Button>
+      <ButtonGroup variant="contained">
+        <Button>Dinheiro</Button>
+      </ButtonGroup>
       <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
     </SearchOrderContainer>
     <TableContainer component={Paper}>
@@ -53,17 +62,12 @@ const index = () => (
           {rows.map((item) => (
             <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
               <TableCell>{item.id}</TableCell>
-
               <TableCell>{item.name}</TableCell>
-
               <TableCell>{item.status}</TableCell>
-
               <TableCell>
                 {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.total)}
               </TableCell>
-
               <TableCell>{item.data}</TableCell>
-
               <TableCell>{item.delete()}</TableCell>
             </TableRow>
           ))}

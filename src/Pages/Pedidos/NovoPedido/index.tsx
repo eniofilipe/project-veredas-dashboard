@@ -36,10 +36,10 @@ const rows = [
 const index = () => (
   <Container>
     <AddOrderContainer>
-      <span>Cliente: </span>
-      <TextField id="outlined-basic" variant="outlined" disabled="disabled" />
-      <Button>Adicionar Cliente </Button>
-      <Button>Adicionar Produto </Button>
+      <span>Cliente:</span>
+      <TextField disabled id="outlined-basic" variant="outlined" />
+      <Button>Adicionar Cliente</Button>
+      <Button>Adicionar Produto</Button>
     </AddOrderContainer>
     <TableContainer component={Paper}>
       <Table>
@@ -71,8 +71,8 @@ const index = () => (
         </TableBody>
       </Table>
     </TableContainer>
-    <Button>Voltar </Button>
-    <Button>Salvar </Button>
+    <Button>Voltar</Button>
+    <Button>Salvar</Button>
   </Container>
 );
 
