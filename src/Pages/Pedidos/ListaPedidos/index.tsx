@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Button,
-  ButtonGroup,
   TableHead,
   TableRow,
   TableCell,
@@ -33,17 +32,12 @@ const rows = [
   },
 ];
 
-const options = ['Dinheiro', 'Cartão de Débito'];
-
 const index = () => (
   <Container>
     <SearchOrderContainer>
       <Button component={Link} to="/pedidos/novo">
         Novo Pedido
       </Button>
-      <ButtonGroup variant="contained">
-        <Button>Dinheiro</Button>
-      </ButtonGroup>
       <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
     </SearchOrderContainer>
     <TableContainer component={Paper}>

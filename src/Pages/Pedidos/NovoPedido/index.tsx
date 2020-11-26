@@ -9,7 +9,13 @@ import {
   Table,
   Paper,
   TextField,
+  ButtonGroup,
+  FormControl,
+  NativeSelect,
+  Grid,
+  Popper,
 } from '@material-ui/core';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { Container, AddOrderContainer } from './styles';
 
 const rows = [
@@ -33,11 +39,19 @@ const rows = [
   },
 ];
 
+const options = ['Dinheiro', 'Cartão de Débito'];
+
 const index = () => (
   <Container>
     <AddOrderContainer>
       <span>Cliente:</span>
       <TextField disabled id="outlined-basic" variant="outlined" />
+      <ButtonGroup variant="contained" orientation="vertical" color="primary">
+        <Button>Dinheiro</Button>
+        <Button>Cartão</Button>
+        <Button>Cheque</Button>
+        <ArrowDropDownIcon />
+      </ButtonGroup>
       <Button>Adicionar Cliente</Button>
       <Button>Adicionar Produto</Button>
     </AddOrderContainer>
