@@ -9,6 +9,7 @@ import NovoProduto from '../Pages/Produtos/NovoProduto';
 import Pedidos from '../Pages/Pedidos/ListaPedidos';
 import Usuarios from '../Pages/Usuarios/ListaUsuarios';
 import Ofertas from '../Pages/Ofertas/ListaOfertas';
+import PedidoNovo from '../Pages/Pedidos/NovoPedido';
 
 import Route from './route';
 
@@ -24,8 +25,10 @@ const index = () => {
       <Route path="/pedidos" exact component={Pedidos} isPrivate signed={signed} />
       <Route path="/usuarios" exact component={Usuarios} isPrivate signed={signed} />
       <Route path="/ofertas" exact component={Ofertas} isPrivate signed={signed} />
+      <Route path="/pedidos/novo" exact component={PedidoNovo} isPrivate signed={signed} />
     </Switch>
   );
 };
+
 
 export default index;
