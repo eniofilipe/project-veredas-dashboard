@@ -17,6 +17,7 @@ export interface PutCategoriaProps {
 export interface Imagem {
   url: string;
   path: string;
+  id: number;
 }
 
 export interface Produto {
@@ -108,7 +109,7 @@ export interface Oferta {
   id: number;
   quantidade: number;
   valor_unitario: number;
-  produtos: Produto[];
+  produtos: Produto;
   validade: Validade;
 }
 
@@ -117,4 +118,16 @@ export interface PostOfertaProps {
   quantidade: number;
   valor_unitario: number;
   validade_oferta_id: number;
+}
+
+export interface OfertaPedido {
+  oferta_id: number;
+  quantidade: number;
+}
+export interface PostPedidoProps {
+  ofertas: OfertaPedido[];
+  cliente_id: number;
+  tipo_pagamento_id: number;
+  valor_frete: number;
+  tipo_frete_id: number;
 }

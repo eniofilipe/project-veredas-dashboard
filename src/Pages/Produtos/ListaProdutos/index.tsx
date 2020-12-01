@@ -18,6 +18,7 @@ import { getProduto } from '../../../Api/Produtos';
 
 const index = () => {
   const [produtos, setProdutos] = useState<Produto[]>([]);
+
   const history = useHistory();
 
   const list = async () => {
