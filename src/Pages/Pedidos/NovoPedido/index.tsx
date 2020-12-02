@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   Button,
+  ButtonGroup,
   TableHead,
   TableRow,
   TableCell,
@@ -50,6 +51,8 @@ const index = () => {
     }
   };
 
+  const options = ['Dinheiro', 'Cartão de Débito'];
+
   const changeProduto = (value: number, pos: number) => {
     const prodAux = produtos;
 
@@ -64,7 +67,7 @@ const index = () => {
         <span>Cliente:</span>
         <TextField disabled id="outlined-basic" variant="outlined" value={cliente?.nome} />
         <ButtonGroup variant="contained">
-          <Button>Dinheiro</Button>
+          <Button>options[0]</Button>
         </ButtonGroup>
         <Button onClick={() => setOpenModalCliente(true)}>Adicionar Cliente</Button>
         <Button onClick={() => setOpenModalProduto(true)}>Adicionar Produto</Button>

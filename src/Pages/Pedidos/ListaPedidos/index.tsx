@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Button,
-  ButtonGroup,
   TableHead,
   TableRow,
   TableCell,
@@ -32,8 +31,6 @@ const rows = [
     delete: () => <Button>Excluir</Button>,
   },
 ];
-
-const options = ['Dinheiro', 'Cartão de Débito'];
 
 const index = () => (
   <Container>
