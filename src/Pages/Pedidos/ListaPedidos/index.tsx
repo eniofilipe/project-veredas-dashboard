@@ -41,9 +41,6 @@ const index = () => (
       <Button component={Link} to="/pedidos/novo">
         Novo Pedido
       </Button>
-      <ButtonGroup variant="contained">
-        <Button>Dinheiro</Button>
-      </ButtonGroup>
       <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
     </SearchOrderContainer>
     <TableContainer component={Paper}>

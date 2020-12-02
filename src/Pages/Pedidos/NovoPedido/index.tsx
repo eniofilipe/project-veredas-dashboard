@@ -63,6 +63,9 @@ const index = () => {
       <AddOrderContainer>
         <span>Cliente:</span>
         <TextField disabled id="outlined-basic" variant="outlined" value={cliente?.nome} />
+        <ButtonGroup variant="contained">
+          <Button>Dinheiro</Button>
+        </ButtonGroup>
         <Button onClick={() => setOpenModalCliente(true)}>Adicionar Cliente</Button>
         <Button onClick={() => setOpenModalProduto(true)}>Adicionar Produto</Button>
       </AddOrderContainer>
