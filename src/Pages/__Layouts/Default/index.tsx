@@ -31,7 +31,7 @@ import {
 } from './styles';
 
 const Default: React.FC = ({ children }) => {
-  const { vendedor, signOut } = useContext(AuthContext);
+  const { admin, signOut } = useContext(AuthContext);
 
   const [open, setOpen] = useState(false);
 
@@ -118,7 +118,7 @@ const Default: React.FC = ({ children }) => {
                   <ListItemIcon>
                     <FaceIcon />
                   </ListItemIcon>
-                  <ListItemText primary="Nome" />
+                  <ListItemText primary={admin?.nome} />
                 </ListItem>
                 <Divider />
                 <ListItem button onClick={() => signOut()}>

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   Button,
   TableHead,
@@ -11,64 +12,70 @@ import {
   TextField,
 } from '@material-ui/core';
 import { Container, AddProductContainer } from './styles';
+import { Produto } from '../../../Types';
 
-const rows = [
-  {
-    id: '463',
-    name: 'Alface',
-    description: 'Pacote de 300g',
-    category: ['Hortaliças', 'Verde'],
-    delete: () => <Button>Excluir</Button>,
-  },
-  {
-    id: '430',
-    name: 'Cebola',
-    description: 'Pacote de 500g',
-    category: ['Hortaliças', 'Essencial'],
-    delete: () => <Button>Excluir</Button>,
-  },
-];
+import { getProduto } from '../../../Api/Produtos';
 
-const index = () => (
-  <Container>
-    <AddProductContainer>
-      <Button>Novo Produto</Button>
-      <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
-    </AddProductContainer>
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Cód</TableCell>
-            <TableCell>Nome</TableCell>
-            <TableCell>Descrição</TableCell>
-            <TableCell>Categorias</TableCell>
-            <TableCell>
-              <Button>Excluir</Button>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((item) => (
-            <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
-              <TableCell>{item.id}</TableCell>
+const index = () => {
+  const [produtos, setProdutos] = useState<Produto[]>([]);
+  const history = useHistory();
 
-              <TableCell>{item.name}</TableCell>
+  const list = async () => {
+    try {
+      const response = await getProduto();
 
-              <TableCell>{item.description}</TableCell>
+      setProdutos(response.data.produtos);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-              <TableCell>{item.category.map((category) => `${category},`)}</TableCell>
+  useEffect(() => {
+    list();
+  }, []);
 
+  return (
+    <Container>
+      <AddProductContainer>
+        <Button onClick={() => history.push('/produtos/novo')}>Novo Produto</Button>
+        <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
+      </AddProductContainer>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Cód</TableCell>
+              <TableCell>Nome</TableCell>
+              <TableCell>Descrição</TableCell>
+              <TableCell>Categorias</TableCell>
               <TableCell>
                 <Button>Excluir</Button>
               </TableCell>
             </TableRow>
-          ))}
-          <TableRow />
-        </TableBody>
-      </Table>
-    </TableContainer>
-  </Container>
-);
+          </TableHead>
+          <TableBody>
+            {produtos.length >= 1 &&
+              produtos.map((prod) => (
+                <TableRow hover tabIndex={-1} key={`cod${prod.id}`}>
+                  <TableCell>{prod.id}</TableCell>
+
+                  <TableCell>{prod.nome}</TableCell>
+
+                  <TableCell>{prod.descricao}</TableCell>
+
+                  <TableCell>{prod.categorias.map((category) => `${category.nome},`)}</TableCell>
+
+                  <TableCell>
+                    <Button>Excluir</Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            <TableRow />
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Container>
+  );
+};
 
 export default index;
