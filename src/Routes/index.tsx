@@ -10,9 +10,10 @@ import Pedidos from '../Pages/Pedidos/ListaPedidos';
 import Usuarios from '../Pages/Usuarios/ListaUsuarios';
 import Ofertas from '../Pages/Ofertas/ListaOfertas';
 import PedidoNovo from '../Pages/Pedidos/NovoPedido';
-
+import OfertaNova from '../Pages/Ofertas/NovaOferta';
 import Route from './route';
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const index = () => {
   const { signed } = useContext(AuthContext);
   return (
@@ -26,6 +27,7 @@ const index = () => {
       <Route path="/usuarios" exact component={Usuarios} isPrivate signed={signed} />
       <Route path="/ofertas" exact component={Ofertas} isPrivate signed={signed} />
       <Route path="/pedidos/novo" exact component={PedidoNovo} isPrivate signed={signed} />
+      <Route path="/ofertas/nova" exact component={OfertaNova} isPrivate signed={signed} />
     </Switch>
   );
 };

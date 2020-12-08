@@ -1,16 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
-import {
-  Button,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableContainer,
-  TableBody,
-  Table,
-  Paper,
-  TextField,
-} from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import { Button, TableHead, TableRow, TableCell, TableContainer, TableBody, Table, Paper } from '@material-ui/core';
 import { Container, AddOfferContainer } from './styles';
 
 import { Validade } from '../../../Types';
@@ -37,7 +28,9 @@ const index = () => {
   return (
     <Container>
       <AddOfferContainer>
-        <Button>Nova Oferta</Button>
+        <Button component={Link} to="/ofertas/nova">
+          Nova Oferta
+        </Button>
       </AddOfferContainer>
       <TableContainer component={Paper}>
         <Table>
@@ -54,13 +47,9 @@ const index = () => {
             {ofertas.map((item) => (
               <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
                 <TableCell>{item.id}</TableCell>
-
                 <TableCell>{item.status}</TableCell>
-
                 <TableCell>{dayjs(item.validade).format('DD/MM/YYYY')}</TableCell>
-
                 <TableCell>{item.status === 'ativa' ? <Button>Editar</Button> : <Button>Remover</Button>}</TableCell>
-
                 <TableCell>{item.status !== 'ativa' && <Button>Copiar</Button>}</TableCell>
               </TableRow>
             ))}
