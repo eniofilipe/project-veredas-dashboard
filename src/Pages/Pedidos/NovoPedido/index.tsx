@@ -11,21 +11,50 @@ import {
   Table,
   Paper,
   TextField,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { Container, AddOrderContainer } from './styles';
 import ModalClientes from '../../__Modais/ListaClientes';
 import ModalProdutos from '../../__Modais/ListaOfertas';
+
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(2),
+    minWidth: 200,
+  },
+}));
+
 
 import { Cliente, Oferta, OfertaPedido } from '../../../Types';
 import { postPedido } from '../../../Api/Pedido';
 
 const index = () => {
   const history = useHistory();
+  const classes = useStyles();
   const [cliente, setCliente] = useState<Cliente>();
   const [produtos, setProdutos] = useState<Oferta[]>([]);
   const [openModalCliente, setOpenModalCliente] = useState(false);
   const [openModalProduto, setOpenModalProduto] = useState(false);
 
+  const [type, setType] = useState('');
+  const [open, setOpen] = useState(false);
+  const options = ['Dinheiro', 'Cartão de Débito'];
+  
+  const handleChange = (event: any) => {
+    setType(event.target.value);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  
   const cadastraPedido = async () => {
     try {
       const ofertasAux = produtos.map((item) => {
@@ -51,7 +80,7 @@ const index = () => {
     }
   };
 
-  const options = ['Dinheiro', 'Cartão de Débito'];
+  
 
   const changeProduto = (value: number, pos: number) => {
     const prodAux = produtos;
@@ -66,9 +95,25 @@ const index = () => {
       <AddOrderContainer>
         <span>Cliente:</span>
         <TextField disabled id="outlined-basic" variant="outlined" value={cliente?.nome} />
-        <ButtonGroup variant="contained">
-          <Button>options[0]</Button>
-        </ButtonGroup>
+        <FormControl className={classes.formControl}>
+          <InputLabel id="demo-controlled-open-select-label">Tipo de Pagamento</InputLabel>
+          <Select
+            labelId="demo-controlled-open-select-label"
+            id="demo-controlled-open-select"
+            open={open}
+            onClose={handleClose}
+            onOpen={handleOpen}
+            value={type}
+            onChange={handleChange}
+          >
+            {options &&
+              options.map((op, i) => (
+                <MenuItem value={op} key={i}>
+                  {op}
+                </MenuItem>
+              ))}
+          </Select>
+        </FormControl>       
         <Button onClick={() => setOpenModalCliente(true)}>Adicionar Cliente</Button>
         <Button onClick={() => setOpenModalProduto(true)}>Adicionar Produto</Button>
       </AddOrderContainer>
@@ -83,6 +128,7 @@ const index = () => {
             </TableRow>
           </TableHead>
           <TableBody>
+
             {produtos.map((item, pos) => (
               <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
                 <TableCell>
