@@ -10,6 +10,7 @@ import {
   Table,
   Paper,
   TextField,
+  Checkbox,
 } from '@material-ui/core';
 import { AddCategoryContainer } from './styles';
 
@@ -66,7 +67,7 @@ const index = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Cód</TableCell>
+              <TableCell>Código</TableCell>
               <TableCell>Categoria</TableCell>
               <TableCell>
                 <Button>Excluir</Button>
@@ -77,9 +78,7 @@ const index = () => {
             {categorias.map((item) => (
               <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
                 <TableCell>{item.id}</TableCell>
-
                 <TableCell>{item.nome}</TableCell>
-
                 <TableCell>
                   <Button>Excluir</Button>
                 </TableCell>
