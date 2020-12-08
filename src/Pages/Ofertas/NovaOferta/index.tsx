@@ -9,8 +9,6 @@ import {
   TableHead,
   TableRow,
   TextField,
-  MenuItem,
-  Select,
 } from '@material-ui/core';
 import { Container, AddOfferContainer } from '../ListaOfertas/styles';
 
