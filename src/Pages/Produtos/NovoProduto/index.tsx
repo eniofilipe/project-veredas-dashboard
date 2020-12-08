@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   Button,
@@ -17,30 +17,68 @@ import {
 } from '@material-ui/core';
 import { PhotoCamera, Add, Clear } from '@material-ui/icons';
 import { Container } from './styles';
+import { Categoria, Imagem } from '../../../Types';
 
-const rows = [
-  {
-    id: '#1',
-    category: 'Hortaliças',
-  },
-  {
-    id: '#2',
-    category: 'Veganos',
-  },
-];
+import { getCategorias } from '../../../Api/Categorias';
+
+import { sendImage } from '../../../Api/Imagens';
+
+import { postProduto } from '../../../Api/Produtos';
 
 const index = () => {
   const history = useHistory();
-  const [image, setImage] = useState({ preview: '', raw: {} as File });
-  const [categorias, setCategorias] = useState<string[]>([]);
-  const [openModal, setOpenModal] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [categorias, setCategorias] = useState<Categoria[]>([]);
+  const [openModal, setOpenModal] = useState(false);
+  const [listCategorias, setListCategorias] = useState<Categoria[]>([]);
+  const [nome, setNome] = useState('');
+  const [descricao, setDescricao] = useState('');
+  const [imagem, setImagem] = useState<Imagem>();
+
+  const cadastroProduto = async () => {
+    try {
+      const idCategorias = categorias.map((cat) => cat.id);
+      if (imagem) {
+        const response = await postProduto({
+          categorias: idCategorias,
+          descricao,
+          nome,
+          imagem_id: imagem.id,
+        });
+
+        history.goBack();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const list = async () => {
+    try {
+      const response = await getCategorias();
+
+      setListCategorias(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    list();
+  }, []);
+
+  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length) {
-      setImage({
-        preview: URL.createObjectURL(e.target.files[0]),
-        raw: e.target.files[0],
-      });
+      try {
+        const data = new FormData();
+
+        data.append('file', e.target.files[0]);
+
+        const response = await sendImage(data);
+        setImagem(response.data);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -50,8 +88,8 @@ const index = () => {
         <form>
           <Grid container spacing={3}>
             <Grid item xs={6}>
-              {image.preview ? (
-                <img src={image.preview} alt="" width="300" height="300" />
+              {imagem ? (
+                <img src={`http://${imagem.url}`} alt="" width="300" height="300" />
               ) : (
                 <>
                   <input
@@ -70,8 +108,8 @@ const index = () => {
               )}
             </Grid>
             <Grid item xs={6}>
-              <TextField placeholder="Nome" />
-              <TextField placeholder="Descrição" />
+              <TextField placeholder="Nome" value={nome} onChange={(e) => setNome(e.target.value)} />
+              <TextField placeholder="Descrição" value={descricao} onChange={(e) => setDescricao(e.target.value)} />
               <div>
                 <span>Categorias</span>
                 <IconButton color="primary" component="span" onClick={() => setOpenModal(true)}>
@@ -80,8 +118,8 @@ const index = () => {
               </div>
               <div>
                 {categorias.map((categoria, i) => (
-                  <div key={`cat${categoria}`}>
-                    <span>{categoria}</span>
+                  <div key={`cat${categoria.id}`}>
+                    <span>{categoria.nome}</span>
                     <IconButton
                       color="primary"
                       component="span"
@@ -100,7 +138,7 @@ const index = () => {
             </Grid>
             <Grid item xs={12}>
               <Button onClick={() => history.goBack()}>Voltar</Button>
-              <Button>Cadastrar Produto</Button>
+              <Button onClick={cadastroProduto}>Cadastrar Produto</Button>
             </Grid>
           </Grid>
         </form>
@@ -116,16 +154,16 @@ const index = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((item) => (
+              {listCategorias.map((item) => (
                 <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
                   <TableCell>{item.id}</TableCell>
 
-                  <TableCell>{item.category}</TableCell>
+                  <TableCell>{item.nome}</TableCell>
 
                   <TableCell>
                     <Button
                       onClick={() => {
-                        setCategorias(categorias.concat(item.category));
+                        setCategorias(categorias.concat(item));
                         setOpenModal(false);
                       }}
                     >

@@ -1,7 +1,8 @@
-/* eslint-disable react/no-array-index-key */
-import React from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   Button,
+  ButtonGroup,
   TableHead,
   TableRow,
   TableCell,
@@ -17,6 +18,8 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Container, AddOrderContainer } from './styles';
+import ModalClientes from '../../__Modais/ListaClientes';
+import ModalProdutos from '../../__Modais/ListaOfertas';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -25,33 +28,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const rows = [
-  {
-    quantity: '4',
-    id: '463',
-    name: 'Alface',
-    status: 'Pacote de 300g',
-    category: 'Hortaliças',
-    price: 19,
-    delete: () => <Button>Excluir</Button>,
-  },
-  {
-    quantity: '1',
-    id: '430',
-    name: 'Cebola',
-    status: 'Pacote de 500g',
-    category: 'Hortaliças',
-    price: 10,
-    delete: () => <Button>Excluir</Button>,
-  },
-];
+
+import { Cliente, Oferta, OfertaPedido } from '../../../Types';
+import { postPedido } from '../../../Api/Pedido';
 
 const index = () => {
+  const history = useHistory();
   const classes = useStyles();
-  const options = ['Dinheiro', 'Cartão de Débito'];
-  const [type, setType] = React.useState('');
-  const [open, setOpen] = React.useState(false);
+  const [cliente, setCliente] = useState<Cliente>();
+  const [produtos, setProdutos] = useState<Oferta[]>([]);
+  const [openModalCliente, setOpenModalCliente] = useState(false);
+  const [openModalProduto, setOpenModalProduto] = useState(false);
 
+  const [type, setType] = useState('');
+  const [open, setOpen] = useState(false);
+  const options = ['Dinheiro', 'Cartão de Débito'];
+  
   const handleChange = (event: any) => {
     setType(event.target.value);
   };
@@ -62,13 +54,47 @@ const index = () => {
 
   const handleOpen = () => {
     setOpen(true);
+  
+  const cadastraPedido = async () => {
+    try {
+      const ofertasAux = produtos.map((item) => {
+        return {
+          oferta_id: item.id,
+          quantidade: item.quantidade,
+        } as OfertaPedido;
+      });
+
+      if (cliente) {
+        await postPedido({
+          cliente_id: cliente.id,
+          tipo_pagamento_id: 1,
+          valor_frete: 5,
+          ofertas: ofertasAux,
+          tipo_frete_id: 1,
+        });
+
+        history.goBack();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  
+
+  const changeProduto = (value: number, pos: number) => {
+    const prodAux = produtos;
+
+    prodAux[pos] = { ...produtos[pos], quantidade: value };
+
+    setProdutos([...prodAux]);
   };
 
   return (
     <Container>
       <AddOrderContainer>
         <span>Cliente:</span>
-        <TextField disabled id="outlined-basic" variant="outlined" />
+        <TextField disabled id="outlined-basic" variant="outlined" value={cliente?.nome} />
         <FormControl className={classes.formControl}>
           <InputLabel id="demo-controlled-open-select-label">Tipo de Pagamento</InputLabel>
           <Select
@@ -87,42 +113,58 @@ const index = () => {
                 </MenuItem>
               ))}
           </Select>
-        </FormControl>
-        <Button>Adicionar Cliente</Button>
-        <Button>Adicionar Produto</Button>
+        </FormControl>       
+        <Button onClick={() => setOpenModalCliente(true)}>Adicionar Cliente</Button>
+        <Button onClick={() => setOpenModalProduto(true)}>Adicionar Produto</Button>
       </AddOrderContainer>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell>Quantidade</TableCell>
-              <TableCell>Código</TableCell>
               <TableCell>Nome</TableCell>
               <TableCell>Descrição</TableCell>
-              <TableCell>Categorias</TableCell>
               <TableCell>Preço</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((item) => (
+
+            {produtos.map((item, pos) => (
               <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
-                <TableCell>{item.quantity}</TableCell>
-                <TableCell>{item.id}</TableCell>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.status}</TableCell>
-                <TableCell>{item.category}</TableCell>
                 <TableCell>
-                  {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.price)}
+                  <TextField
+                    InputLabelProps={{ shrink: true }}
+                    type="number"
+                    value={item.quantidade}
+                    onChange={(e) => changeProduto(Number(e.target.value), pos)}
+                  />
                 </TableCell>
-                <TableCell>{item.delete()}</TableCell>
+                <TableCell>{item.produtos.nome}</TableCell>
+                <TableCell>{item.produtos.descricao}</TableCell>
+                <TableCell>
+                  {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
+                    item.quantidade * item.valor_unitario
+                  )}
+                </TableCell>
+                <TableCell />
               </TableRow>
             ))}
             <TableRow />
           </TableBody>
         </Table>
       </TableContainer>
-      <Button>Voltar</Button>
-      <Button>Salvar</Button>
+      <Button onClick={() => history.goBack()}>Voltar</Button>
+      <Button onClick={cadastraPedido}>Salvar</Button>
+      <ModalClientes
+        isOpen={openModalCliente}
+        setModalClose={() => setOpenModalCliente(false)}
+        selection={(cli) => setCliente(cli)}
+      />
+      <ModalProdutos
+        isOpen={openModalProduto}
+        setModalClose={() => setOpenModalProduto(false)}
+        selection={(prod) => setProdutos(produtos.concat({ ...prod, quantidade: 1 }))}
+      />
     </Container>
   );
 };

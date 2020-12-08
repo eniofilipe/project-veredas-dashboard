@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import dayjs from 'dayjs';
 import {
   Button,
   TableHead,
@@ -12,59 +13,63 @@ import {
 } from '@material-ui/core';
 import { Container, AddOfferContainer } from './styles';
 
-const rows = [
-  {
-    id: '463',
-    status: 'Aberta',
-    validade: '10/10/2020',
-    delete: () => <Button>Excluir</Button>,
-    editar: () => <Button>Editar</Button>,
-    copiar: () => <Button>Nova</Button>,
-  },
-  {
-    id: '430',
-    status: 'Finalizada',
-    validade: '10/10/2020',
-    delete: () => <Button>Excluir</Button>,
-    editar: () => <Button>Editar</Button>,
-    copiar: () => <Button>Nova</Button>,
-  },
-];
-const index = () => (
-  <Container>
-    <AddOfferContainer>
-      <Button>Nova Oferta</Button>
-    </AddOfferContainer>
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Cód</TableCell>
-            <TableCell>Status</TableCell>
-            <TableCell>Validade</TableCell>
-            <TableCell />
-            <TableCell />
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((item) => (
-            <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
-              <TableCell>{item.id}</TableCell>
+import { Validade } from '../../../Types';
 
-              <TableCell>{item.status}</TableCell>
+import { getOfertas } from '../../../Api/Ofertas';
 
-              <TableCell>{item.validade}</TableCell>
+const index = () => {
+  const [ofertas, setOfertas] = useState<Validade[]>([]);
 
-              <TableCell>{item.status === 'Aberta' ? item.editar() : item.delete()}</TableCell>
+  const listOfertas = async () => {
+    try {
+      const response = await getOfertas();
 
-              <TableCell>{item.status === 'Finalizada' && item.copiar()}</TableCell>
+      setOfertas(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    listOfertas();
+  }, []);
+
+  return (
+    <Container>
+      <AddOfferContainer>
+        <Button>Nova Oferta</Button>
+      </AddOfferContainer>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Cód</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Validade</TableCell>
+              <TableCell />
+              <TableCell />
             </TableRow>
-          ))}
-          <TableRow />
-        </TableBody>
-      </Table>
-    </TableContainer>
-  </Container>
-);
+          </TableHead>
+          <TableBody>
+            {ofertas.map((item) => (
+              <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
+                <TableCell>{item.id}</TableCell>
+
+                <TableCell>{item.status}</TableCell>
+
+                <TableCell>{dayjs(item.validade).format('DD/MM/YYYY')}</TableCell>
+
+                <TableCell>{item.status === 'ativa' ? <Button>Editar</Button> : <Button>Remover</Button>}</TableCell>
+
+                <TableCell>{item.status !== 'ativa' && <Button>Copiar</Button>}</TableCell>
+              </TableRow>
+            ))}
+            <TableRow />
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Container>
+  );
+};
 
 export default index;
