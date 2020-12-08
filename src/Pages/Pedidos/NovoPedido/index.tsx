@@ -1,8 +1,8 @@
+/* eslint-disable react/no-array-index-key */
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   Button,
-  ButtonGroup,
   TableHead,
   TableRow,
   TableCell,
@@ -21,16 +21,15 @@ import { Container, AddOrderContainer } from './styles';
 import ModalClientes from '../../__Modais/ListaClientes';
 import ModalProdutos from '../../__Modais/ListaOfertas';
 
+import { Cliente, Oferta, OfertaPedido } from '../../../Types';
+import { postPedido } from '../../../Api/Pedido';
+
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(2),
     minWidth: 200,
   },
 }));
-
-
-import { Cliente, Oferta, OfertaPedido } from '../../../Types';
-import { postPedido } from '../../../Api/Pedido';
 
 const index = () => {
   const history = useHistory();
@@ -43,7 +42,7 @@ const index = () => {
   const [type, setType] = useState('');
   const [open, setOpen] = useState(false);
   const options = ['Dinheiro', 'Cartão de Débito'];
-  
+
   const handleChange = (event: any) => {
     setType(event.target.value);
   };
@@ -54,7 +53,8 @@ const index = () => {
 
   const handleOpen = () => {
     setOpen(true);
-  
+  };
+
   const cadastraPedido = async () => {
     try {
       const ofertasAux = produtos.map((item) => {
@@ -79,8 +79,6 @@ const index = () => {
       console.log(error);
     }
   };
-
-  
 
   const changeProduto = (value: number, pos: number) => {
     const prodAux = produtos;
@@ -113,7 +111,7 @@ const index = () => {
                 </MenuItem>
               ))}
           </Select>
-        </FormControl>       
+        </FormControl>
         <Button onClick={() => setOpenModalCliente(true)}>Adicionar Cliente</Button>
         <Button onClick={() => setOpenModalProduto(true)}>Adicionar Produto</Button>
       </AddOrderContainer>
@@ -128,7 +126,6 @@ const index = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-
             {produtos.map((item, pos) => (
               <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
                 <TableCell>
