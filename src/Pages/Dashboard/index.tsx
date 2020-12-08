@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
-import { Card, Titulo, Container, HeaderDashboard, CardInformacao, CardRelatorio, BodyDashboard } from './styles';
+import { Card, Titulo, Container, HeaderDashboard, CardInformacao, BodyDashboard } from './styles';
 
 const index = () => {
   return (
@@ -20,13 +20,15 @@ const index = () => {
         </Card>
       </HeaderDashboard>
       <BodyDashboard>
-        <CardInformacao>Informações</CardInformacao>
-        <CardRelatorio>
+        <CardInformacao>
+          <Titulo>Informações</Titulo>
+        </CardInformacao>
+        <Card>
           <Titulo>Relatórios</Titulo>
-          <Button>Produtos</Button>
-          <Button>Pedidos</Button>
-          <Button>Usuários</Button>
-        </CardRelatorio>
+          <Button>Produtos</Button> <p />
+          <Button>Pedidos</Button> <p />
+          <Button>Usuários</Button> <p />
+        </Card>
       </BodyDashboard>
     </Container>
   );
