@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
-import { Button, TableHead, TableRow, TableCell, TableContainer, TableBody, Table, Paper } from '@material-ui/core';
+import {
+  Button,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableContainer,
+  TableBody,
+  Table,
+  Paper,
+  Checkbox,
+} from '@material-ui/core';
 import { Container, AddOfferContainer } from './styles';
 
 import { Validade } from '../../../Types';
@@ -36,7 +46,7 @@ const index = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Cód</TableCell>
+              <TableCell>Código</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Validade</TableCell>
               <TableCell />
