@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button } from '@material-ui/core';
+import { Container, TableContainer, TableHead, TableBody, TableCell, TableRow } from '@material-ui/core';
 
 import { Oferta } from '../../../Types';
 import { getProdutosOfertas } from '../../../Api/Ofertas';
 
 const index = () => {
-  const [produtos, setProdutos] = useState<Oferta>();
+  const [oferta, setOferta] = useState<Oferta[]>([]);
 
   const history = useHistory();
 
@@ -14,7 +14,7 @@ const index = () => {
     try {
       const response = await getProdutosOfertas();
 
-      setProdutos(response.data);
+      setOferta(response.data);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
@@ -24,6 +24,22 @@ const index = () => {
   useEffect(() => {
     listProdutos();
   }, []);
+
+  return (
+    <Container>
+      <TableContainer>
+        <TableHead>
+          <TableCell>Código</TableCell>
+          <TableCell>Nome</TableCell>
+          <TableCell>Descrição</TableCell>
+          <TableCell>Categorias</TableCell>
+          <TableCell>Quantidade</TableCell>
+          <TableCell>Preço</TableCell>
+        </TableHead>
+        <TableBody />
+      </TableContainer>
+    </Container>
+  );
 };
 
 export default index;
