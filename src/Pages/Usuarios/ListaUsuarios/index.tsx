@@ -50,11 +50,8 @@ const index = () => (
           {rows.map((item) => (
             <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
               <TableCell>{item.name}</TableCell>
-
               <TableCell>{item.email}</TableCell>
-
               <TableCell>{item.phone}</TableCell>
-
               <TableCell>{item.adress}</TableCell>
             </TableRow>
           ))}
