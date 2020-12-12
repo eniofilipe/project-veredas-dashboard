@@ -179,3 +179,26 @@ export interface PostPedidoProps {
   valor_frete: number;
   tipo_frete_id: number;
 }
+
+export interface Usuario {
+  id: number;
+  nome: string;
+  email: string;
+  cpf: number;
+  telefone: number;
+  endereco: {
+    id: number;
+    cep: number;
+    estado: string;
+    cidade: string;
+    bairro: string;
+    logradouro: string;
+    numero: string;
+    complemento: string;
+    referencia: string;
+  };
+}
+
+export interface ResponseUsuario {
+  usuarios: Usuario[];
+}
