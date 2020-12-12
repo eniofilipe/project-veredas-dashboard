@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
+import { useHistory } from 'react-router-dom';
+
 import {
   Button,
   TableHead,
@@ -18,6 +20,7 @@ import { Validade } from '../../../Types';
 import { getOfertas } from '../../../Api/Ofertas';
 
 const index = () => {
+  const history = useHistory();
   const [ofertas, setOfertas] = useState<Validade[]>([]);
 
   const listOfertas = async () => {
@@ -37,7 +40,7 @@ const index = () => {
   return (
     <Container>
       <AddOfferContainer>
-        <Button>Nova Oferta</Button>
+        <Button onClick={() => history.push('/ofertas/novo')}>Nova Oferta</Button>
       </AddOfferContainer>
       <TableContainer component={Paper}>
         <Table>

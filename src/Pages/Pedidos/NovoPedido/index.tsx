@@ -20,6 +20,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Container, AddOrderContainer } from './styles';
 import ModalClientes from '../../__Modais/ListaClientes';
 import ModalProdutos from '../../__Modais/ListaOfertas';
+import { Cliente, Oferta, OfertaPedido } from '../../../Types';
+import { postPedido } from '../../../Api/Pedido';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -27,10 +29,6 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 200,
   },
 }));
-
-
-import { Cliente, Oferta, OfertaPedido } from '../../../Types';
-import { postPedido } from '../../../Api/Pedido';
 
 const index = () => {
   const history = useHistory();
@@ -43,7 +41,7 @@ const index = () => {
   const [type, setType] = useState('');
   const [open, setOpen] = useState(false);
   const options = ['Dinheiro', 'Cartão de Débito'];
-  
+
   const handleChange = (event: any) => {
     setType(event.target.value);
   };
@@ -54,7 +52,8 @@ const index = () => {
 
   const handleOpen = () => {
     setOpen(true);
-  
+  };
+
   const cadastraPedido = async () => {
     try {
       const ofertasAux = produtos.map((item) => {
@@ -79,8 +78,6 @@ const index = () => {
       console.log(error);
     }
   };
-
-  
 
   const changeProduto = (value: number, pos: number) => {
     const prodAux = produtos;
@@ -108,12 +105,12 @@ const index = () => {
           >
             {options &&
               options.map((op, i) => (
-                <MenuItem value={op} key={i}>
+                <MenuItem value={op} key={op}>
                   {op}
                 </MenuItem>
               ))}
           </Select>
-        </FormControl>       
+        </FormControl>
         <Button onClick={() => setOpenModalCliente(true)}>Adicionar Cliente</Button>
         <Button onClick={() => setOpenModalProduto(true)}>Adicionar Produto</Button>
       </AddOrderContainer>
@@ -128,7 +125,6 @@ const index = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-
             {produtos.map((item, pos) => (
               <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
                 <TableCell>

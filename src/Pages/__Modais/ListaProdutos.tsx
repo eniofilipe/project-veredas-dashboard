@@ -38,6 +38,10 @@ const ListaProdutos = ({ selection, isOpen, setModalClose }: ListaProdutosProps)
     list();
   }, []);
 
+  useEffect(() => {
+    console.log(listProdutos);
+  }, [listProdutos]);
+
   return (
     <Modal open={isOpen} onClose={setModalClose}>
       <TableContainer component={Paper}>
