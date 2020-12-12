@@ -10,7 +10,6 @@ import {
   Table,
   Paper,
   TextField,
-  Checkbox,
 } from '@material-ui/core';
 import { AddCategoryContainer } from './styles';
 

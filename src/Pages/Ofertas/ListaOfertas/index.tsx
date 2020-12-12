@@ -1,17 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { Link } from 'react-router-dom';
-import {
-  Button,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableContainer,
-  TableBody,
-  Table,
-  Paper,
-  Checkbox,
-} from '@material-ui/core';
+import { Button, TableHead, TableRow, TableCell, TableContainer, TableBody, Table, Paper } from '@material-ui/core';
 import { Container, AddOfferContainer } from './styles';
 
 import { Validade } from '../../../Types';
@@ -21,12 +11,15 @@ import { getOfertas } from '../../../Api/Ofertas';
 const index = () => {
   const [ofertas, setOfertas] = useState<Validade[]>([]);
 
+  const history = useHistory();
+
   const listOfertas = async () => {
     try {
       const response = await getOfertas();
 
       setOfertas(response.data);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(error);
     }
   };
@@ -38,9 +31,7 @@ const index = () => {
   return (
     <Container>
       <AddOfferContainer>
-        <Button component={Link} to="/ofertas/nova">
-          Nova Oferta
-        </Button>
+        <Button onClick={() => history.push('/ofertas/nova')}>Nova Oferta</Button>
       </AddOfferContainer>
       <TableContainer component={Paper}>
         <Table>
@@ -50,7 +41,7 @@ const index = () => {
               <TableCell>Status</TableCell>
               <TableCell>Validade</TableCell>
               <TableCell />
-              <TableCell />
+              {/* <TableCell /> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -59,8 +50,14 @@ const index = () => {
                 <TableCell>{item.id}</TableCell>
                 <TableCell>{item.status}</TableCell>
                 <TableCell>{dayjs(item.validade).format('DD/MM/YYYY')}</TableCell>
-                <TableCell>{item.status === 'ativa' ? <Button>Editar</Button> : <Button>Remover</Button>}</TableCell>
-                <TableCell>{item.status !== 'ativa' && <Button>Copiar</Button>}</TableCell>
+                <TableCell>
+                  {item.status === 'ativa' ? (
+                    <Button onClick={() => history.push(`/ofertas/editar/${item.id}`)}>Editar</Button>
+                  ) : (
+                    <Button>Remover</Button>
+                  )}
+                </TableCell>
+                {/* <TableCell>{item.status !== 'ativa' && <Button>Copiar</Button>}</TableCell> */}
               </TableRow>
             ))}
             <TableRow />

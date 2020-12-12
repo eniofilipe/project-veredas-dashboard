@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import dayjs from 'dayjs';
 import {
   Button,
@@ -23,6 +23,8 @@ import { getPedidos } from '../../../Api/Pedido';
 const index = () => {
   const [pedidos, setPedidos] = useState<Pedido[]>([]);
 
+  const history = useHistory();
+
   const listPedidos = async () => {
     try {
       const response = await getPedidos();
@@ -40,9 +42,7 @@ const index = () => {
   return (
     <Container>
       <SearchOrderContainer>
-        <Button component={Link} to="/pedidos/novo">
-          Novo Pedido
-        </Button>
+        <Button onClick={() => history.push('/pedidos/novo')}>Novo Pedido</Button>
         <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
       </SearchOrderContainer>
       <TableContainer component={Paper}>

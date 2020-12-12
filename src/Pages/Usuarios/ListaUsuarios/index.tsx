@@ -1,15 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Button,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableContainer,
-  TableBody,
-  Table,
-  Paper,
-  TextField,
-} from '@material-ui/core';
+import { TableHead, TableRow, TableCell, TableContainer, TableBody, Table, Paper, TextField } from '@material-ui/core';
 import { Container, SearchUsersContainer } from './styles';
 
 import { Usuario } from '../../../Types';
