@@ -23,9 +23,6 @@ import ModalProdutos from '../../__Modais/ListaOfertas';
 import { Cliente, Oferta, OfertaPedido } from '../../../Types';
 import { postPedido } from '../../../Api/Pedido';
 
-import { Cliente, Oferta, OfertaPedido } from '../../../Types';
-import { postPedido } from '../../../Api/Pedido';
-
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(2),
