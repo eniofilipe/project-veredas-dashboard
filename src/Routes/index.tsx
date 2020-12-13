@@ -11,6 +11,8 @@ import Usuarios from '../Pages/Usuarios/ListaUsuarios';
 import Ofertas from '../Pages/Ofertas/ListaOfertas';
 import PedidoNovo from '../Pages/Pedidos/NovoPedido';
 
+import NovaOferta from '../Pages/Ofertas/NovaOferta';
+
 import Route from './route';
 
 const index = () => {
@@ -25,6 +27,7 @@ const index = () => {
       <Route path="/pedidos" exact component={Pedidos} isPrivate signed={signed} />
       <Route path="/usuarios" exact component={Usuarios} isPrivate signed={signed} />
       <Route path="/ofertas" exact component={Ofertas} isPrivate signed={signed} />
+      <Route path="/ofertas/novo" exact component={NovaOferta} isPrivate signed={signed} />
       <Route path="/pedidos/novo" exact component={PedidoNovo} isPrivate signed={signed} />
     </Switch>
   );
