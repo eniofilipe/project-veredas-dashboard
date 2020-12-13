@@ -12,6 +12,7 @@ import {
   Paper,
 } from '@material-ui/core';
 import { Container, AddProductContainer } from './styles';
+import { moneyMask } from '../../../Utilities/masks';
 
 import { Oferta } from '../../../Types';
 
@@ -60,14 +61,16 @@ const index = () => {
             </TableRow>
           </TableHead>
           <TableBody> 
-            {ofertas.map((item) => (
+            {ofertas.map((item): JSX.Element => (
               <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
                 <TableCell>{item.produtos.id}</TableCell>
                 <TableCell>{item.produtos.nome}</TableCell>
                 <TableCell>{item.produtos.descricao}</TableCell>
                 <TableCell>{item.produtos.categorias.map((category) => `${category.nome}, `)}</TableCell>
-                <TableCell>{item.quantidade}</TableCell>
-                <TableCell>{item.valor_unitario * item.quantidade}</TableCell>
+                <TableCell>
+                  <TextField id="standard-number" type="number" value="item.produtos.descricao" />
+                </TableCell>
+                {/* <TableCell>{moneyMask(item.valor_unitario * item.quantidade)}</TableCell> */}
               </TableRow>
             ))}
           </TableBody>
