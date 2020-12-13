@@ -52,7 +52,7 @@ const index = () => {
                 <TableCell>{dayjs(item.validade).format('DD/MM/YYYY')}</TableCell>
                 <TableCell>
                   {item.status === 'ativa' ? (
-                    <Button onClick={() => history.push(`/ofertas/editar/${item.id}`)}>Editar</Button>
+                    <Button onClick={() => history.push(`/ofertas/id/${item.id}`)}>Editar</Button>
                   ) : (
                     <Button>Remover</Button>
                   )}

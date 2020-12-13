@@ -9,3 +9,5 @@ export const getProdutosOfertas = async () =>
   });
 
 export const getOfertas = async () => api.get<Validade[]>('/validade-oferta');
+
+export const getProdutosOferta = async () => api.get<Oferta[]>('/oferta');

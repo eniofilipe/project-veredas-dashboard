@@ -1,7 +1,6 @@
+/* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import {
-  Container,
   TableContainer,
   TableHead,
   TableBody,
@@ -10,22 +9,22 @@ import {
   TableRow,
   TextField,
   Button,
+  Paper,
 } from '@material-ui/core';
-import { AddProductContainer } from './styles';
+import { Container, AddProductContainer } from './styles';
 
 import { Oferta } from '../../../Types';
-import { getProdutosOfertas } from '../../../Api/Ofertas';
+
+import { getProdutosOferta } from '../../../Api/Ofertas';
 
 const index = () => {
-  const [oferta, setOferta] = useState<Oferta[]>([]);
-
-  const history = useHistory();
+  const [ofertas, setOfertas] = useState<Oferta[]>([]);
 
   const listProdutos = async () => {
     try {
-      const response = await getProdutosOfertas();
+      const response = await getProdutosOferta();
 
-      setOferta(response.data);
+      setOfertas(response.data);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
@@ -48,7 +47,7 @@ const index = () => {
         <TextField id="outlined-basic" variant="outlined" />
         <Button>Adicionar Produto</Button>
       </AddProductContainer>
-      <TableContainer>
+      <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
@@ -60,9 +59,21 @@ const index = () => {
               <TableCell>Preço</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody />
+          <TableBody> 
+            {ofertas.map((item) => (
+              <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
+                <TableCell>{item.produtos.id}</TableCell>
+                <TableCell>{item.produtos.nome}</TableCell>
+                <TableCell>{item.produtos.descricao}</TableCell>
+                <TableCell>{item.produtos.categorias.map((category) => `${category.nome}, `)}</TableCell>
+                <TableCell>{item.quantidade}</TableCell>
+                <TableCell>{item.valor_unitario * item.quantidade}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
         </Table>
       </TableContainer>
+      <Button>Salvar</Button>
     </Container>
   );
 };

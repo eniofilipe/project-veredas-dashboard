@@ -30,7 +30,7 @@ const index = () => {
       <Route path="/ofertas" exact component={Ofertas} isPrivate signed={signed} />
       <Route path="/pedidos/novo" exact component={PedidoNovo} isPrivate signed={signed} />
       <Route path="/ofertas/nova" exact component={OfertaNova} isPrivate signed={signed} />
-      <Route path="/ofertas/editar" exact component={EditarOferta} isPrivate signed={signed} />
+      <Route path="/ofertas/id/:codigo" exact component={EditarOferta} isPrivate signed={signed} />
     </Switch>
   );
 };
