@@ -45,7 +45,7 @@ const index = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Cód</TableCell>
+              <TableCell>Código</TableCell>
               <TableCell>Nome</TableCell>
               <TableCell>Descrição</TableCell>
               <TableCell>Categorias</TableCell>

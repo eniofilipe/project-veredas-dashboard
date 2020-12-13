@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   TableHead,
@@ -12,57 +12,57 @@ import {
 } from '@material-ui/core';
 import { Container, SearchUsersContainer } from './styles';
 
-const rows = [
-  {
-    id: '463',
-    name: 'Deise Santana',
-    email: 'usuario@email.com',
-    phone: '38 99191-8888',
-    adress: 'Av Rui de Albuquerque, 1052, bl13 ap403',
-    delete: () => <Button>Excluir</Button>,
-  },
-  {
-    id: '430',
-    name: 'Deise Santana',
-    email: 'usuario@email.com',
-    phone: '38 99191-8888',
-    adress: 'Av Rui de Albuquerque, 1052, bl13 ap403',
-    delete: () => <Button>Excluir</Button>,
-  },
-];
+import { Usuario } from '../../../Types';
 
-const index = () => (
-  <Container>
-    <SearchUsersContainer>
-      <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
-    </SearchUsersContainer>
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Nome</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell>Telefone</TableCell>
-            <TableCell>Endereço</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((item) => (
-            <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
-              <TableCell>{item.name}</TableCell>
+import { getUsuarios } from '../../../Api/Usuario';
 
-              <TableCell>{item.email}</TableCell>
+const index = () => {
+  const [usuarios, setUsuarios] = useState<Usuario[]>([]);
 
-              <TableCell>{item.phone}</TableCell>
+  const listUsuarios = async () => {
+    try {
+      const response = await getUsuarios();
 
-              <TableCell>{item.adress}</TableCell>
+      setUsuarios(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    listUsuarios();
+  }, []);
+
+  return (
+    <Container>
+      <SearchUsersContainer>
+        <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
+      </SearchUsersContainer>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Nome</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell>Telefone</TableCell>
+              <TableCell>Endereço</TableCell>
             </TableRow>
-          ))}
-          <TableRow />
-        </TableBody>
-      </Table>
-    </TableContainer>
-  </Container>
-);
+          </TableHead>
+          <TableBody>
+            {usuarios.map((item) => (
+              <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
+                <TableCell>{item.nome}</TableCell>
+                <TableCell>{item.email}</TableCell>
+                <TableCell>{item.telefone}</TableCell>
+                <TableCell>{item.endereco}</TableCell>
+              </TableRow>
+            ))}
+            <TableRow />
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Container>
+  );
+};
 
 export default index;

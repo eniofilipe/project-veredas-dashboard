@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import { useHistory } from 'react-router-dom';
-
 import {
   Button,
   TableHead,
@@ -11,7 +10,7 @@ import {
   TableBody,
   Table,
   Paper,
-  TextField,
+  Checkbox,
 } from '@material-ui/core';
 import { Container, AddOfferContainer } from './styles';
 
@@ -46,7 +45,7 @@ const index = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Cód</TableCell>
+              <TableCell>Código</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Validade</TableCell>
               <TableCell />
@@ -57,13 +56,9 @@ const index = () => {
             {ofertas.map((item) => (
               <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
                 <TableCell>{item.id}</TableCell>
-
                 <TableCell>{item.status}</TableCell>
-
                 <TableCell>{dayjs(item.validade).format('DD/MM/YYYY')}</TableCell>
-
                 <TableCell>{item.status === 'ativa' ? <Button>Editar</Button> : <Button>Remover</Button>}</TableCell>
-
                 <TableCell>{item.status !== 'ativa' && <Button>Copiar</Button>}</TableCell>
               </TableRow>
             ))}

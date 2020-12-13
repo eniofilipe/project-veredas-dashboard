@@ -124,10 +124,81 @@ export interface OfertaPedido {
   oferta_id: number;
   quantidade: number;
 }
+
+export interface Pedido {
+  id: number;
+  status: string;
+  valor_frete: number;
+  tipo_pagamento_id: number;
+  tipo_frete_id: number;
+  createdAt: Date;
+  ofertas: {
+    id: number;
+    valor_unitario: number;
+    validade_oferta_id: number;
+    produtos: {
+      id: number;
+      nome: string;
+      descricao: string;
+      imagem_id: number;
+      imagem: {
+        url: string;
+        path: string;
+      };
+    };
+    oferta_pedidos: {
+      quantidade: number;
+    };
+  };
+  clientes: {
+    id: number;
+    nome: string;
+    email: string;
+    cpf: string;
+    telefone: number;
+    endereco_id: number;
+    enderecos: {
+      id: number;
+      cep: number;
+      estado: string;
+      cidade: string;
+      bairro: string;
+      logradouro: string;
+      numero: string;
+      complemento: string;
+      referencia: string;
+    };
+  };
+  administrador: string;
+}
+
 export interface PostPedidoProps {
   ofertas: OfertaPedido[];
   cliente_id: number;
   tipo_pagamento_id: number;
   valor_frete: number;
   tipo_frete_id: number;
+}
+
+export interface Usuario {
+  id: number;
+  nome: string;
+  email: string;
+  cpf: number;
+  telefone: number;
+  endereco: {
+    id: number;
+    cep: number;
+    estado: string;
+    cidade: string;
+    bairro: string;
+    logradouro: string;
+    numero: string;
+    complemento: string;
+    referencia: string;
+  };
+}
+
+export interface ResponseUsuario {
+  usuarios: Usuario[];
 }

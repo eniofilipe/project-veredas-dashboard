@@ -15,6 +15,7 @@ import NovaOferta from '../Pages/Ofertas/NovaOferta';
 
 import Route from './route';
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const index = () => {
   const { signed } = useContext(AuthContext);
   return (
@@ -29,6 +30,7 @@ const index = () => {
       <Route path="/ofertas" exact component={Ofertas} isPrivate signed={signed} />
       <Route path="/ofertas/novo" exact component={NovaOferta} isPrivate signed={signed} />
       <Route path="/pedidos/novo" exact component={PedidoNovo} isPrivate signed={signed} />
+      <Route path="/ofertas/nova" exact component={NovaOferta} isPrivate signed={signed} />
     </Switch>
   );
 };
