@@ -13,7 +13,6 @@ import PedidoNovo from '../Pages/Pedidos/NovoPedido';
 import NovaOferta from '../Pages/Ofertas/NovaOferta';
 import EditarOferta from '../Pages/Ofertas/EditarOferta';
 
-
 import Route from './route';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types

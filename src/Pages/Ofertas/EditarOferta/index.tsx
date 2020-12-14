@@ -16,14 +16,14 @@ import { moneyMask } from '../../../Utilities/masks';
 
 import { Oferta } from '../../../Types';
 
-import { getProdutosOferta } from '../../../Api/Ofertas';
+import { getProdutosOfertas } from '../../../Api/Ofertas';
 
 const index = () => {
   const [ofertas, setOfertas] = useState<Oferta[]>([]);
 
   const listProdutos = async () => {
     try {
-      const response = await getProdutosOferta();
+      const response = await getProdutosOfertas();
 
       setOfertas(response.data);
     } catch (error) {
@@ -60,7 +60,7 @@ const index = () => {
               <TableCell>Preço</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody> 
+          <TableBody>
             {ofertas.map((item): JSX.Element => (
               <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
                 <TableCell>{item.produtos.id}</TableCell>

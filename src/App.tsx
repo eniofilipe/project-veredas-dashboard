@@ -2,8 +2,11 @@ import { Router } from 'react-router-dom';
 import React from 'react';
 
 import dtUtils from '@date-io/dayjs';
+import { ThemeProvider } from '@material-ui/core/styles';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import Routes from './Routes';
+
+import theme from './Styles/theme';
 
 import History from './Services/history';
 import { AuthProvider } from './Contexts/auth';
@@ -11,11 +14,13 @@ import { AuthProvider } from './Contexts/auth';
 const App = () => {
   return (
     <Router history={History}>
-      <MuiPickersUtilsProvider utils={dtUtils}>
-        <AuthProvider>
-          <Routes />
-        </AuthProvider>
-      </MuiPickersUtilsProvider>
+      <ThemeProvider theme={theme}>
+        <MuiPickersUtilsProvider utils={dtUtils}>
+          <AuthProvider>
+            <Routes />
+          </AuthProvider>
+        </MuiPickersUtilsProvider>
+      </ThemeProvider>
     </Router>
   );
 };
