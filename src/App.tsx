@@ -1,26 +1,28 @@
+import { Router } from 'react-router-dom';
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
+import dtUtils from '@date-io/dayjs';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import Routes from './Routes';
+
+import theme from './Styles/theme';
+
+import History from './Services/history';
+import { AuthProvider } from './Contexts/auth';
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router history={History}>
+      <ThemeProvider theme={theme}>
+        <MuiPickersUtilsProvider utils={dtUtils}>
+          <AuthProvider>
+            <Routes />
+          </AuthProvider>
+        </MuiPickersUtilsProvider>
+      </ThemeProvider>
+    </Router>
   );
-}
+};
 
 export default App;
