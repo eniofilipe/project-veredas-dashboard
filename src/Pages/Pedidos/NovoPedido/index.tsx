@@ -20,7 +20,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Container, AddOrderContainer } from './styles';
 import ModalClientes from '../../__Modais/ListaClientes';
 import ModalProdutos from '../../__Modais/ListaOfertas';
-
 import { Cliente, Oferta, OfertaPedido } from '../../../Types';
 import { postPedido } from '../../../Api/Pedido';
 
@@ -106,7 +105,7 @@ const index = () => {
           >
             {options &&
               options.map((op, i) => (
-                <MenuItem value={op} key={i}>
+                <MenuItem value={op} key={op}>
                   {op}
                 </MenuItem>
               ))}

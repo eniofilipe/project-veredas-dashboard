@@ -1,5 +1,5 @@
 import api from './Api';
-import { Oferta, Validade } from '../Types';
+import { Oferta, Validade, PostValidadeProps, PostOfertaProps } from '../Types';
 
 export const getProdutosOfertas = async () =>
   api.get<Oferta[]>('/oferta', {
@@ -10,4 +10,7 @@ export const getProdutosOfertas = async () =>
 
 export const getOfertas = async () => api.get<Validade[]>('/validade-oferta');
 
-export const getProdutosOferta = async () => api.get<Oferta[]>('/oferta');
+export const setValidadeOferta = async (data: PostValidadeProps) => api.post<Validade>('/validade-oferta', data);
+
+export const setOferta = async (data: PostOfertaProps) => api.post('/oferta', data);
+

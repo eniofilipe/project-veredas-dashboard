@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import dayjs from 'dayjs';
-import { Button, TableHead, TableRow, TableCell, TableContainer, TableBody, Table, Paper } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
+import {
+  Button,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableContainer,
+  TableBody,
+  Table,
+  Paper,
+  Checkbox,
+} from '@material-ui/core';
 import { Container, AddOfferContainer } from './styles';
 
 import { Validade } from '../../../Types';
@@ -9,6 +20,7 @@ import { Validade } from '../../../Types';
 import { getOfertas } from '../../../Api/Ofertas';
 
 const index = () => {
+  const history = useHistory();
   const [ofertas, setOfertas] = useState<Validade[]>([]);
 
   const history = useHistory();
@@ -31,7 +43,8 @@ const index = () => {
   return (
     <Container>
       <AddOfferContainer>
-        <Button onClick={() => history.push('/ofertas/nova')}>Nova Oferta</Button>
+        <Button onClick={() => history.push('/ofertas/novo')}>Nova Oferta</Button>
+
       </AddOfferContainer>
       <TableContainer component={Paper}>
         <Table>

@@ -55,18 +55,21 @@ const index = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {produtos.length >= 1 &&
-              produtos.map((prod) => (
-                <TableRow hover tabIndex={-1} key={`cod${prod.id}`}>
-                  <TableCell>{prod.id}</TableCell>
-                  <TableCell>{prod.nome}</TableCell>
-                  <TableCell>{prod.descricao}</TableCell>
-                  <TableCell>{prod.categorias.map((category) => `${category.nome}, `)}</TableCell>
-                  <TableCell>
-                    <Button>Excluir</Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+            {produtos.map((prod) => (
+              <TableRow hover tabIndex={-1} key={`cod${prod.id}`}>
+                <TableCell>{prod.id}</TableCell>
+
+                <TableCell>{prod.nome}</TableCell>
+
+                <TableCell>{prod.descricao}</TableCell>
+
+                <TableCell>{prod.categorias.map((category) => `${category.nome},`)}</TableCell>
+
+                <TableCell>
+                  <Button>Excluir</Button>
+                </TableCell>
+              </TableRow>
+            ))}
             <TableRow />
           </TableBody>
         </Table>

@@ -1,18 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+
 import {
   Button,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
   TableHead,
   TableRow,
+  TableCell,
+  TableContainer,
+  TableBody,
+  Table,
+  Paper,
   TextField,
 } from '@material-ui/core';
-import { Container, AddOfferContainer } from '../ListaOfertas/styles';
+import dayjs from 'dayjs';
+import { makeStyles } from '@material-ui/core/styles';
+import { Container, AddOrderContainer } from './styles';
 
-const index = () => {
+import ModalProdutos from '../../__Modais/ListaProdutos';
+import { Produto } from '../../../Types';
+import { setOferta, setValidadeOferta } from '../../../Api/Ofertas';
+
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(2),
+    minWidth: 200,
+  },
+}));
+
+interface OfertaProd {
+  produto: Produto;
+  quantidade: number;
+  valor: number;
+}
+
+const NovaOferta = () => {
+  const history = useHistory();
+  const classes = useStyles();
+  const [selectedDate, setSelectedDate] = useState('');
+  const [produtos, setProdutos] = useState<OfertaProd[]>([]);
+  const [openModalProduto, setOpenModalProduto] = useState(false);
+
   const [type, setType] = useState('');
   const [open, setOpen] = useState(false);
 
@@ -28,74 +55,116 @@ const index = () => {
     setOpen(true);
   };
 
-  const produtos = ['Alface', 'Cebola'];
+  const cadastraOferta = async () => {
+    try {
+      const responseValidade = await setValidadeOferta({ validade: selectedDate });
 
-  const rows = [
-    {
-      codigo: '463',
-      nome: 'Alface',
-      descricao: 'Pacote de 300g',
-      categorias: 'Hortaliças',
-      quantidade: 30,
-      preco: 2,
-      delete: () => <Button>Excluir</Button>,
-    },
-    {
-      codigo: '430',
-      nome: 'Cebola',
-      descricao: '1 kg',
-      categorias: 'Hortaliças',
-      quantidade: 60,
-      preco: 10,
-      delete: () => <Button>Excluir</Button>,
-    },
-  ];
+      const idOferta = responseValidade.data.id;
+
+      produtos.map(async (prod) => {
+        await setOferta({
+          produto_id: prod.produto.id,
+          quantidade: prod.quantidade,
+          validade_oferta_id: idOferta,
+          valor_unitario: Number(prod.valor),
+        });
+      });
+
+      history.goBack();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const changeQuantidade = (value: number, pos: number) => {
+    const prodAux = produtos;
+
+    prodAux[pos] = { ...produtos[pos], quantidade: value };
+
+    setProdutos([...prodAux]);
+  };
+
+  const changeValor = (value: number, pos: number) => {
+    const prodAux = produtos;
+
+    prodAux[pos] = { ...produtos[pos], valor: value };
+
+    setProdutos([...prodAux]);
+  };
+
   return (
     <Container>
-      <AddOfferContainer>
-        Produto:
-        {/* Adicionar select do produto */}
-        <TextField id="outlined-basic" variant="outlined" />
-        Quantidade:
-        <TextField id="outlined-basic" variant="outlined" />
-        Preço:
-        <TextField id="outlined-basic" variant="outlined" />
-        <Button>Adicionar Produto</Button>
-      </AddOfferContainer>
+      <AddOrderContainer>
+        <span>Validade:</span>
+        <TextField
+          type="date"
+          value={dayjs(selectedDate).format('YYYY-MM-DD')}
+          onChange={(e) => {
+            setSelectedDate(e.target.value);
+          }}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+
+        <Button onClick={() => setOpenModalProduto(true)}>Adicionar Produto</Button>
+      </AddOrderContainer>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Código</TableCell>
               <TableCell>Nome</TableCell>
               <TableCell>Descrição</TableCell>
-              <TableCell>Categorias</TableCell>
               <TableCell>Quantidade</TableCell>
               <TableCell>Preço</TableCell>
-              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((item) => (
-              <TableRow hover tabIndex={-1} key={`cod${item.codigo}`}>
-                <TableCell>{item.codigo}</TableCell>
-                <TableCell>{item.nome}</TableCell>
-                <TableCell>{item.descricao}</TableCell>
-                <TableCell>{item.categorias}</TableCell>
-                <TableCell>{item.quantidade}</TableCell>
+            {produtos.map((item, pos) => (
+              <TableRow hover tabIndex={-1} key={`cod${item.produto.id}`}>
+                <TableCell>{item.produto.nome}</TableCell>
+                <TableCell>{item.produto.descricao}</TableCell>
                 <TableCell>
-                  {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.preco)}
+                  <TextField
+                    InputLabelProps={{ shrink: true }}
+                    type="number"
+                    value={item.quantidade}
+                    onChange={(e) => changeQuantidade(Number(e.target.value), pos)}
+                  />
                 </TableCell>
-                <TableCell>{item.delete()}</TableCell>
+                <TableCell>
+                  <TextField
+                    InputLabelProps={{ shrink: true }}
+                    type="number"
+                    value={item.valor}
+                    onChange={(e) => changeValor(Number(e.target.value), pos)}
+                  />
+                </TableCell>
+                <TableCell />
               </TableRow>
             ))}
             <TableRow />
           </TableBody>
         </Table>
       </TableContainer>
-      <Button>Salvar</Button>
+      <Button onClick={() => history.goBack()}>Voltar</Button>
+      <Button onClick={() => cadastraOferta()}>Salvar</Button>
+
+      <ModalProdutos
+        isOpen={openModalProduto}
+        setModalClose={() => setOpenModalProduto(false)}
+        selection={(prod) => {
+          const prodOferta = {
+            produto: prod,
+            quantidade: 1,
+            valor: 0,
+          } as OfertaProd;
+
+          setProdutos(produtos.concat(prodOferta));
+        }}
+      />
     </Container>
   );
 };
 
-export default index;
+export default NovaOferta;
