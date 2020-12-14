@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { useHistory } from 'react-router-dom';
 import {
@@ -22,12 +23,15 @@ const index = () => {
   const history = useHistory();
   const [ofertas, setOfertas] = useState<Validade[]>([]);
 
+  const history = useHistory();
+
   const listOfertas = async () => {
     try {
       const response = await getOfertas();
 
       setOfertas(response.data);
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.log(error);
     }
   };
@@ -40,6 +44,7 @@ const index = () => {
     <Container>
       <AddOfferContainer>
         <Button onClick={() => history.push('/ofertas/novo')}>Nova Oferta</Button>
+
       </AddOfferContainer>
       <TableContainer component={Paper}>
         <Table>
@@ -49,7 +54,7 @@ const index = () => {
               <TableCell>Status</TableCell>
               <TableCell>Validade</TableCell>
               <TableCell />
-              <TableCell />
+              {/* <TableCell /> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -58,8 +63,14 @@ const index = () => {
                 <TableCell>{item.id}</TableCell>
                 <TableCell>{item.status}</TableCell>
                 <TableCell>{dayjs(item.validade).format('DD/MM/YYYY')}</TableCell>
-                <TableCell>{item.status === 'ativa' ? <Button>Editar</Button> : <Button>Remover</Button>}</TableCell>
-                <TableCell>{item.status !== 'ativa' && <Button>Copiar</Button>}</TableCell>
+                <TableCell>
+                  {item.status === 'ativa' ? (
+                    <Button onClick={() => history.push(`/ofertas/id/${item.id}`)}>Editar</Button>
+                  ) : (
+                    <Button>Remover</Button>
+                  )}
+                </TableCell>
+                {/* <TableCell>{item.status !== 'ativa' && <Button>Copiar</Button>}</TableCell> */}
               </TableRow>
             ))}
             <TableRow />
