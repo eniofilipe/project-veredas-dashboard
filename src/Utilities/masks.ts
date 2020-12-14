@@ -65,6 +65,13 @@ export const moneyUnmask = (price: string) => {
   return Number(priceAsString) / 100;
 };
 
+export const viewMoney = (price: number) => {
+  return Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  }).format(Number(price));
+};
+
 export const weightMask = (minimum: string | number, maximum: string | number) => {
   const minimumAsNumber = Number(minimum);
   const maximumAsNumber = Number(maximum);
