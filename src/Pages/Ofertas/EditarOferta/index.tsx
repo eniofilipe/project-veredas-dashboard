@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   TableContainer,
   TableHead,
@@ -16,9 +17,10 @@ import { viewMoney } from '../../../Utilities/masks';
 
 import { Oferta } from '../../../Types';
 
-import { getProdutosOfertas } from '../../../Api/Ofertas';
+import { getProdutosOfertas, putOferta } from '../../../Api/Ofertas';
 
 const index = () => {
+  const history = useHistory();
   const [ofertas, setOfertas] = useState<Oferta[]>([]);
 
   const listProdutos = async () => {
@@ -38,6 +40,25 @@ const index = () => {
     prodAux[pos] = { ...ofertas[pos], quantidade: value };
 
     setOfertas([...prodAux]);
+  };
+
+  const editarOferta = async () => {
+    try{
+    
+    ofertas.map(async (item) => { 
+      console.log(item);
+        await putOferta({
+          id: item.produtos.id,
+          quantidade: item.quantidade,
+          valor_unitario: Number(item.valor_unitario),
+          validade_oferta_id: item.validade.id,
+        });
+      });
+
+      history.goBack();
+    } catch (error) {
+      console.log(error); 
+    }
   };
 
   useEffect(() => {
@@ -89,7 +110,7 @@ const index = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Button>Salvar</Button>
+      <Button onClick={() => editarOferta()}>Salvar</Button>
     </Container>
   );
 };

@@ -114,7 +114,8 @@ export interface Oferta {
 }
 
 export interface PostOfertaProps {
-  produto_id: number;
+  produto_id?: number;
+  id?: number;
   quantidade: number;
   valor_unitario: number;
   validade_oferta_id: number;
