@@ -62,7 +62,6 @@ const ListaOfertas = ({ selection, isOpen, setModalClose }: ListaOfertasProps) =
                 <TableCell>
                   {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.valor_unitario)}
                 </TableCell>
-
                 <TableCell>
                   <Button
                     onClick={() => {

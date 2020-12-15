@@ -12,6 +12,8 @@ import {
   Paper,
   // Checkbox,
 } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import { Container, AddOfferContainer } from './styles';
 
 import { Validade } from '../../../Types';
@@ -64,9 +66,15 @@ const index = () => {
                 <TableCell align="center">{dayjs(item.validade).format('DD/MM/YYYY')}</TableCell>
                 <TableCell align="center">
                   {item.status === 'ativa' ? (
-                    <Button onClick={() => history.push(`/ofertas/id/${item.id}`)}>Editar</Button>
+                    <Button startIcon={<EditIcon />} onClick={() => history.push(`/ofertas/id/${item.id}`)}>
+                      Editar
+                    </Button>
                   ) : (
-                    <Button>Remover</Button>
+                    <Button>
+                      startIcon=
+                      <DeleteIcon />
+                      Remover
+                    </Button>
                   )}
                 </TableCell>
                 {/* <TableCell>{item.status !== 'ativa' && <Button>Copiar</Button>}</TableCell> */}

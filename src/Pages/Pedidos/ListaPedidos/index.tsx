@@ -11,15 +11,33 @@ import {
   Table,
   Paper,
   TextField,
+  makeStyles,
+  createStyles,
+  Theme,
 } from '@material-ui/core';
 import { Container, SearchOrderContainer } from './styles';
 import { Pedido } from '../../../Types';
 import { getPedidos } from '../../../Api/Pedido';
 import { viewMoney } from '../../../Utilities/masks';
 
-const index = () => {
-  const [pedidos, setPedidos] = useState<Pedido[]>([]);
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      '& .MuiTextField-root': {
+        margin: theme.spacing(1),
+        width: '25ch',
+      },
+    },
+    busca: {
+      width: '50ch',
+    },
+  })
+);
 
+const index = () => {
+  const classes = useStyles();
+
+  const [pedidos, setPedidos] = useState<Pedido[]>([]);
   const history = useHistory();
 
   const listPedidos = async () => {
@@ -42,7 +60,7 @@ const index = () => {
         <Button variant="contained" onClick={() => history.push('/pedidos/novo')}>
           Novo Pedido
         </Button>
-        <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
+        {/* <TextField className={classes.busca} id="outlined-basic" variant="outlined" placeholder="Buscar" /> */}
       </SearchOrderContainer>
       <p />
       <TableContainer component={Paper}>
