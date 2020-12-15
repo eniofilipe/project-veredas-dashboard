@@ -38,36 +38,33 @@ const index = () => {
   return (
     <Container>
       <AddProductContainer>
-        <Button onClick={() => history.push('/produtos/novo')}>Novo Produto</Button>
+        <Button variant="contained" onClick={() => history.push('/produtos/novo')}>
+          Novo Produto
+        </Button>
         <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
       </AddProductContainer>
+      <p />
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell>Código</TableCell>
               <TableCell>Nome</TableCell>
-              <TableCell>Descrição</TableCell>
-              <TableCell>Categorias</TableCell>
-              <TableCell>
-                <Button>Excluir</Button>
-              </TableCell>
+              <TableCell align="center">Descrição</TableCell>
+              <TableCell align="center">Categorias</TableCell>
+              {/* <TableCell /> */}
             </TableRow>
           </TableHead>
           <TableBody>
             {produtos.map((prod) => (
               <TableRow hover tabIndex={-1} key={`cod${prod.id}`}>
                 <TableCell>{prod.id}</TableCell>
-
                 <TableCell>{prod.nome}</TableCell>
-
-                <TableCell>{prod.descricao}</TableCell>
-
-                <TableCell>{prod.categorias.map((category) => `${category.nome},`)}</TableCell>
-
-                <TableCell>
+                <TableCell align="center">{prod.descricao}</TableCell>
+                <TableCell align="center">{prod.categorias.map((category) => `${category.nome},`)}</TableCell>
+                {/* <TableCell>
                   <Button>Excluir</Button>
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             ))}
             <TableRow />

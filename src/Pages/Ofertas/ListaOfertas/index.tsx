@@ -10,8 +10,10 @@ import {
   TableBody,
   Table,
   Paper,
-  Checkbox,
+  // Checkbox,
 } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import { Container, AddOfferContainer } from './styles';
 
 import { Validade } from '../../../Types';
@@ -40,15 +42,18 @@ const index = () => {
   return (
     <Container>
       <AddOfferContainer>
-        <Button onClick={() => history.push('/ofertas/novo')}>Nova Oferta</Button>
+        <Button variant="contained" onClick={() => history.push('/ofertas/novo')}>
+          Nova Oferta
+        </Button>
       </AddOfferContainer>
+      <p />
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell>Código</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Validade</TableCell>
+              <TableCell align="center">Status</TableCell>
+              <TableCell align="center">Validade</TableCell>
               <TableCell />
               {/* <TableCell /> */}
             </TableRow>
@@ -57,13 +62,19 @@ const index = () => {
             {ofertas.map((item) => (
               <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
                 <TableCell>{item.id}</TableCell>
-                <TableCell>{item.status}</TableCell>
-                <TableCell>{dayjs(item.validade).format('DD/MM/YYYY')}</TableCell>
-                <TableCell>
+                <TableCell align="center">{item.status}</TableCell>
+                <TableCell align="center">{dayjs(item.validade).format('DD/MM/YYYY')}</TableCell>
+                <TableCell align="center">
                   {item.status === 'ativa' ? (
-                    <Button onClick={() => history.push(`/ofertas/id/${item.id}`)}>Editar</Button>
+                    <Button startIcon={<EditIcon />} onClick={() => history.push(`/ofertas/id/${item.id}`)}>
+                      Editar
+                    </Button>
                   ) : (
-                    <Button>Remover</Button>
+                    <Button>
+                      startIcon=
+                      <DeleteIcon />
+                      Remover
+                    </Button>
                   )}
                 </TableCell>
                 {/* <TableCell>{item.status !== 'ativa' && <Button>Copiar</Button>}</TableCell> */}

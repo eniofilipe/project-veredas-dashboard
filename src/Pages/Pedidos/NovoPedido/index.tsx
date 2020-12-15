@@ -90,8 +90,10 @@ const index = () => {
   return (
     <Container>
       <AddOrderContainer>
-        <span>Cliente:</span>
-        <TextField disabled id="outlined-basic" variant="outlined" value={cliente?.nome} />
+        <AddOrderContainer>
+          Cliente:&emsp;
+          <TextField disabled id="outlined-basic" variant="outlined" value={cliente?.nome} />
+        </AddOrderContainer>
         <FormControl className={classes.formControl}>
           <InputLabel id="demo-controlled-open-select-label">Tipo de Pagamento</InputLabel>
           <Select
@@ -111,8 +113,10 @@ const index = () => {
               ))}
           </Select>
         </FormControl>
-        <Button onClick={() => setOpenModalCliente(true)}>Adicionar Cliente</Button>
-        <Button onClick={() => setOpenModalProduto(true)}>Adicionar Produto</Button>
+        <AddOrderContainer>
+          <Button onClick={() => setOpenModalCliente(true)}>Adicionar Cliente</Button> <p />
+          <Button onClick={() => setOpenModalProduto(true)}>Adicionar Produto</Button>
+        </AddOrderContainer>
       </AddOrderContainer>
       <TableContainer component={Paper}>
         <Table>

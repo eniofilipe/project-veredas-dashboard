@@ -16,7 +16,7 @@ import {
   TableRow,
 } from '@material-ui/core';
 import { PhotoCamera, Add, Clear } from '@material-ui/icons';
-import { Container } from './styles';
+import { Container, OptionsContainer } from './styles';
 import { Categoria, Imagem } from '../../../Types';
 
 import { getCategorias } from '../../../Api/Categorias';
@@ -86,8 +86,9 @@ const index = () => {
     <Container>
       <Paper>
         <form>
-          <Grid container spacing={3}>
-            <Grid item xs={6}>
+          <p />
+          <Grid container spacing={1}>
+            <Grid item xs={7}>
               {imagem ? (
                 <img src={`${imagem.url}`} alt="" width="300" height="300" />
               ) : (
@@ -107,9 +108,20 @@ const index = () => {
                 </>
               )}
             </Grid>
-            <Grid item xs={6}>
-              <TextField placeholder="Nome" value={nome} onChange={(e) => setNome(e.target.value)} />
-              <TextField placeholder="Descrição" value={descricao} onChange={(e) => setDescricao(e.target.value)} />
+            <Grid item xs={3}>
+              <TextField
+                style={{ width: 500 }}
+                placeholder="Nome"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+              />
+              <p />
+              <TextField
+                style={{ width: 500 }}
+                placeholder="Descrição"
+                value={descricao}
+                onChange={(e) => setDescricao(e.target.value)}
+              />
               <div>
                 <span>Categorias</span>
                 <IconButton color="primary" component="span" onClick={() => setOpenModal(true)}>
@@ -136,19 +148,26 @@ const index = () => {
                 ))}
               </div>
             </Grid>
-            <Grid item xs={12}>
-              <Button onClick={() => history.goBack()}>Voltar</Button>
-              <Button onClick={cadastroProduto}>Cadastrar Produto</Button>
-            </Grid>
+            <Grid item xs={12} />
           </Grid>
         </form>
       </Paper>
+      <p />
+      <OptionsContainer>
+        <Button variant="contained" onClick={() => history.goBack()}>
+          Voltar
+        </Button>
+        &emsp;
+        <Button variant="contained" onClick={cadastroProduto}>
+          Cadastrar Produto
+        </Button>
+      </OptionsContainer>
       <Modal open={openModal} onClose={() => setOpenModal(false)}>
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Cód</TableCell>
+                <TableCell>Código</TableCell>
                 <TableCell>Categoria</TableCell>
                 <TableCell />
               </TableRow>
@@ -157,9 +176,7 @@ const index = () => {
               {listCategorias.map((item) => (
                 <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
                   <TableCell>{item.id}</TableCell>
-
                   <TableCell>{item.nome}</TableCell>
-
                   <TableCell>
                     <Button
                       onClick={() => {
