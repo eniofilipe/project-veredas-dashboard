@@ -29,7 +29,6 @@ const index = () => {
 
       setOfertas(response.data);
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.log(error);
     }
   };
@@ -44,11 +43,10 @@ const index = () => {
 
   const editarOferta = async () => {
     try{
-    
-    ofertas.map(async (item) => { 
-      console.log(item);
-        await putOferta({
-          id: item.produtos.id,
+        
+      ofertas.map(async (item) => { 
+          await putOferta({
+          id: item.id,
           quantidade: item.quantidade,
           valor_unitario: Number(item.valor_unitario),
           validade_oferta_id: item.validade.id,
@@ -90,8 +88,8 @@ const index = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {ofertas.map((item, pos) => (
-              <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
+            {ofertas.map((item, pos) => (              
+              <TableRow hover key={`cod${item.produtos.id}`}>
                 <TableCell>{item.produtos.id}</TableCell>
                 <TableCell>{item.produtos.nome}</TableCell>
                 <TableCell>{item.produtos.descricao}</TableCell>

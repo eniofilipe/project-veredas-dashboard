@@ -187,7 +187,7 @@ export interface Usuario {
   email: string;
   cpf: number;
   telefone: number;
-  endereco: {
+  enderecos: {
     id: number;
     cep: number;
     estado: string;
