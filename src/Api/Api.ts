@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://server.veredasdaterra.com.br',
+  baseURL: process.env.REACT_APP_END_POINT,
 });
 
 api.interceptors.request.use((config) => {
