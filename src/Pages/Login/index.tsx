@@ -13,16 +13,6 @@ import Container from '@material-ui/core/Container';
 import { Paper, AvatarLogin, Form, ButtonSubmit } from './styles';
 import AuthContext from '../../Contexts/auth';
 
-const Copyright = () => (
-  <Typography variant="body2" color="textSecondary" align="center">
-    {'Copyright © '}
-    <Link color="inherit" href="https://material-ui.com/">
-      Your Website
-    </Link>
-    {new Date().getFullYear()}.
-  </Typography>
-);
-
 const index = () => {
   const { signIn } = useContext(AuthContext);
 
@@ -44,7 +34,7 @@ const index = () => {
           <LockOutlinedIcon />
         </AvatarLogin>
         <Typography component="h1" variant="h5">
-          Sign in
+          Acessar
         </Typography>
         <Form noValidate>
           <TextField
@@ -53,7 +43,7 @@ const index = () => {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label="Email"
             name="email"
             autoComplete="email"
             autoFocus
@@ -66,14 +56,14 @@ const index = () => {
             required
             fullWidth
             name="password"
-            label="Password"
+            label="Senha"
             type="password"
             id="password"
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassowrd(e.target.value)}
           />
-          <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
+          <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Lembrar-Me" />
           <ButtonSubmit fullWidth variant="contained" color="primary" onClick={() => handleLogin()}>
             Acessar
           </ButtonSubmit>
@@ -86,9 +76,7 @@ const index = () => {
           </Grid>
         </Form>
       </Paper>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
+      <Box mt={4} />
     </Container>
   );
 };
