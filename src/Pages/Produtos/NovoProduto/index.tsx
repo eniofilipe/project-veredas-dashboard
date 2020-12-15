@@ -86,8 +86,9 @@ const index = () => {
     <Container>
       <Paper>
         <form>
-          <Grid container spacing={3}>
-            <Grid item xs={6}>
+          <p />
+          <Grid container spacing={1}>
+            <Grid item xs={7}>
               {imagem ? (
                 <img src={`http://${imagem.url}`} alt="" width="300" height="300" />
               ) : (
