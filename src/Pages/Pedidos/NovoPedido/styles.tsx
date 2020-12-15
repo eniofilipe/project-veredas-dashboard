@@ -9,3 +9,11 @@ export const AddOrderContainer = styled.div`
   align-items: center;
   font-size: 16px;
 `;
+
+export const ButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 16px;
+`;

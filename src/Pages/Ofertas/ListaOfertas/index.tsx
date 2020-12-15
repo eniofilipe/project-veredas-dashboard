@@ -70,11 +70,7 @@ const index = () => {
                       Editar
                     </Button>
                   ) : (
-                    <Button>
-                      startIcon=
-                      <DeleteIcon />
-                      Remover
-                    </Button>
+                    <Button startIcon={<DeleteIcon />}> Remover </Button>
                   )}
                 </TableCell>
                 {/* <TableCell>{item.status !== 'ativa' && <Button>Copiar</Button>}</TableCell> */}
