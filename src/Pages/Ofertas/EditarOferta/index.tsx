@@ -8,15 +8,13 @@ import {
   TableCell,
   Table,
   TableRow,
-  TextField,
   Button,
   Paper,
+  Input,
+  InputAdornment,
 } from '@material-ui/core';
-import { Container, AddProductContainer } from './styles';
-import { viewMoney } from '../../../Utilities/masks';
-
+import { Container, ButtonContainer } from './styles';
 import { Oferta } from '../../../Types';
-
 import { getProdutosOfertas, putOferta } from '../../../Api/Ofertas';
 
 const index = () => {
@@ -33,10 +31,18 @@ const index = () => {
     }
   };
 
-  const changeOferta = (value: number, pos: number) => {
+  const changeQuantidade = (value: number, pos: number) => {
     const prodAux = ofertas;
 
     prodAux[pos] = { ...ofertas[pos], quantidade: value };
+
+    setOfertas([...prodAux]);
+  };
+
+  const changeValor = (value: number, pos: number) => {
+    const prodAux = ofertas;
+
+    prodAux[pos] = { ...ofertas[pos], valor_unitario: value };
 
     setOfertas([...prodAux]);
   };
@@ -65,16 +71,10 @@ const index = () => {
 
   return (
     <Container>
-      <AddProductContainer>
-        Produto:
-        {/* Adicionar select do produto */}
-        <TextField id="outlined-basic" variant="outlined" />
-        Quantidade:
-        <TextField id="outlined-basic" variant="outlined" />
-        Preço:
-        <TextField id="outlined-basic" variant="outlined" />
-        <Button>Adicionar Produto</Button>
-      </AddProductContainer>
+      <ButtonContainer>
+        <Button variant="contained">Adicionar Produto</Button>
+      </ButtonContainer>
+      <p />
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -95,20 +95,33 @@ const index = () => {
                 <TableCell>{item.produtos.descricao}</TableCell>
                 <TableCell>{item.produtos.categorias.map((category) => `${category.nome}, `)}</TableCell>
                 <TableCell>
-                  <TextField 
+                  <Input 
                     id="standard-number" 
                     type="number" 
                     value={item.quantidade} 
-                    onChange={(e) => changeOferta(Number(e.target.value), pos)}
+                    style={{ width: 100 }}
+                    onChange={(e) => changeQuantidade(Number(e.target.value), pos)}
                   />
                 </TableCell>
-                <TableCell>{viewMoney(item.valor_unitario)}</TableCell>
+                <TableCell>                  
+                  <Input 
+                    id="standard-number" 
+                    type="number" 
+                    startAdornment={<InputAdornment position="start">R$</InputAdornment>}
+                    style={{ width: 100 }}
+                    value={item.valor_unitario} 
+                    onChange={(e) => changeValor(Number(e.target.value), pos)}
+                  />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-      <Button onClick={() => editarOferta()}>Salvar</Button>
+      <p />
+      <ButtonContainer>
+        <Button variant="contained" onClick={() => editarOferta()}>Salvar</Button>
+      </ButtonContainer>
     </Container>
   );
 };

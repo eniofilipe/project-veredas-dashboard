@@ -209,3 +209,9 @@ export interface Usuario {
 export interface ResponseUsuario {
   usuarios: Usuario[];
 }
+
+export interface Dados {
+  usuariosCadastrados: number;
+  pedidosRealizados: number;
+  produtosCadastrados: number;
+}

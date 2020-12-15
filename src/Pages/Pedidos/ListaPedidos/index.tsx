@@ -11,7 +11,6 @@ import {
   Table,
   Paper,
   TextField,
-  Checkbox,
 } from '@material-ui/core';
 import { Container, SearchOrderContainer } from './styles';
 import { Pedido } from '../../../Types';
@@ -40,19 +39,22 @@ const index = () => {
   return (
     <Container>
       <SearchOrderContainer>
-        <Button onClick={() => history.push('/pedidos/novo')}>Novo Pedido</Button>
+        <Button variant="contained" onClick={() => history.push('/pedidos/novo')}>
+          Novo Pedido
+        </Button>
         <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
       </SearchOrderContainer>
+      <p />
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell>Código</TableCell>
               <TableCell>Cliente</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Total</TableCell>
-              <TableCell>Data</TableCell>
-              <TableCell />
+              <TableCell align="center">Status</TableCell>
+              <TableCell align="center">Total</TableCell>
+              <TableCell align="center">Data</TableCell>
+              {/* <TableCell /> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -63,12 +65,12 @@ const index = () => {
                 </TableCell> */}
                 <TableCell>{item.id}</TableCell>
                 <TableCell>{item.clientes.nome}</TableCell>
-                <TableCell>{item.status}</TableCell>
-                <TableCell>{viewMoney(item.total)}</TableCell>
-                <TableCell>{dayjs(item.createdAt).format('DD/MM/YYYY')}</TableCell>
-                <TableCell>
+                <TableCell align="center">{item.status}</TableCell>
+                <TableCell align="center">{viewMoney(item.total)}</TableCell>
+                <TableCell align="center">{dayjs(item.createdAt).format('DD/MM/YYYY')}</TableCell>
+                {/* <TableCell>
                   <Button>Cancelar</Button>
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             ))}
           </TableBody>

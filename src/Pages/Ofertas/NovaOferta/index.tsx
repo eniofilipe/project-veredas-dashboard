@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-
 import {
   Button,
   TableHead,
@@ -11,10 +10,12 @@ import {
   Table,
   Paper,
   TextField,
+  Input,
+  InputAdornment,
 } from '@material-ui/core';
 import dayjs from 'dayjs';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, AddOrderContainer } from './styles';
+import { Container, AddOrderContainer, ValidateContainer, OptionsContainer } from './styles';
 
 import ModalProdutos from '../../__Modais/ListaProdutos';
 import { Produto } from '../../../Types';
@@ -35,25 +36,9 @@ interface OfertaProd {
 
 const NovaOferta = () => {
   const history = useHistory();
-  const classes = useStyles();
   const [selectedDate, setSelectedDate] = useState('');
   const [produtos, setProdutos] = useState<OfertaProd[]>([]);
   const [openModalProduto, setOpenModalProduto] = useState(false);
-
-  const [type, setType] = useState('');
-  const [open, setOpen] = useState(false);
-
-  const handleChange = (event: any) => {
-    setType(event.target.value);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
 
   const cadastraOferta = async () => {
     try {
@@ -95,48 +80,55 @@ const NovaOferta = () => {
   return (
     <Container>
       <AddOrderContainer>
-        <span>Validade:</span>
-        <TextField
-          type="date"
-          value={dayjs(selectedDate).format('YYYY-MM-DD')}
-          onChange={(e) => {
-            setSelectedDate(e.target.value);
-          }}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-
-        <Button onClick={() => setOpenModalProduto(true)}>Adicionar Produto</Button>
+        <ValidateContainer>
+          Validade:&emsp;
+          <TextField
+            type="date"
+            value={dayjs(selectedDate).format('YYYY-MM-DD')}
+            onChange={(e) => {
+              setSelectedDate(e.target.value);
+            }}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </ValidateContainer>
+        <Button variant="contained" onClick={() => setOpenModalProduto(true)}>
+          Adicionar Produto
+        </Button>
       </AddOrderContainer>
+      <p />
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell>Nome</TableCell>
-              <TableCell>Descrição</TableCell>
-              <TableCell>Quantidade</TableCell>
-              <TableCell>Preço</TableCell>
+              <TableCell align="center">Descrição</TableCell>
+              <TableCell align="center">Quantidade</TableCell>
+              <TableCell align="center">Preço</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {produtos.map((item, pos) => (
               <TableRow hover tabIndex={-1} key={`cod${item.produto.id}`}>
                 <TableCell>{item.produto.nome}</TableCell>
-                <TableCell>{item.produto.descricao}</TableCell>
-                <TableCell>
-                  <TextField
-                    InputLabelProps={{ shrink: true }}
+                <TableCell align="center">{item.produto.descricao}</TableCell>
+                <TableCell align="center">
+                  <Input
+                    id="standard-number"
                     type="number"
+                    style={{ width: 60 }}
                     value={item.quantidade}
                     onChange={(e) => changeQuantidade(Number(e.target.value), pos)}
                   />
                 </TableCell>
-                <TableCell>
-                  <TextField
-                    InputLabelProps={{ shrink: true }}
+                <TableCell align="center">
+                  <Input
+                    id="standard-start-adornment"
                     type="number"
+                    startAdornment={<InputAdornment position="start">R$</InputAdornment>}
                     value={item.valor}
+                    style={{ width: 100 }}
                     onChange={(e) => changeValor(Number(e.target.value), pos)}
                   />
                 </TableCell>
@@ -147,8 +139,16 @@ const NovaOferta = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Button onClick={() => history.goBack()}>Voltar</Button>
-      <Button onClick={() => cadastraOferta()}>Salvar</Button>
+      <p />
+      <OptionsContainer>
+        <Button variant="contained" onClick={() => history.goBack()}>
+          Voltar
+        </Button>
+        &emsp;
+        <Button variant="contained" onClick={() => cadastraOferta()}>
+          Salvar
+        </Button>
+      </OptionsContainer>
 
       <ModalProdutos
         isOpen={openModalProduto}
@@ -159,7 +159,6 @@ const NovaOferta = () => {
             quantidade: 1,
             valor: 0,
           } as OfertaProd;
-
           setProdutos(produtos.concat(prodOferta));
         }}
       />

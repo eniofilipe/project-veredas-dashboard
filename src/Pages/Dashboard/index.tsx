@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@material-ui/core';
 import { Card, Titulo, Container, HeaderDashboard, CardInformacao, BodyDashboard } from './styles';
 
@@ -8,15 +8,12 @@ const index = () => {
       <HeaderDashboard>
         <Card>
           <Titulo>Pedidos Efetuados</Titulo>
-          <p />
         </Card>
         <Card>
           <Titulo>Produtos Disponíveis</Titulo>
-          <p />
         </Card>
         <Card>
           <Titulo>Usuários Ativos</Titulo>
-          <p />
         </Card>
       </HeaderDashboard>
       <BodyDashboard>
