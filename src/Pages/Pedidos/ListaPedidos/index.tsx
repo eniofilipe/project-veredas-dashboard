@@ -13,12 +13,10 @@ import {
   TextField,
   Checkbox,
 } from '@material-ui/core';
-
 import { Container, SearchOrderContainer } from './styles';
-
 import { Pedido } from '../../../Types';
-
 import { getPedidos } from '../../../Api/Pedido';
+import { viewMoney } from '../../../Utilities/masks';
 
 const index = () => {
   const [pedidos, setPedidos] = useState<Pedido[]>([]);
@@ -49,7 +47,6 @@ const index = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell />
               <TableCell>Código</TableCell>
               <TableCell>Cliente</TableCell>
               <TableCell>Status</TableCell>
@@ -61,13 +58,13 @@ const index = () => {
           <TableBody>
             {pedidos.map((item) => (
               <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
-                <TableCell>
+                {/* <TableCell>
                   <Checkbox />
-                </TableCell>
+                </TableCell> */}
                 <TableCell>{item.id}</TableCell>
                 <TableCell>{item.clientes.nome}</TableCell>
                 <TableCell>{item.status}</TableCell>
-                <TableCell /> {/* Calcular Total */}
+                <TableCell>{viewMoney(item.total)}</TableCell>
                 <TableCell>{dayjs(item.createdAt).format('DD/MM/YYYY')}</TableCell>
                 <TableCell>
                   <Button>Cancelar</Button>

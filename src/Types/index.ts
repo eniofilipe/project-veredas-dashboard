@@ -171,6 +171,12 @@ export interface Pedido {
     };
   };
   administrador: string;
+  pagamento: {
+    id: number;
+    titulo: string;
+    valor_frete: number;
+  };
+  total: number;
 }
 
 export interface PostPedidoProps {

@@ -8,15 +8,15 @@ const index = () => {
       <HeaderDashboard>
         <Card>
           <Titulo>Pedidos Efetuados</Titulo>
-          <p>20</p>
+          <p />
         </Card>
         <Card>
           <Titulo>Produtos Disponíveis</Titulo>
-          <p>20</p>
+          <p />
         </Card>
         <Card>
           <Titulo>Usuários Ativos</Titulo>
-          <p>20</p>
+          <p />
         </Card>
       </HeaderDashboard>
       <BodyDashboard>

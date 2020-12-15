@@ -49,22 +49,16 @@ const index = () => {
               <TableCell>Nome</TableCell>
               <TableCell>Descrição</TableCell>
               <TableCell>Categorias</TableCell>
-              <TableCell>
-                <Button>Excluir</Button>
-              </TableCell>
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
             {produtos.map((prod) => (
               <TableRow hover tabIndex={-1} key={`cod${prod.id}`}>
                 <TableCell>{prod.id}</TableCell>
-
                 <TableCell>{prod.nome}</TableCell>
-
                 <TableCell>{prod.descricao}</TableCell>
-
                 <TableCell>{prod.categorias.map((category) => `${category.nome},`)}</TableCell>
-
                 <TableCell>
                   <Button>Excluir</Button>
                 </TableCell>
