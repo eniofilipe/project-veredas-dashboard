@@ -48,7 +48,7 @@ const ListaOfertas = ({ selection, isOpen, setModalClose }: ListaOfertasProps) =
               <TableCell>Nome</TableCell>
               <TableCell>Descrição</TableCell>
               <TableCell>Quantidade</TableCell>
-              <TableCell>Val Unit</TableCell>
+              <TableCell>Valor Unitário</TableCell>
               <TableCell />
             </TableRow>
           </TableHead>
@@ -56,17 +56,12 @@ const ListaOfertas = ({ selection, isOpen, setModalClose }: ListaOfertasProps) =
             {listOfertas.map((item) => (
               <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
                 <TableCell>{item.id}</TableCell>
-
                 <TableCell>{item.produtos.nome}</TableCell>
-
                 <TableCell>{item.produtos.descricao}</TableCell>
-
                 <TableCell>{item.quantidade}</TableCell>
-
                 <TableCell>
                   {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.valor_unitario)}
                 </TableCell>
-
                 <TableCell>
                   <Button
                     onClick={() => {

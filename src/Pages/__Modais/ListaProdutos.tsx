@@ -59,11 +59,8 @@ const ListaProdutos = ({ selection, isOpen, setModalClose }: ListaProdutosProps)
             {listProdutos.map((item) => (
               <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
                 <TableCell>{item.id}</TableCell>
-
                 <TableCell>{item.nome}</TableCell>
-
                 <TableCell>{item.descricao}</TableCell>
-
                 <TableCell>{item.categorias.map((category) => `${category.nome},`)}</TableCell>
                 <TableCell>
                   <Button

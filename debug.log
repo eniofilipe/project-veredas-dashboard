@@ -30,3 +30,5 @@
 [1214/045637.603:ERROR:exception_snapshot_win.cc(99)] thread ID 19816 not found in process
 [1214/045637.604:ERROR:exception_snapshot_win.cc(99)] thread ID 18060 not found in process
 [1214/091909.765:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema nï¿½o pode encontrar o caminho especificado. (0x3)
+[1214/125417.022:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)
+[1214/145836.276:ERROR:directory_reader_win.cc(43)] FindFirstFile: O sistema não pode encontrar o caminho especificado. (0x3)

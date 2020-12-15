@@ -10,7 +10,17 @@ import {
   Face as FaceIcon,
 } from '@material-ui/icons';
 
-import { Divider, List, ListItem, ListItemIcon, ListItemText, CssBaseline, Popover, Paper } from '@material-ui/core';
+import {
+  Divider,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  CssBaseline,
+  Popover,
+  Paper,
+  MenuItem,
+} from '@material-ui/core';
 import AuthContext from '../../../Contexts/auth';
 import History from '../../../Services/history';
 
