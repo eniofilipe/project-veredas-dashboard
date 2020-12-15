@@ -71,9 +71,9 @@ const index = () => {
 
   return (
     <Container>
-      <ButtonContainer>
+      {/* <ButtonContainer>
         <Button variant="contained">Adicionar Produto</Button>
-      </ButtonContainer>
+      </ButtonContainer> */}
       <p />
       <TableContainer component={Paper}>
         <Table>

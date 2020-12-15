@@ -17,7 +17,7 @@ import {
   InputLabel,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, AddOrderContainer } from './styles';
+import { Container, AddOrderContainer, ButtonsContainer } from './styles';
 import ModalClientes from '../../__Modais/ListaClientes';
 import ModalProdutos from '../../__Modais/ListaOfertas';
 import { Cliente, Oferta, OfertaPedido } from '../../../Types';
@@ -93,29 +93,35 @@ const index = () => {
         <AddOrderContainer>
           Cliente:&emsp;
           <TextField disabled id="outlined-basic" variant="outlined" value={cliente?.nome} />
+          <FormControl className={classes.formControl}>
+            <InputLabel id="demo-controlled-open-select-label">Tipo de Pagamento</InputLabel>
+            <Select
+              labelId="demo-controlled-open-select-label"
+              id="demo-controlled-open-select"
+              open={open}
+              onClose={handleClose}
+              onOpen={handleOpen}
+              value={type}
+              onChange={handleChange}
+            >
+              {options &&
+                options.map((op, i) => (
+                  <MenuItem value={op} key={op}>
+                    {op}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
         </AddOrderContainer>
-        <FormControl className={classes.formControl}>
-          <InputLabel id="demo-controlled-open-select-label">Tipo de Pagamento</InputLabel>
-          <Select
-            labelId="demo-controlled-open-select-label"
-            id="demo-controlled-open-select"
-            open={open}
-            onClose={handleClose}
-            onOpen={handleOpen}
-            value={type}
-            onChange={handleChange}
-          >
-            {options &&
-              options.map((op, i) => (
-                <MenuItem value={op} key={op}>
-                  {op}
-                </MenuItem>
-              ))}
-          </Select>
-        </FormControl>
         <AddOrderContainer>
-          <Button onClick={() => setOpenModalCliente(true)}>Adicionar Cliente</Button> <p />
-          <Button onClick={() => setOpenModalProduto(true)}>Adicionar Produto</Button>
+          <Button variant="contained" onClick={() => setOpenModalCliente(true)}>
+            Adicionar Cliente
+          </Button>
+          &emsp;
+          <p />
+          <Button variant="contained" onClick={() => setOpenModalProduto(true)}>
+            Adicionar Produto
+          </Button>
         </AddOrderContainer>
       </AddOrderContainer>
       <TableContainer component={Paper}>
@@ -153,8 +159,16 @@ const index = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Button onClick={() => history.goBack()}>Voltar</Button>
-      <Button onClick={cadastraPedido}>Salvar</Button>
+      <p />
+      <ButtonsContainer>
+        <Button variant="contained" onClick={() => history.goBack()}>
+          Voltar
+        </Button>
+        &emsp;
+        <Button variant="contained" onClick={cadastraPedido}>
+          Salvar
+        </Button>
+      </ButtonsContainer>
       <ModalClientes
         isOpen={openModalCliente}
         setModalClose={() => setOpenModalCliente(false)}
