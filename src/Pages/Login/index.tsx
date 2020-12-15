@@ -13,6 +13,15 @@ import Container from '@material-ui/core/Container';
 import { Paper, AvatarLogin, Form, ButtonSubmit } from './styles';
 import AuthContext from '../../Contexts/auth';
 
+const Copyright = () => (
+  <Typography variant="body2" color="textSecondary" align="center">
+    <Link color="inherit" href="https://material-ui.com/">
+      Veredas da Terra &emsp;
+    </Link>
+    {new Date().getFullYear()}.
+  </Typography>
+);
+
 const index = () => {
   const { signIn } = useContext(AuthContext);
 
@@ -34,7 +43,7 @@ const index = () => {
           <LockOutlinedIcon />
         </AvatarLogin>
         <Typography component="h1" variant="h5">
-          Acessar
+          Acessar - Administrador
         </Typography>
         <Form noValidate>
           <TextField
@@ -43,7 +52,7 @@ const index = () => {
             required
             fullWidth
             id="email"
-            label="Email"
+            label="E-Mail"
             name="email"
             autoComplete="email"
             autoFocus
@@ -70,14 +79,17 @@ const index = () => {
           <Grid container>
             <Grid item>
               <Link href="/" variant="body2">
-                {/* Não tem Conta? Sign Up */}
+                Não tem conta? Criar Nova
               </Link>
             </Grid>
           </Grid>
         </Form>
       </Paper>
-      <Box mt={4} />
+      <Box mt={8}>
+        <Copyright />
+      </Box>
     </Container>
   );
 };
+
 export default index;
