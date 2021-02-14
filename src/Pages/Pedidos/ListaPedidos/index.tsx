@@ -14,6 +14,7 @@ import {
   Checkbox,
 } from '@material-ui/core';
 
+import { Add, Close } from '@material-ui/icons';
 import { Container, SearchOrderContainer } from './styles';
 
 import { Pedido } from '../../../Types';
@@ -42,7 +43,9 @@ const index = () => {
   return (
     <Container>
       <SearchOrderContainer>
-        <Button onClick={() => history.push('/pedidos/novo')}>Novo Pedido</Button>
+        <Button startIcon={<Add />} variant="contained" onClick={() => history.push('/pedidos/novo')}>
+          Novo Pedido
+        </Button>
         <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
       </SearchOrderContainer>
       <TableContainer component={Paper}>
@@ -62,7 +65,7 @@ const index = () => {
             {pedidos.map((item) => (
               <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
                 <TableCell>
-                  <Checkbox />
+                  <Checkbox color="primary" />
                 </TableCell>
                 <TableCell>{item.id}</TableCell>
                 <TableCell>{item.clientes.nome}</TableCell>
@@ -70,7 +73,9 @@ const index = () => {
                 <TableCell /> {/* Calcular Total */}
                 <TableCell>{dayjs(item.createdAt).format('DD/MM/YYYY')}</TableCell>
                 <TableCell>
-                  <Button>Cancelar</Button>
+                  <Button startIcon={<Close />} variant="contained">
+                    Cancelar
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}

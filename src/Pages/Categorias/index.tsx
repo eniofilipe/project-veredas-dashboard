@@ -11,7 +11,8 @@ import {
   Paper,
   TextField,
 } from '@material-ui/core';
-import { AddCategoryContainer } from './styles';
+import { DeleteOutline, Add } from '@material-ui/icons';
+import { AddCategoryContainer, InputCategoria } from './styles';
 
 import { getCategorias, postCategoria } from '../../Api/Categorias';
 
@@ -54,13 +55,16 @@ const index = () => {
     <div style={{ width: '100%' }}>
       <AddCategoryContainer>
         <span>Categoria: </span>
-        <TextField
+        <InputCategoria
           id="outlined-basic"
           variant="outlined"
+          size="small"
           value={nomeCategoria}
           onChange={(e) => setNomeCategoria(e.target.value)}
         />
-        <Button onClick={cadastroCategoria}>Adicionar</Button>
+        <Button variant="contained" startIcon={<Add />} onClick={cadastroCategoria}>
+          Adicionar
+        </Button>
       </AddCategoryContainer>
       <TableContainer component={Paper}>
         <Table>
@@ -79,7 +83,9 @@ const index = () => {
                 <TableCell>{item.id}</TableCell>
                 <TableCell>{item.nome}</TableCell>
                 <TableCell>
-                  <Button>Excluir</Button>
+                  <Button variant="contained" startIcon={<DeleteOutline />}>
+                    Excluir
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}

@@ -10,7 +10,9 @@ import {
   Table,
   Paper,
   TextField,
+  Chip,
 } from '@material-ui/core';
+import { Add, DeleteOutline } from '@material-ui/icons';
 import { Container, AddProductContainer } from './styles';
 import { Produto } from '../../../Types';
 
@@ -38,7 +40,9 @@ const index = () => {
   return (
     <Container>
       <AddProductContainer>
-        <Button onClick={() => history.push('/produtos/novo')}>Novo Produto</Button>
+        <Button variant="contained" onClick={() => history.push('/produtos/novo')} color="inherit" startIcon={<Add />}>
+          Novo Produto
+        </Button>
         <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
       </AddProductContainer>
       <TableContainer component={Paper}>
@@ -49,24 +53,24 @@ const index = () => {
               <TableCell>Nome</TableCell>
               <TableCell>Descrição</TableCell>
               <TableCell>Categorias</TableCell>
-              <TableCell>
-                <Button>Excluir</Button>
-              </TableCell>
+              <TableCell>Excluir</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {produtos.map((prod) => (
               <TableRow hover tabIndex={-1} key={`cod${prod.id}`}>
                 <TableCell>{prod.id}</TableCell>
-
                 <TableCell>{prod.nome}</TableCell>
-
                 <TableCell>{prod.descricao}</TableCell>
-
-                <TableCell>{prod.categorias.map((category) => `${category.nome},`)}</TableCell>
-
                 <TableCell>
-                  <Button>Excluir</Button>
+                  {prod.categorias.map((category) => (
+                    <Chip key={category.id} label={category.nome} />
+                  ))}
+                </TableCell>
+                <TableCell>
+                  <Button variant="contained" startIcon={<DeleteOutline />}>
+                    Excluir
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}

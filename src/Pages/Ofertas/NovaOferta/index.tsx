@@ -11,10 +11,12 @@ import {
   Table,
   Paper,
   TextField,
+  InputAdornment,
 } from '@material-ui/core';
 import dayjs from 'dayjs';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, AddOrderContainer } from './styles';
+import { AddShoppingCart, ArrowBack, Save } from '@material-ui/icons';
+import { Container, AddOrderContainer, WrapperButtons, WrapperValidade } from './styles';
 
 import ModalProdutos from '../../__Modais/ListaProdutos';
 import { Produto } from '../../../Types';
@@ -95,19 +97,23 @@ const NovaOferta = () => {
   return (
     <Container>
       <AddOrderContainer>
-        <span>Validade:</span>
-        <TextField
-          type="date"
-          value={dayjs(selectedDate).format('YYYY-MM-DD')}
-          onChange={(e) => {
-            setSelectedDate(e.target.value);
-          }}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
+        <WrapperValidade>
+          <span>Validade:</span>
+          <TextField
+            type="date"
+            value={dayjs(selectedDate).format('YYYY-MM-DD')}
+            onChange={(e) => {
+              setSelectedDate(e.target.value);
+            }}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </WrapperValidade>
 
-        <Button onClick={() => setOpenModalProduto(true)}>Adicionar Produto</Button>
+        <Button variant="contained" startIcon={<AddShoppingCart />} onClick={() => setOpenModalProduto(true)}>
+          Adicionar Produto
+        </Button>
       </AddOrderContainer>
       <TableContainer component={Paper}>
         <Table>
@@ -129,7 +135,13 @@ const NovaOferta = () => {
                     InputLabelProps={{ shrink: true }}
                     type="number"
                     value={item.quantidade}
-                    onChange={(e) => changeQuantidade(Number(e.target.value), pos)}
+                    onChange={(e) => changeQuantidade(Math.trunc(Number(e.target.value)), pos)}
+                    inputProps={{
+                      'aria-disabled': true,
+                      min: 1,
+                      step: 1,
+                      pattern: /\d/,
+                    }}
                   />
                 </TableCell>
                 <TableCell>
@@ -138,6 +150,9 @@ const NovaOferta = () => {
                     type="number"
                     value={item.valor}
                     onChange={(e) => changeValor(Number(e.target.value), pos)}
+                    InputProps={{
+                      startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+                    }}
                   />
                 </TableCell>
                 <TableCell />
@@ -147,9 +162,14 @@ const NovaOferta = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Button onClick={() => history.goBack()}>Voltar</Button>
-      <Button onClick={() => cadastraOferta()}>Salvar</Button>
-
+      <WrapperButtons>
+        <Button variant="contained" startIcon={<Save />} onClick={cadastraOferta}>
+          Salvar
+        </Button>
+        <Button variant="contained" startIcon={<ArrowBack />} onClick={() => history.goBack()}>
+          Voltar
+        </Button>
+      </WrapperButtons>
       <ModalProdutos
         isOpen={openModalProduto}
         setModalClose={() => setOpenModalProduto(false)}

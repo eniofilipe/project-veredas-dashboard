@@ -17,7 +17,8 @@ import {
   InputLabel,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, AddOrderContainer } from './styles';
+import { AddShoppingCart, ArrowBack, PersonAdd, Save } from '@material-ui/icons';
+import { Container, AddOrderContainer, WrapperCliente, WrapperButtons } from './styles';
 import ModalClientes from '../../__Modais/ListaClientes';
 import ModalProdutos from '../../__Modais/ListaOfertas';
 import { Cliente, Oferta, OfertaPedido } from '../../../Types';
@@ -90,8 +91,14 @@ const index = () => {
   return (
     <Container>
       <AddOrderContainer>
-        <span>Cliente:</span>
-        <TextField disabled id="outlined-basic" variant="outlined" value={cliente?.nome} />
+        <WrapperCliente>
+          <span>Cliente:</span>
+          <TextField size="small" disabled id="outlined-basic" variant="outlined" value={cliente?.nome} />
+          <Button variant="contained" startIcon={<PersonAdd />} onClick={() => setOpenModalCliente(true)}>
+            Adicionar Cliente
+          </Button>
+        </WrapperCliente>
+
         <FormControl className={classes.formControl}>
           <InputLabel id="demo-controlled-open-select-label">Tipo de Pagamento</InputLabel>
           <Select
@@ -111,8 +118,10 @@ const index = () => {
               ))}
           </Select>
         </FormControl>
-        <Button onClick={() => setOpenModalCliente(true)}>Adicionar Cliente</Button>
-        <Button onClick={() => setOpenModalProduto(true)}>Adicionar Produto</Button>
+
+        <Button variant="contained" startIcon={<AddShoppingCart />} onClick={() => setOpenModalProduto(true)}>
+          Adicionar Produto
+        </Button>
       </AddOrderContainer>
       <TableContainer component={Paper}>
         <Table>
@@ -132,7 +141,13 @@ const index = () => {
                     InputLabelProps={{ shrink: true }}
                     type="number"
                     value={item.quantidade}
-                    onChange={(e) => changeProduto(Number(e.target.value), pos)}
+                    onChange={(e) => changeProduto(Math.trunc(Number(e.target.value)), pos)}
+                    inputProps={{
+                      'aria-disabled': true,
+                      min: 1,
+                      step: 1,
+                      pattern: /\d/,
+                    }}
                   />
                 </TableCell>
                 <TableCell>{item.produtos.nome}</TableCell>
@@ -149,8 +164,15 @@ const index = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Button onClick={() => history.goBack()}>Voltar</Button>
-      <Button onClick={cadastraPedido}>Salvar</Button>
+      <WrapperButtons>
+        <Button variant="contained" startIcon={<Save />} onClick={cadastraPedido}>
+          Salvar
+        </Button>
+        <Button variant="contained" startIcon={<ArrowBack />} onClick={() => history.goBack()}>
+          Voltar
+        </Button>
+      </WrapperButtons>
+
       <ModalClientes
         isOpen={openModalCliente}
         setModalClose={() => setOpenModalCliente(false)}
