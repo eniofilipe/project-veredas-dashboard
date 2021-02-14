@@ -19,6 +19,7 @@ import {
   TableRow,
   Chip,
 } from '@material-ui/core';
+
 import { PhotoCamera, Add, Clear, ArrowBackIos, Done } from '@material-ui/icons';
 import {
   Container,
@@ -29,6 +30,7 @@ import {
   StyledModal,
   LabelError,
 } from './styles';
+
 import { Categoria, Imagem } from '../../../Types';
 
 import { getCategorias } from '../../../Api/Categorias';
@@ -151,6 +153,7 @@ const index = () => {
   return (
     <Container>
       <Paper>
+
         <form onSubmit={(e) => onSubmit(e)}>
           <Grid container spacing={3}>
             <Grid item xs={3}>
@@ -230,6 +233,7 @@ const index = () => {
                   <TableCell>Cód</TableCell>
                   <TableCell>Categoria</TableCell>
                   <TableCell />
+
                 </TableRow>
               </TableHead>
               <TableBody>

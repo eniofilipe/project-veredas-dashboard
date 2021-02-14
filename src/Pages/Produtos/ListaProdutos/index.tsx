@@ -41,10 +41,12 @@ const index = () => {
     <Container>
       <AddProductContainer>
         <Button variant="contained" onClick={() => history.push('/produtos/novo')} color="inherit" startIcon={<Add />}>
+
           Novo Produto
         </Button>
         <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
       </AddProductContainer>
+      <p />
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -72,6 +74,7 @@ const index = () => {
                     Excluir
                   </Button>
                 </TableCell>
+
               </TableRow>
             ))}
             <TableRow />

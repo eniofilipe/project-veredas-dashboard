@@ -11,19 +11,36 @@ import {
   Table,
   Paper,
   TextField,
-  Checkbox,
+  makeStyles,
+  createStyles,
+  Theme,
 } from '@material-ui/core';
+
 
 import { Add, Close } from '@material-ui/icons';
 import { Container, SearchOrderContainer } from './styles';
-
 import { Pedido } from '../../../Types';
-
 import { getPedidos } from '../../../Api/Pedido';
+import { viewMoney } from '../../../Utilities/masks';
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      '& .MuiTextField-root': {
+        margin: theme.spacing(1),
+        width: '25ch',
+      },
+    },
+    busca: {
+      width: '50ch',
+    },
+  })
+);
 
 const index = () => {
-  const [pedidos, setPedidos] = useState<Pedido[]>([]);
+  const classes = useStyles();
 
+  const [pedidos, setPedidos] = useState<Pedido[]>([]);
   const history = useHistory();
 
   const listPedidos = async () => {
@@ -47,18 +64,19 @@ const index = () => {
           Novo Pedido
         </Button>
         <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
+
       </SearchOrderContainer>
+      <p />
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell />
               <TableCell>Código</TableCell>
               <TableCell>Cliente</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Total</TableCell>
-              <TableCell>Data</TableCell>
-              <TableCell />
+              <TableCell align="center">Status</TableCell>
+              <TableCell align="center">Total</TableCell>
+              <TableCell align="center">Data</TableCell>
+              {/* <TableCell /> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -77,6 +95,7 @@ const index = () => {
                     Cancelar
                   </Button>
                 </TableCell>
+
               </TableRow>
             ))}
           </TableBody>

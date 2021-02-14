@@ -90,6 +90,7 @@ const ListaOfertas = ({ selection, isOpen, setModalClose }: ListaOfertasProps) =
         </TableContainer>
       </WrapperContentModal>
     </StyledModal>
+
   );
 };
 
