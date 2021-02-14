@@ -10,7 +10,9 @@ import {
   Table,
   Paper,
   TextField,
+  Chip,
 } from '@material-ui/core';
+import { Add, DeleteOutline } from '@material-ui/icons';
 import { Container, AddProductContainer } from './styles';
 import { Produto } from '../../../Types';
 
@@ -38,7 +40,8 @@ const index = () => {
   return (
     <Container>
       <AddProductContainer>
-        <Button variant="contained" onClick={() => history.push('/produtos/novo')}>
+        <Button variant="contained" onClick={() => history.push('/produtos/novo')} color="inherit" startIcon={<Add />}>
+
           Novo Produto
         </Button>
         <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
@@ -50,9 +53,9 @@ const index = () => {
             <TableRow>
               <TableCell>Código</TableCell>
               <TableCell>Nome</TableCell>
-              <TableCell align="center">Descrição</TableCell>
-              <TableCell align="center">Categorias</TableCell>
-              {/* <TableCell /> */}
+              <TableCell>Descrição</TableCell>
+              <TableCell>Categorias</TableCell>
+              <TableCell>Excluir</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -60,11 +63,18 @@ const index = () => {
               <TableRow hover tabIndex={-1} key={`cod${prod.id}`}>
                 <TableCell>{prod.id}</TableCell>
                 <TableCell>{prod.nome}</TableCell>
-                <TableCell align="center">{prod.descricao}</TableCell>
-                <TableCell align="center">{prod.categorias.map((category) => `${category.nome},`)}</TableCell>
-                {/* <TableCell>
-                  <Button>Excluir</Button>
-                </TableCell> */}
+                <TableCell>{prod.descricao}</TableCell>
+                <TableCell>
+                  {prod.categorias.map((category) => (
+                    <Chip key={category.id} label={category.nome} />
+                  ))}
+                </TableCell>
+                <TableCell>
+                  <Button variant="contained" startIcon={<DeleteOutline />}>
+                    Excluir
+                  </Button>
+                </TableCell>
+
               </TableRow>
             ))}
             <TableRow />

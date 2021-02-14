@@ -9,11 +9,14 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Chip,
 } from '@material-ui/core';
 
+import { Check } from '@material-ui/icons';
 import { Produto } from '../../Types';
 
 import { getProduto } from '../../Api/Produtos';
+import { StyledModal, WrapperContentModal } from './styles';
 
 interface ListaProdutosProps {
   selection: (cliente: Produto) => void;
@@ -43,42 +46,55 @@ const ListaProdutos = ({ selection, isOpen, setModalClose }: ListaProdutosProps)
   }, [listProdutos]);
 
   return (
-    <Modal open={isOpen} onClose={setModalClose}>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Cód</TableCell>
-              <TableCell>Nome</TableCell>
-              <TableCell>Descrição</TableCell>
-              <TableCell>Categorias</TableCell>
-              <TableCell />
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {listProdutos.map((item) => (
-              <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
-                <TableCell>{item.id}</TableCell>
-                <TableCell>{item.nome}</TableCell>
-                <TableCell>{item.descricao}</TableCell>
-                <TableCell>{item.categorias.map((category) => `${category.nome},`)}</TableCell>
-                <TableCell>
-                  <Button
-                    onClick={() => {
-                      selection(item);
-                      setModalClose();
-                    }}
-                  >
-                    Selecionar
-                  </Button>
-                </TableCell>
+
+    <StyledModal open={isOpen} onClose={setModalClose}>
+      <WrapperContentModal>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Cód</TableCell>
+                <TableCell>Nome</TableCell>
+                <TableCell>Descrição</TableCell>
+                <TableCell>Categorias</TableCell>
+                <TableCell />
               </TableRow>
-            ))}
-            <TableRow />
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Modal>
+            </TableHead>
+            <TableBody>
+              {listProdutos.map((item) => (
+                <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
+                  <TableCell>{item.id}</TableCell>
+
+                  <TableCell>{item.nome}</TableCell>
+
+                  <TableCell>{item.descricao}</TableCell>
+
+                  <TableCell>
+                    {item.categorias.map((category) => (
+                      <Chip key={category.id} label={category.nome} />
+                    ))}
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      startIcon={<Check />}
+                      onClick={() => {
+                        selection(item);
+                        setModalClose();
+                      }}
+                    >
+                      Selecionar
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+              <TableRow />
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </WrapperContentModal>
+    </StyledModal>
+
   );
 };
 

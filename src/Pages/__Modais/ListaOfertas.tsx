@@ -11,9 +11,11 @@ import {
   TableRow,
 } from '@material-ui/core';
 
+import { Check } from '@material-ui/icons';
 import { Oferta } from '../../Types';
 
 import { getProdutosOfertas } from '../../Api/Ofertas';
+import { StyledModal, WrapperContentModal } from './styles';
 
 interface ListaOfertasProps {
   selection: (cliente: Oferta) => void;
@@ -39,46 +41,56 @@ const ListaOfertas = ({ selection, isOpen, setModalClose }: ListaOfertasProps) =
   }, []);
 
   return (
-    <Modal open={isOpen} onClose={setModalClose}>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Cód</TableCell>
-              <TableCell>Nome</TableCell>
-              <TableCell>Descrição</TableCell>
-              <TableCell>Quantidade</TableCell>
-              <TableCell>Valor Unitário</TableCell>
-              <TableCell />
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {listOfertas.map((item) => (
-              <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
-                <TableCell>{item.id}</TableCell>
-                <TableCell>{item.produtos.nome}</TableCell>
-                <TableCell>{item.produtos.descricao}</TableCell>
-                <TableCell>{item.quantidade}</TableCell>
-                <TableCell>
-                  {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.valor_unitario)}
-                </TableCell>
-                <TableCell>
-                  <Button
-                    onClick={() => {
-                      selection(item);
-                      setModalClose();
-                    }}
-                  >
-                    Selecionar
-                  </Button>
-                </TableCell>
+    <StyledModal open={isOpen} onClose={setModalClose}>
+      <WrapperContentModal>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Cód</TableCell>
+                <TableCell>Nome</TableCell>
+                <TableCell>Descrição</TableCell>
+                <TableCell>Quantidade</TableCell>
+                <TableCell>Val Unit</TableCell>
+                <TableCell />
               </TableRow>
-            ))}
-            <TableRow />
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Modal>
+            </TableHead>
+            <TableBody>
+              {listOfertas.map((item) => (
+                <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
+                  <TableCell>{item.id}</TableCell>
+
+                  <TableCell>{item.produtos.nome}</TableCell>
+
+                  <TableCell>{item.produtos.descricao}</TableCell>
+
+                  <TableCell>{item.quantidade}</TableCell>
+
+                  <TableCell>
+                    {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.valor_unitario)}
+                  </TableCell>
+
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      startIcon={<Check />}
+                      onClick={() => {
+                        selection(item);
+                        setModalClose();
+                      }}
+                    >
+                      Selecionar
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+              <TableRow />
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </WrapperContentModal>
+    </StyledModal>
+
   );
 };
 

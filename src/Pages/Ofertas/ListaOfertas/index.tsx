@@ -12,8 +12,9 @@ import {
   Paper,
   // Checkbox,
 } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
+
+import { Add, DeleteOutline, Edit } from '@material-ui/icons';
+
 import { Container, AddOfferContainer } from './styles';
 
 import { Validade } from '../../../Types';
@@ -42,7 +43,9 @@ const index = () => {
   return (
     <Container>
       <AddOfferContainer>
-        <Button variant="contained" onClick={() => history.push('/ofertas/novo')}>
+
+        <Button variant="contained" startIcon={<Add />} onClick={() => history.push('/ofertas/novo')}>
+
           Nova Oferta
         </Button>
       </AddOfferContainer>
@@ -66,11 +69,18 @@ const index = () => {
                 <TableCell align="center">{dayjs(item.validade).format('DD/MM/YYYY')}</TableCell>
                 <TableCell align="center">
                   {item.status === 'ativa' ? (
-                    <Button startIcon={<EditIcon />} onClick={() => history.push(`/ofertas/id/${item.id}`)}>
+                    <Button
+                      variant="contained"
+                      startIcon={<Edit />}
+                      onClick={() => history.push(`/ofertas/id/${item.id}`)}
+                    >
                       Editar
                     </Button>
                   ) : (
-                    <Button startIcon={<DeleteIcon />}> Remover </Button>
+                    <Button variant="contained" startIcon={<DeleteOutline />}>
+                      Remover
+                    </Button>
+
                   )}
                 </TableCell>
                 {/* <TableCell>{item.status !== 'ativa' && <Button>Copiar</Button>}</TableCell> */}

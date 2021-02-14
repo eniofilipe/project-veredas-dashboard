@@ -17,7 +17,10 @@ import {
   InputLabel,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, AddOrderContainer, ButtonsContainer } from './styles';
+
+import { AddShoppingCart, ArrowBack, PersonAdd, Save } from '@material-ui/icons';
+import { Container, AddOrderContainer, WrapperCliente, WrapperButtons } from './styles';
+
 import ModalClientes from '../../__Modais/ListaClientes';
 import ModalProdutos from '../../__Modais/ListaOfertas';
 import { Cliente, Oferta, OfertaPedido } from '../../../Types';
@@ -90,39 +93,39 @@ const index = () => {
   return (
     <Container>
       <AddOrderContainer>
-        <AddOrderContainer>
-          Cliente:&emsp;
-          <TextField disabled id="outlined-basic" variant="outlined" value={cliente?.nome} />
-          <FormControl className={classes.formControl}>
-            <InputLabel id="demo-controlled-open-select-label">Tipo de Pagamento</InputLabel>
-            <Select
-              labelId="demo-controlled-open-select-label"
-              id="demo-controlled-open-select"
-              open={open}
-              onClose={handleClose}
-              onOpen={handleOpen}
-              value={type}
-              onChange={handleChange}
-            >
-              {options &&
-                options.map((op, i) => (
-                  <MenuItem value={op} key={op}>
-                    {op}
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
-        </AddOrderContainer>
-        <AddOrderContainer>
-          <Button variant="contained" onClick={() => setOpenModalCliente(true)}>
+
+        <WrapperCliente>
+          <span>Cliente:</span>
+          <TextField size="small" disabled id="outlined-basic" variant="outlined" value={cliente?.nome} />
+          <Button variant="contained" startIcon={<PersonAdd />} onClick={() => setOpenModalCliente(true)}>
             Adicionar Cliente
           </Button>
-          &emsp;
-          <p />
-          <Button variant="contained" onClick={() => setOpenModalProduto(true)}>
-            Adicionar Produto
-          </Button>
-        </AddOrderContainer>
+        </WrapperCliente>
+
+        <FormControl className={classes.formControl}>
+          <InputLabel id="demo-controlled-open-select-label">Tipo de Pagamento</InputLabel>
+          <Select
+            labelId="demo-controlled-open-select-label"
+            id="demo-controlled-open-select"
+            open={open}
+            onClose={handleClose}
+            onOpen={handleOpen}
+            value={type}
+            onChange={handleChange}
+          >
+            {options &&
+              options.map((op, i) => (
+                <MenuItem value={op} key={op}>
+                  {op}
+                </MenuItem>
+              ))}
+          </Select>
+        </FormControl>
+
+        <Button variant="contained" startIcon={<AddShoppingCart />} onClick={() => setOpenModalProduto(true)}>
+          Adicionar Produto
+        </Button>
+
       </AddOrderContainer>
       <TableContainer component={Paper}>
         <Table>
@@ -142,7 +145,13 @@ const index = () => {
                     InputLabelProps={{ shrink: true }}
                     type="number"
                     value={item.quantidade}
-                    onChange={(e) => changeProduto(Number(e.target.value), pos)}
+                    onChange={(e) => changeProduto(Math.trunc(Number(e.target.value)), pos)}
+                    inputProps={{
+                      'aria-disabled': true,
+                      min: 1,
+                      step: 1,
+                      pattern: /\d/,
+                    }}
                   />
                 </TableCell>
                 <TableCell>{item.produtos.nome}</TableCell>
@@ -159,16 +168,17 @@ const index = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <p />
-      <ButtonsContainer>
-        <Button variant="contained" onClick={() => history.goBack()}>
-          Voltar
-        </Button>
-        &emsp;
-        <Button variant="contained" onClick={cadastraPedido}>
+
+      <WrapperButtons>
+        <Button variant="contained" startIcon={<Save />} onClick={cadastraPedido}>
           Salvar
         </Button>
-      </ButtonsContainer>
+        <Button variant="contained" startIcon={<ArrowBack />} onClick={() => history.goBack()}>
+          Voltar
+        </Button>
+      </WrapperButtons>
+
+
       <ModalClientes
         isOpen={openModalCliente}
         setModalClose={() => setOpenModalCliente(false)}

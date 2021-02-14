@@ -15,6 +15,9 @@ import {
   createStyles,
   Theme,
 } from '@material-ui/core';
+
+
+import { Add, Close } from '@material-ui/icons';
 import { Container, SearchOrderContainer } from './styles';
 import { Pedido } from '../../../Types';
 import { getPedidos } from '../../../Api/Pedido';
@@ -57,10 +60,11 @@ const index = () => {
   return (
     <Container>
       <SearchOrderContainer>
-        <Button variant="contained" onClick={() => history.push('/pedidos/novo')}>
+        <Button startIcon={<Add />} variant="contained" onClick={() => history.push('/pedidos/novo')}>
           Novo Pedido
         </Button>
-        {/* <TextField className={classes.busca} id="outlined-basic" variant="outlined" placeholder="Buscar" /> */}
+        <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
+
       </SearchOrderContainer>
       <p />
       <TableContainer component={Paper}>
@@ -78,17 +82,20 @@ const index = () => {
           <TableBody>
             {pedidos.map((item) => (
               <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
-                {/* <TableCell>
-                  <Checkbox />
-                </TableCell> */}
+                <TableCell>
+                  <Checkbox color="primary" />
+                </TableCell>
                 <TableCell>{item.id}</TableCell>
                 <TableCell>{item.clientes.nome}</TableCell>
-                <TableCell align="center">{item.status}</TableCell>
-                <TableCell align="center">{viewMoney(item.total)}</TableCell>
-                <TableCell align="center">{dayjs(item.createdAt).format('DD/MM/YYYY')}</TableCell>
-                {/* <TableCell>
-                  <Button>Cancelar</Button>
-                </TableCell> */}
+                <TableCell>{item.status}</TableCell>
+                <TableCell /> {/* Calcular Total */}
+                <TableCell>{dayjs(item.createdAt).format('DD/MM/YYYY')}</TableCell>
+                <TableCell>
+                  <Button startIcon={<Close />} variant="contained">
+                    Cancelar
+                  </Button>
+                </TableCell>
+
               </TableRow>
             ))}
           </TableBody>

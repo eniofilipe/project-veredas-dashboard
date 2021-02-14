@@ -8,6 +8,8 @@ import {
   BarChart as ReportsIcon,
   ExitToApp as LogoutIcon,
   Face as FaceIcon,
+  ShoppingBasket,
+  Storefront,
 } from '@material-ui/icons';
 
 import {
@@ -158,7 +160,7 @@ const Default: React.FC = ({ children }) => {
           </ListItem>
           <ListItem button onClick={() => goToOfertas()}>
             <ListItemIcon>
-              <ShoppingCartIcon />
+              <Storefront />
             </ListItemIcon>
             <ListItemText primary="Ofertas" />
           </ListItem>
@@ -170,7 +172,7 @@ const Default: React.FC = ({ children }) => {
           </ListItem>
           <ListItem button onClick={() => goToProdutos()}>
             <ListItemIcon>
-              <ShoppingCartIcon />
+              <ShoppingBasket />
             </ListItemIcon>
             <ListItemText primary="Produtos" />
           </ListItem>

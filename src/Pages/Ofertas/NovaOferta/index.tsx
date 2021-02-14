@@ -10,12 +10,13 @@ import {
   Table,
   Paper,
   TextField,
-  Input,
   InputAdornment,
 } from '@material-ui/core';
 import dayjs from 'dayjs';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, AddOrderContainer, ValidateContainer, OptionsContainer } from './styles';
+import { AddShoppingCart, ArrowBack, Save } from '@material-ui/icons';
+import { Container, AddOrderContainer, WrapperButtons, WrapperValidade } from './styles';
+
 
 import ModalProdutos from '../../__Modais/ListaProdutos';
 import { Produto } from '../../../Types';
@@ -80,8 +81,10 @@ const NovaOferta = () => {
   return (
     <Container>
       <AddOrderContainer>
-        <ValidateContainer>
-          Validade:&emsp;
+
+        <WrapperValidade>
+          <span>Validade:</span>
+
           <TextField
             type="date"
             value={dayjs(selectedDate).format('YYYY-MM-DD')}
@@ -92,8 +95,11 @@ const NovaOferta = () => {
               shrink: true,
             }}
           />
-        </ValidateContainer>
-        <Button variant="contained" onClick={() => setOpenModalProduto(true)}>
+
+        </WrapperValidade>
+
+        <Button variant="contained" startIcon={<AddShoppingCart />} onClick={() => setOpenModalProduto(true)}>
+
           Adicionar Produto
         </Button>
       </AddOrderContainer>
@@ -119,7 +125,13 @@ const NovaOferta = () => {
                     type="number"
                     style={{ width: 60 }}
                     value={item.quantidade}
-                    onChange={(e) => changeQuantidade(Number(e.target.value), pos)}
+                    onChange={(e) => changeQuantidade(Math.trunc(Number(e.target.value)), pos)}
+                    inputProps={{
+                      'aria-disabled': true,
+                      min: 1,
+                      step: 1,
+                      pattern: /\d/,
+                    }}
                   />
                 </TableCell>
                 <TableCell align="center">
@@ -130,6 +142,9 @@ const NovaOferta = () => {
                     value={item.valor}
                     style={{ width: 100 }}
                     onChange={(e) => changeValor(Number(e.target.value), pos)}
+                    InputProps={{
+                      startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+                    }}
                   />
                 </TableCell>
                 <TableCell />
@@ -139,16 +154,15 @@ const NovaOferta = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <p />
-      <OptionsContainer>
-        <Button variant="contained" onClick={() => history.goBack()}>
-          Voltar
-        </Button>
-        &emsp;
-        <Button variant="contained" onClick={() => cadastraOferta()}>
+
+      <WrapperButtons>
+        <Button variant="contained" startIcon={<Save />} onClick={cadastraOferta}>
           Salvar
         </Button>
-      </OptionsContainer>
+        <Button variant="contained" startIcon={<ArrowBack />} onClick={() => history.goBack()}>
+          Voltar
+        </Button>
+      </WrapperButtons>
 
       <ModalProdutos
         isOpen={openModalProduto}
