@@ -12,6 +12,8 @@ import {
   Paper,
   TextField,
   InputAdornment,
+  Backdrop,
+  CircularProgress,
 } from '@material-ui/core';
 import dayjs from 'dayjs';
 import { makeStyles } from '@material-ui/core/styles';
@@ -41,6 +43,7 @@ const NovaOferta = () => {
   const [selectedDate, setSelectedDate] = useState('');
   const [produtos, setProdutos] = useState<OfertaProd[]>([]);
   const [openModalProduto, setOpenModalProduto] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [type, setType] = useState('');
   const [open, setOpen] = useState(false);
@@ -59,6 +62,7 @@ const NovaOferta = () => {
 
   const cadastraOferta = async () => {
     try {
+      setLoading(true);
       const responseValidade = await setValidadeOferta({ validade: selectedDate });
 
       const idOferta = responseValidade.data.id;
@@ -75,6 +79,8 @@ const NovaOferta = () => {
       history.goBack();
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -183,6 +189,9 @@ const NovaOferta = () => {
           setProdutos(produtos.concat(prodOferta));
         }}
       />
+      <Backdrop open={loading} style={{ zIndex: 10 }}>
+        <CircularProgress color="primary" />
+      </Backdrop>
     </Container>
   );
 };

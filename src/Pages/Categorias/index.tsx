@@ -10,20 +10,37 @@ import {
   Table,
   Paper,
   TextField,
+  Backdrop,
+  CircularProgress,
 } from '@material-ui/core';
 import { DeleteOutline, Add } from '@material-ui/icons';
 import { AddCategoryContainer, InputCategoria } from './styles';
 
-import { getCategorias, postCategoria } from '../../Api/Categorias';
+import { getCategorias, postCategoria, deleteCategoria } from '../../Api/Categorias';
 
 import { Categoria } from '../../Types';
 
 const index = () => {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [nomeCategoria, setNomeCategoria] = useState<string>('');
+  const [loading, setLoading] = useState(false);
+
+  const remove = async (id: number) => {
+    try {
+      setLoading(true);
+      const response = await deleteCategoria(id);
+
+      listCategorias();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const cadastroCategoria = async () => {
     try {
+      setLoading(true);
       if (nomeCategoria !== '') {
         await postCategoria({
           nome: nomeCategoria,
@@ -34,16 +51,21 @@ const index = () => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const listCategorias = async () => {
     try {
+      setLoading(true);
       const response = await getCategorias();
 
       setCategorias(response.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -83,7 +105,7 @@ const index = () => {
                 <TableCell>{item.id}</TableCell>
                 <TableCell>{item.nome}</TableCell>
                 <TableCell>
-                  <Button variant="contained" startIcon={<DeleteOutline />}>
+                  <Button variant="contained" startIcon={<DeleteOutline />} onClick={() => remove(item.id)}>
                     Excluir
                   </Button>
                 </TableCell>
@@ -92,6 +114,9 @@ const index = () => {
             <TableRow />
           </TableBody>
         </Table>
+        <Backdrop open={loading} style={{ zIndex: 10 }}>
+          <CircularProgress color="primary" />
+        </Backdrop>
       </TableContainer>
     </div>
   );

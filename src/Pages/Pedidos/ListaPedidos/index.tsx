@@ -12,6 +12,8 @@ import {
   Paper,
   TextField,
   Checkbox,
+  Backdrop,
+  CircularProgress,
 } from '@material-ui/core';
 
 import { Add, Close } from '@material-ui/icons';
@@ -23,16 +25,19 @@ import { getPedidos } from '../../../Api/Pedido';
 
 const index = () => {
   const [pedidos, setPedidos] = useState<Pedido[]>([]);
-
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
 
   const listPedidos = async () => {
     try {
+      setLoading(true);
       const response = await getPedidos();
 
       setPedidos(response.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -81,6 +86,9 @@ const index = () => {
             ))}
           </TableBody>
         </Table>
+        <Backdrop open={loading} style={{ zIndex: 10 }}>
+          <CircularProgress color="primary" />
+        </Backdrop>
       </TableContainer>
     </Container>
   );

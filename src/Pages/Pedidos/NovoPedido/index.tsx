@@ -15,6 +15,8 @@ import {
   Select,
   FormControl,
   InputLabel,
+  Backdrop,
+  CircularProgress,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { AddShoppingCart, ArrowBack, PersonAdd, Save } from '@material-ui/icons';
@@ -38,7 +40,7 @@ const index = () => {
   const [produtos, setProdutos] = useState<Oferta[]>([]);
   const [openModalCliente, setOpenModalCliente] = useState(false);
   const [openModalProduto, setOpenModalProduto] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const [type, setType] = useState('');
   const [open, setOpen] = useState(false);
   const options = ['Dinheiro', 'Cartão de Débito'];
@@ -57,6 +59,7 @@ const index = () => {
 
   const cadastraPedido = async () => {
     try {
+      setLoading(true);
       const ofertasAux = produtos.map((item) => {
         return {
           oferta_id: item.id,
@@ -77,6 +80,8 @@ const index = () => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -183,6 +188,9 @@ const index = () => {
         setModalClose={() => setOpenModalProduto(false)}
         selection={(prod) => setProdutos(produtos.concat({ ...prod, quantidade: 1 }))}
       />
+      <Backdrop open={loading} style={{ zIndex: 10 }}>
+        <CircularProgress color="primary" />
+      </Backdrop>
     </Container>
   );
 };
