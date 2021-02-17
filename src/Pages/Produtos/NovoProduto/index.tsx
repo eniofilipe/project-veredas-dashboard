@@ -18,6 +18,8 @@ import {
   TableHead,
   TableRow,
   Chip,
+  Backdrop,
+  CircularProgress,
 } from '@material-ui/core';
 
 import { PhotoCamera, Add, Clear, ArrowBackIos, Done } from '@material-ui/icons';
@@ -91,11 +93,14 @@ const index = () => {
 
   const list = async () => {
     try {
+      setLoading(true);
       const response = await getCategorias();
 
       setListCategorias(response.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -106,6 +111,7 @@ const index = () => {
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length) {
       try {
+        setLoading(true);
         const data = new FormData();
 
         data.append('file', e.target.files[0]);
@@ -114,6 +120,8 @@ const index = () => {
         setValue('imagem', response.data);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -121,9 +129,7 @@ const index = () => {
   const onSubmit = handleSubmit(async (data) => {
     if (isLoading) return;
 
-    console.log(data);
-
-    /* await cadastroProduto(data); */
+    await cadastroProduto(data);
   });
 
   const removeCategoria = (indexVector: number) => {
@@ -263,6 +269,9 @@ const index = () => {
           </TableContainer>
         </WrapperContentModal>
       </StyledModal>
+      <Backdrop open={isLoading} style={{ zIndex: 10 }}>
+        <CircularProgress color="primary" />
+      </Backdrop>
     </Container>
   );
 };

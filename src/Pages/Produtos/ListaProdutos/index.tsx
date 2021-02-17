@@ -11,25 +11,44 @@ import {
   Paper,
   TextField,
   Chip,
+  Backdrop,
+  CircularProgress,
 } from '@material-ui/core';
 import { Add, DeleteOutline } from '@material-ui/icons';
 import { Container, AddProductContainer } from './styles';
 import { Produto } from '../../../Types';
 
-import { getProduto } from '../../../Api/Produtos';
+import { getProduto, deleteProduto } from '../../../Api/Produtos';
 
 const index = () => {
   const [produtos, setProdutos] = useState<Produto[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const history = useHistory();
 
+  const remove = async (id: number) => {
+    try {
+      setLoading(true);
+      const response = await deleteProduto(id);
+
+      list();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const list = async () => {
     try {
+      setLoading(true);
       const response = await getProduto();
 
       setProdutos(response.data.produtos);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -70,7 +89,7 @@ const index = () => {
                   ))}
                 </TableCell>
                 <TableCell>
-                  <Button variant="contained" startIcon={<DeleteOutline />}>
+                  <Button variant="contained" startIcon={<DeleteOutline />} onClick={() => remove(prod.id)}>
                     Excluir
                   </Button>
                 </TableCell>
@@ -80,6 +99,9 @@ const index = () => {
             <TableRow />
           </TableBody>
         </Table>
+        <Backdrop open={loading} style={{ zIndex: 10 }}>
+          <CircularProgress color="primary" />
+        </Backdrop>
       </TableContainer>
     </Container>
   );

@@ -12,6 +12,7 @@ export interface PostCategoriaProps {
 export interface PutCategoriaProps {
   categoria_id: number;
   isvalid: boolean;
+  nome: string;
 }
 
 export interface Imagem {
@@ -34,6 +35,13 @@ export interface ResponseProduto {
 
 export interface PostProdutoProps {
   nome: string;
+  descricao: string;
+  imagem_id: number;
+  categorias: number[];
+}
+
+export interface PutProdutoProps {
+  id: number;
   descricao: string;
   imagem_id: number;
   categorias: number[];
@@ -116,6 +124,13 @@ export interface Oferta {
 export interface PostOfertaProps {
   produto_id?: number;
   id?: number;
+  quantidade: number;
+  valor_unitario: number;
+  validade_oferta_id: number;
+}
+
+export interface PutOfertaProps {
+  id: number;
   quantidade: number;
   valor_unitario: number;
   validade_oferta_id: number;

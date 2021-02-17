@@ -11,11 +11,13 @@ import {
   Table,
   Paper,
   TextField,
+  Checkbox,
+  Backdrop,
+  CircularProgress,
   makeStyles,
   createStyles,
   Theme,
 } from '@material-ui/core';
-
 
 import { Add, Close } from '@material-ui/icons';
 import { Container, SearchOrderContainer } from './styles';
@@ -38,18 +40,22 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const index = () => {
+  const [pedidos, setPedidos] = useState<Pedido[]>([]);
+  const [loading, setLoading] = useState(false);
   const classes = useStyles();
 
-  const [pedidos, setPedidos] = useState<Pedido[]>([]);
   const history = useHistory();
 
   const listPedidos = async () => {
     try {
+      setLoading(true);
       const response = await getPedidos();
 
       setPedidos(response.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -64,7 +70,6 @@ const index = () => {
           Novo Pedido
         </Button>
         <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
-
       </SearchOrderContainer>
       <p />
       <TableContainer component={Paper}>
@@ -95,11 +100,13 @@ const index = () => {
                     Cancelar
                   </Button>
                 </TableCell>
-
               </TableRow>
             ))}
           </TableBody>
         </Table>
+        <Backdrop open={loading} style={{ zIndex: 10 }}>
+          <CircularProgress color="primary" />
+        </Backdrop>
       </TableContainer>
     </Container>
   );
