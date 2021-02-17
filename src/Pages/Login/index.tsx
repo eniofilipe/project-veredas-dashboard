@@ -75,12 +75,12 @@ const index = () => {
           />
           <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
           <ButtonSubmit fullWidth variant="contained" color="primary" onClick={() => handleLogin()}>
-            Sign In
+            Acessar
           </ButtonSubmit>
           <Grid container>
             <Grid item>
               <Link href="/" variant="body2">
-                Don't have an account? Sign Up
+                {/* Não tem Conta? Sign Up */}
               </Link>
             </Grid>
           </Grid>

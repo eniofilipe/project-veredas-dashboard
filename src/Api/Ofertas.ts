@@ -2,7 +2,7 @@ import api from './Api';
 import { Oferta, Validade, PostValidadeProps, PostOfertaProps, PutValidadeProps, PutOfertaProps } from '../Types';
 
 export const getProdutosOfertas = async () =>
-  api.get<Oferta[]>('/oferta', {
+  api.get<Oferta[]>('/oferta-admin', {
     params: {
       disponibilidade: 'ativa',
     },

@@ -122,7 +122,8 @@ export interface Oferta {
 }
 
 export interface PostOfertaProps {
-  produto_id: number;
+  produto_id?: number;
+  id?: number;
   quantidade: number;
   valor_unitario: number;
   validade_oferta_id: number;
@@ -185,6 +186,12 @@ export interface Pedido {
     };
   };
   administrador: string;
+  pagamento: {
+    id: number;
+    titulo: string;
+    valor_frete: number;
+  };
+  total: number;
 }
 
 export interface PostPedidoProps {
@@ -201,7 +208,7 @@ export interface Usuario {
   email: string;
   cpf: number;
   telefone: number;
-  endereco: {
+  enderecos: {
     id: number;
     cep: number;
     estado: string;
@@ -216,4 +223,10 @@ export interface Usuario {
 
 export interface ResponseUsuario {
   usuarios: Usuario[];
+}
+
+export interface Dados {
+  usuariosCadastrados: number;
+  pedidosRealizados: number;
+  produtosCadastrados: number;
 }

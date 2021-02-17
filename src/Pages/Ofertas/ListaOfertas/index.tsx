@@ -14,7 +14,9 @@ import {
   Backdrop,
   CircularProgress,
 } from '@material-ui/core';
+
 import { Add, DeleteOutline, Edit } from '@material-ui/icons';
+
 import { Container, AddOfferContainer } from './styles';
 
 import { Validade } from '../../../Types';
@@ -51,13 +53,14 @@ const index = () => {
           Nova Oferta
         </Button>
       </AddOfferContainer>
+      <p />
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell>Código</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Validade</TableCell>
+              <TableCell align="center">Status</TableCell>
+              <TableCell align="center">Validade</TableCell>
               <TableCell />
               {/* <TableCell /> */}
             </TableRow>
@@ -66,9 +69,9 @@ const index = () => {
             {ofertas.map((item) => (
               <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
                 <TableCell>{item.id}</TableCell>
-                <TableCell>{item.status}</TableCell>
-                <TableCell>{dayjs(item.validade).format('DD/MM/YYYY')}</TableCell>
-                <TableCell>
+                <TableCell align="center">{item.status}</TableCell>
+                <TableCell align="center">{dayjs(item.validade).format('DD/MM/YYYY')}</TableCell>
+                <TableCell align="center">
                   {item.status === 'ativa' ? (
                     <Button
                       variant="contained"

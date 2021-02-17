@@ -19,8 +19,10 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+
 import { AddShoppingCart, ArrowBack, PersonAdd, Save } from '@material-ui/icons';
 import { Container, AddOrderContainer, WrapperCliente, WrapperButtons } from './styles';
+
 import ModalClientes from '../../__Modais/ListaClientes';
 import ModalProdutos from '../../__Modais/ListaOfertas';
 import { Cliente, Oferta, OfertaPedido } from '../../../Types';
@@ -96,6 +98,7 @@ const index = () => {
   return (
     <Container>
       <AddOrderContainer>
+
         <WrapperCliente>
           <span>Cliente:</span>
           <TextField size="small" disabled id="outlined-basic" variant="outlined" value={cliente?.nome} />
@@ -127,6 +130,7 @@ const index = () => {
         <Button variant="contained" startIcon={<AddShoppingCart />} onClick={() => setOpenModalProduto(true)}>
           Adicionar Produto
         </Button>
+
       </AddOrderContainer>
       <TableContainer component={Paper}>
         <Table>
@@ -169,6 +173,7 @@ const index = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
       <WrapperButtons>
         <Button variant="contained" startIcon={<Save />} onClick={cadastraPedido}>
           Salvar
@@ -177,6 +182,7 @@ const index = () => {
           Voltar
         </Button>
       </WrapperButtons>
+
 
       <ModalClientes
         isOpen={openModalCliente}
