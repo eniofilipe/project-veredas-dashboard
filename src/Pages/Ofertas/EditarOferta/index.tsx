@@ -1,129 +1,320 @@
-/* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import {
-  TableContainer,
-  TableHead,
-  TableBody,
-  TableCell,
-  Table,
-  TableRow,
   Button,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableContainer,
+  TableBody,
+  Table,
   Paper,
-  Input,
+  TextField,
   InputAdornment,
+  Backdrop,
+  CircularProgress,
+  Input,
 } from '@material-ui/core';
-import { Container, ButtonContainer } from './styles';
-import { Oferta } from '../../../Types';
-import { getProdutosOfertas, putOferta } from '../../../Api/Ofertas';
+import dayjs from 'dayjs';
+import { makeStyles } from '@material-ui/core/styles';
+import { AddShoppingCart, ArrowBack, DeleteOutline, Save } from '@material-ui/icons';
+import { Container, AddOrderContainer, WrapperButtons, WrapperValidade } from './styles';
 
-const index = () => {
+import ModalProdutos from '../../__Modais/ListaProdutos';
+import { Oferta, Produto, Validade } from '../../../Types';
+import {
+  getProdutosOfertas,
+  setOferta,
+  editOferta,
+  deleteOferta,
+  getOfertasOfValidade,
+  editValidadeOferta,
+} from '../../../Api/Ofertas';
+
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(2),
+    minWidth: 200,
+  },
+}));
+
+interface OfertaProd {
+  produto: Produto;
+  quantidade: number;
+  valor: number;
+}
+
+const EditarOferta = () => {
   const history = useHistory();
-  const [ofertas, setOfertas] = useState<Oferta[]>([]);
+  const location = useLocation<Validade>();
+  const [selectedDate, setSelectedDate] = useState('');
+  const [produtos, setProdutos] = useState<Oferta[]>([]);
+  const [novosProdutos, setNovosProdutos] = useState<OfertaProd[]>([]);
+  const [prodToDelete, setProdToDelete] = useState<Oferta[]>([]);
+  const [openModalProduto, setOpenModalProduto] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [validade, setValidade] = useState(location.state);
 
-  const listProdutos = async () => {
+  const carregaOfertas = async () => {
     try {
-      const response = await getProdutosOfertas();
+      setLoading(true);
 
-      setOfertas(response.data);
+      const response = await getOfertasOfValidade(validade.id);
+
+      setProdutos([...response.data]);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteFromApi = (index: number) => {
+    console.log(index);
+    const auxToDelete = [...prodToDelete];
+
+    auxToDelete.push(produtos[index]);
+
+    const auxProdutos = [...produtos];
+
+    auxProdutos.splice(index, 1);
+
+    setProdToDelete(auxToDelete);
+    setProdutos(auxProdutos);
+  };
+
+  const deleteFromNovos = (index: number) => {
+    const aux = [...novosProdutos];
+
+    aux.splice(index, 1);
+
+    setNovosProdutos(aux);
+  };
+
+  useEffect(() => {
+    carregaOfertas();
+    setSelectedDate(validade.validade);
+  }, [validade]);
+
+  const editaOferta = async () => {
+    try {
+      setLoading(true);
+
+      await editValidadeOferta({
+        validade: selectedDate,
+        validade_id: validade.id,
+        status: validade.status,
+      });
+
+      produtos.map(async (prod) => {
+        await editOferta({
+          id: prod.id,
+          quantidade: prod.quantidade,
+          validade_oferta_id: validade.id,
+          valor_unitario: Number(prod.valor_unitario),
+        });
+      });
+
+      if (novosProdutos.length > 0) {
+        novosProdutos.map(async (prod) => {
+          await setOferta({
+            produto_id: prod.produto.id,
+            quantidade: prod.quantidade,
+            validade_oferta_id: validade.id,
+            valor_unitario: Number(prod.valor),
+          });
+        });
+      }
+
+      if (prodToDelete.length > 0) {
+        prodToDelete.map(async (prod) => {
+          await deleteOferta(prod.id);
+        });
+      }
+
+      setLoading(false);
+      history.goBack();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const changeQuantidade = (value: number, pos: number) => {
-    const prodAux = ofertas;
+    const prodAux = produtos;
 
-    prodAux[pos] = { ...ofertas[pos], quantidade: value };
+    prodAux[pos] = { ...produtos[pos], quantidade: value };
 
-    setOfertas([...prodAux]);
+    setProdutos([...prodAux]);
   };
 
   const changeValor = (value: number, pos: number) => {
-    const prodAux = ofertas;
+    const prodAux = produtos;
 
-    prodAux[pos] = { ...ofertas[pos], valor_unitario: value };
+    prodAux[pos] = { ...produtos[pos], valor_unitario: value };
 
-    setOfertas([...prodAux]);
+    setProdutos([...prodAux]);
   };
 
-  const editarOferta = async () => {
-    try{
-        
-      ofertas.map(async (item) => { 
-          await putOferta({
-          id: item.id,
-          quantidade: item.quantidade,
-          valor_unitario: Number(item.valor_unitario),
-          validade_oferta_id: item.validade.id,
-        });
-      });
+  const changeQuantidadeNovos = (value: number, pos: number) => {
+    const prodAux = novosProdutos;
 
-      history.goBack();
-    } catch (error) {
-      console.log(error); 
-    }
+    prodAux[pos] = { ...novosProdutos[pos], quantidade: value };
+
+    setNovosProdutos([...prodAux]);
   };
 
-  useEffect(() => {
-    listProdutos();
-  }, []);
+  const changeValorNovos = (value: number, pos: number) => {
+    const prodAux = novosProdutos;
+
+    prodAux[pos] = { ...novosProdutos[pos], valor: value };
+
+    setNovosProdutos([...prodAux]);
+  };
 
   return (
     <Container>
-      {/* <ButtonContainer>
-        <Button variant="contained">Adicionar Produto</Button>
-      </ButtonContainer> */}
+      <AddOrderContainer>
+        <WrapperValidade>
+          <span>Validade:</span>
+
+          <TextField
+            type="date"
+            value={dayjs(selectedDate).format('YYYY-MM-DD')}
+            onChange={(e) => {
+              setSelectedDate(e.target.value);
+            }}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </WrapperValidade>
+
+        <Button variant="contained" startIcon={<AddShoppingCart />} onClick={() => setOpenModalProduto(true)}>
+          Adicionar Produto
+        </Button>
+      </AddOrderContainer>
       <p />
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Código</TableCell>
               <TableCell>Nome</TableCell>
-              <TableCell>Descrição</TableCell>
-              <TableCell>Categorias</TableCell>
-              <TableCell>Quantidade</TableCell>
-              <TableCell>Valor Unitário</TableCell>
+              <TableCell align="center">Descrição</TableCell>
+              <TableCell align="center">Quantidade</TableCell>
+              <TableCell align="center">Preço</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {ofertas.map((item, pos) => (              
-              <TableRow hover key={`cod${item.produtos.id}`}>
-                <TableCell>{item.produtos.id}</TableCell>
+            {produtos.map((item, pos) => (
+              <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
                 <TableCell>{item.produtos.nome}</TableCell>
-                <TableCell>{item.produtos.descricao}</TableCell>
-                <TableCell>{item.produtos.categorias.map((category) => `${category.nome}, `)}</TableCell>
-                <TableCell>
-                  <Input 
-                    id="standard-number" 
-                    type="number" 
-                    value={item.quantidade} 
-                    style={{ width: 100 }}
-                    onChange={(e) => changeQuantidade(Number(e.target.value), pos)}
+                <TableCell align="center">{item.produtos.descricao}</TableCell>
+                <TableCell align="center">
+                  <Input
+                    id="standard-number"
+                    type="number"
+                    style={{ width: 60 }}
+                    value={item.quantidade}
+                    onChange={(e) => changeQuantidade(Math.trunc(Number(e.target.value)), pos)}
+                    inputProps={{
+                      'aria-disabled': true,
+                      min: 1,
+                      step: 1,
+                      pattern: /\d/,
+                    }}
                   />
                 </TableCell>
-                <TableCell>                  
-                  <Input 
-                    id="standard-number" 
-                    type="number" 
+                <TableCell align="center">
+                  <Input
+                    id="standard-start-adornment"
+                    type="number"
                     startAdornment={<InputAdornment position="start">R$</InputAdornment>}
+                    value={item.valor_unitario}
                     style={{ width: 100 }}
-                    value={item.valor_unitario} 
                     onChange={(e) => changeValor(Number(e.target.value), pos)}
+                    inputProps={{
+                      startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+                    }}
                   />
+                </TableCell>
+                <TableCell>
+                  <Button variant="contained" startIcon={<DeleteOutline />} onClick={() => deleteFromApi(pos)}>
+                    Remover
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+            {novosProdutos.map((item, pos) => (
+              <TableRow hover tabIndex={-1} key={`cod${item.produto.id}`}>
+                <TableCell>{item.produto.nome}</TableCell>
+                <TableCell align="center">{item.produto.descricao}</TableCell>
+                <TableCell align="center">
+                  <Input
+                    id="standard-number"
+                    type="number"
+                    style={{ width: 60 }}
+                    value={item.quantidade}
+                    onChange={(e) => changeQuantidadeNovos(Math.trunc(Number(e.target.value)), pos)}
+                    inputProps={{
+                      'aria-disabled': true,
+                      min: 1,
+                      step: 1,
+                      pattern: /\d/,
+                    }}
+                  />
+                </TableCell>
+                <TableCell align="center">
+                  <Input
+                    id="standard-start-adornment"
+                    type="number"
+                    startAdornment={<InputAdornment position="start">R$</InputAdornment>}
+                    value={item.valor}
+                    style={{ width: 100 }}
+                    onChange={(e) => changeValorNovos(Number(e.target.value), pos)}
+                    inputProps={{
+                      startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+                    }}
+                  />
+                </TableCell>
+                <TableCell>
+                  <Button variant="contained" startIcon={<DeleteOutline />} onClick={() => deleteFromNovos(pos)}>
+                    Remover
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-      <p />
-      <ButtonContainer>
-        <Button variant="contained" onClick={() => editarOferta()}>Salvar</Button>
-      </ButtonContainer>
+
+      <WrapperButtons>
+        <Button variant="contained" startIcon={<Save />} onClick={editaOferta}>
+          Salvar
+        </Button>
+        <Button variant="contained" startIcon={<ArrowBack />} onClick={() => history.goBack()}>
+          Voltar
+        </Button>
+      </WrapperButtons>
+
+      <ModalProdutos
+        isOpen={openModalProduto}
+        setModalClose={() => setOpenModalProduto(false)}
+        selection={(prod) => {
+          const prodOferta = {
+            produto: prod,
+            quantidade: 1,
+            valor: 0,
+          } as OfertaProd;
+          setNovosProdutos(novosProdutos.concat(prodOferta));
+        }}
+      />
+      <Backdrop open={loading} style={{ zIndex: 10 }}>
+        <CircularProgress color="primary" />
+      </Backdrop>
     </Container>
   );
 };
 
-export default index;
+export default EditarOferta;

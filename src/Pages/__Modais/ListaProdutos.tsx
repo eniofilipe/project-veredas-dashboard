@@ -46,7 +46,6 @@ const ListaProdutos = ({ selection, isOpen, setModalClose }: ListaProdutosProps)
   }, [listProdutos]);
 
   return (
-
     <StyledModal open={isOpen} onClose={setModalClose}>
       <WrapperContentModal>
         <TableContainer component={Paper}>
@@ -94,7 +93,6 @@ const ListaProdutos = ({ selection, isOpen, setModalClose }: ListaProdutosProps)
         </TableContainer>
       </WrapperContentModal>
     </StyledModal>
-
   );
 };
 
