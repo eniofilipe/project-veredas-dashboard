@@ -10,6 +10,8 @@ import {
   Face as FaceIcon,
   ShoppingBasket,
   Storefront,
+  VerifiedUser,
+  Description,
 } from '@material-ui/icons';
 
 import {
@@ -88,6 +90,11 @@ const Default: React.FC = ({ children }) => {
   function goToProdutos() {
     History.push('/produtos');
   }
+
+  function goToAdministradores() {
+    History.push('/administradores');
+  }
+
   const openPopover = Boolean(anchorEl);
   const id = openPopover ? 'simple-popover' : undefined;
 
@@ -187,6 +194,18 @@ const Default: React.FC = ({ children }) => {
               <ReportsIcon />
             </ListItemIcon>
             <ListItemText primary="Usuários" />
+          </ListItem>
+          <ListItem button onClick={() => goToAdministradores()}>
+            <ListItemIcon>
+              <VerifiedUser />
+            </ListItemIcon>
+            <ListItemText primary="Administradores" />
+          </ListItem>
+          <ListItem button onClick={() => goToRelatorios()}>
+            <ListItemIcon>
+              <Description />
+            </ListItemIcon>
+            <ListItemText primary="Relatórios" />
           </ListItem>
         </List>
       </MenuDrawer>

@@ -15,7 +15,7 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 
-import { Add, DeleteOutline, Edit } from '@material-ui/icons';
+import { Add, DeleteOutline, Edit, FileCopy } from '@material-ui/icons';
 
 import { Container, AddOfferContainer } from './styles';
 
@@ -76,7 +76,7 @@ const index = () => {
                     <Button
                       variant="contained"
                       startIcon={<Edit />}
-                      onClick={() => history.push(`/ofertas/id/${item.id}`)}
+                      onClick={() => history.push(`/ofertas/editar`, item)}
                     >
                       Editar
                     </Button>
@@ -86,7 +86,17 @@ const index = () => {
                     </Button>
                   )}
                 </TableCell>
-                {/* <TableCell>{item.status !== 'ativa' && <Button>Copiar</Button>}</TableCell> */}
+                <TableCell>
+                  {item.status !== 'ativa' && (
+                    <Button
+                      variant="contained"
+                      startIcon={<FileCopy />}
+                      onClick={() => history.push('/ofertas/novo', { id: item.id })}
+                    >
+                      Copiar
+                    </Button>
+                  )}
+                </TableCell>
               </TableRow>
             ))}
             <TableRow />

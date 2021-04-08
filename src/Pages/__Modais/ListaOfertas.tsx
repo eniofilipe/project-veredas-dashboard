@@ -28,7 +28,7 @@ const ListaOfertas = ({ selection, isOpen, setModalClose }: ListaOfertasProps) =
 
   const list = async () => {
     try {
-      const response = await getProdutosOfertas();
+      const response = await getProdutosOfertas('ativa');
 
       setListOfertas(response.data);
     } catch (error) {
@@ -90,7 +90,6 @@ const ListaOfertas = ({ selection, isOpen, setModalClose }: ListaOfertasProps) =
         </TableContainer>
       </WrapperContentModal>
     </StyledModal>
-
   );
 };
 

@@ -19,7 +19,7 @@ import {
   Theme,
 } from '@material-ui/core';
 
-import { Add, Close } from '@material-ui/icons';
+import { Add, Close, Edit } from '@material-ui/icons';
 import { Container, SearchOrderContainer } from './styles';
 import { Pedido } from '../../../Types';
 import { getPedidos } from '../../../Api/Pedido';
@@ -76,11 +76,14 @@ const index = () => {
         <Table>
           <TableHead>
             <TableRow>
+              <TableCell />
               <TableCell>Código</TableCell>
               <TableCell>Cliente</TableCell>
-              <TableCell align="center">Status</TableCell>
-              <TableCell align="center">Total</TableCell>
-              <TableCell align="center">Data</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Total</TableCell>
+              <TableCell>Data</TableCell>
+              <TableCell />
+              <TableCell />
               {/* <TableCell /> */}
             </TableRow>
           </TableHead>
@@ -93,8 +96,24 @@ const index = () => {
                 <TableCell>{item.id}</TableCell>
                 <TableCell>{item.clientes.nome}</TableCell>
                 <TableCell>{item.status}</TableCell>
-                <TableCell /> {/* Calcular Total */}
+                <TableCell>
+                  {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
+                    item.ofertas
+                      .map((value) => value.valor_unitario * value.oferta_pedidos.quantidade)
+                      .reduce((prev, next) => prev + next, 0)
+                  )}
+                </TableCell>{' '}
+                {/* Calcular Total */}
                 <TableCell>{dayjs(item.createdAt).format('DD/MM/YYYY')}</TableCell>
+                <TableCell>
+                  <Button
+                    startIcon={<Edit />}
+                    variant="contained"
+                    onClick={() => history.push('/pedidos/editar', { item })}
+                  >
+                    Editar
+                  </Button>
+                </TableCell>
                 <TableCell>
                   <Button startIcon={<Close />} variant="contained">
                     Cancelar

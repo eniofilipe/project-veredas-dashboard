@@ -1,7 +1,7 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 
 import history from '../Services/history';
-import { getLogin } from '../Api/Login';
+import { getLogin, getValidaToken } from '../Api/Login';
 import { Administrador, Login } from '../Types';
 
 interface IAuthContext {
@@ -14,12 +14,32 @@ interface IAuthContext {
 const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 export const AuthProvider: React.FC = ({ children }) => {
-  const [admin, setAdmin] = useState<Administrador | null>(
-    localStorage.getItem('admin') ? JSON.parse(localStorage.getItem('admin') || '') : null
-  );
+  const [admin, setAdmin] = useState<Administrador | null>(null);
   const [token, setToken] = useState<string | null>(
     localStorage.getItem('token') ? localStorage.getItem('token') : null
   );
+
+  const handleToken = async () => {
+    if (token) {
+      try {
+        const response = await getValidaToken(token);
+
+        setAdmin({
+          nome: response.data.nome,
+          email: response.data.email,
+          id: response.data.id,
+        });
+      } catch (error) {
+        console.log(error);
+        setAdmin(null);
+        setToken(null);
+      }
+    }
+  };
+
+  useEffect(() => {
+    handleToken();
+  }, []);
 
   const signIn = async (data: Login) => {
     try {
@@ -29,7 +49,6 @@ export const AuthProvider: React.FC = ({ children }) => {
       });
 
       setAdmin(response.data.client);
-      localStorage.setItem('admin', JSON.stringify(response.data.client));
       setToken(response.data.token);
       localStorage.setItem('token', response.data.token);
       history.push('/dashboard');

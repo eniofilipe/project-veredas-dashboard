@@ -23,5 +23,4 @@ export const WrapperValidade = styled.div`
   align-items: center;
   gap: 10px;
   margin-right: auto;
-
 `;

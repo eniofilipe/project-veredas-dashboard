@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Button,
@@ -33,13 +33,13 @@ import {
   LabelError,
 } from './styles';
 
-import { Categoria, Imagem } from '../../../Types';
+import { Categoria, Imagem, Produto } from '../../../Types';
 
 import { getCategorias } from '../../../Api/Categorias';
 
 import { sendImage } from '../../../Api/Imagens';
 
-import { postProduto } from '../../../Api/Produtos';
+import { editProduto } from '../../../Api/Produtos';
 
 import { ProductValidation } from './validation';
 
@@ -52,33 +52,33 @@ interface FormShape {
 
 const index = () => {
   const history = useHistory();
+  const location = useLocation<Produto>();
 
-  const { register, handleSubmit, errors, reset, watch, setValue, getValues } = useForm<FormShape>({
+  const [productState, setProduct] = useState<Produto>(location.state);
+
+  const { register, handleSubmit, errors, reset, watch, setValue, formState, control } = useForm<FormShape>({
     resolver: yupResolver(ProductValidation),
+    defaultValues: { ...productState },
   });
 
   const categorias = watch('categorias');
   const imagem = watch('imagem');
 
-  /* const { categorias, imagem } = getValues(); */
-
-  /* const [categorias, setCategorias] = useState<Categoria[]>([]); */
   const [openModal, setOpenModal] = useState(false);
   const [listCategorias, setListCategorias] = useState<Categoria[]>([]);
   const [isLoading, setLoading] = useState(false);
-  /*   const [nome, setNome] = useState('');
-  const [descricao, setDescricao] = useState('');
-  const [imagem, setImagem] = useState<Imagem>(); */
 
-  const cadastroProduto = async (data: FormShape) => {
+  const salvarProduto = async (data: FormShape) => {
     try {
       setLoading(true);
       const idCategorias = data.categorias.map((cat) => cat.id);
+
       if (data.imagem) {
-        const response = await postProduto({
+        const response = await editProduto({
           categorias: idCategorias,
           descricao: data.descricao,
           nome: data.nome,
+          id: location.state.id,
           imagem_id: data.imagem.id,
         });
 
@@ -129,7 +129,7 @@ const index = () => {
   const onSubmit = handleSubmit(async (data) => {
     if (isLoading) return;
 
-    await cadastroProduto(data);
+    await salvarProduto(data);
   });
 
   const removeCategoria = (indexVector: number) => {
@@ -154,7 +154,11 @@ const index = () => {
   useEffect(() => {
     register('categorias');
     register('imagem');
-  }, [register]);
+
+    setValue('categorias', [...productState.categorias]);
+  }, [register, productState]);
+
+  /* useEffect(() => {}, [reset, productState]); */
 
   return (
     <Container>
@@ -188,7 +192,7 @@ const index = () => {
                 <TextField
                   placeholder="Nome"
                   fullWidth
-                  ref={register}
+                  inputRef={register}
                   name="nome"
                   error={!!errors.nome}
                   helperText={errors.nome?.message}
@@ -196,7 +200,7 @@ const index = () => {
                 <TextField
                   placeholder="Descrição"
                   fullWidth
-                  ref={register}
+                  inputRef={register}
                   name="descricao"
                   error={!!errors.descricao}
                   helperText={errors.descricao?.message}
@@ -208,7 +212,7 @@ const index = () => {
                   </Button>
                 </div>
                 <div>
-                  {!!errors.categorias && <LabelError>Selecione ao menos uma categoria</LabelError>}
+                  {!!errors.categorias && <LabelError>{errors.categorias[0]?.id?.message}</LabelError>}
                   {categorias &&
                     categorias.map((categoria, i) => (
                       <Chip key={`${categoria.id}`} label={categoria.nome} onDelete={() => removeCategoria(i)} />
@@ -219,7 +223,7 @@ const index = () => {
             <Grid item xs={12}>
               <WrapperButtons>
                 <Button startIcon={<Done />} variant="contained" type="submit">
-                  Cadastrar Produto
+                  Salvar Produto
                 </Button>
                 <Button startIcon={<ArrowBackIos />} variant="contained" onClick={() => history.goBack()}>
                   Voltar

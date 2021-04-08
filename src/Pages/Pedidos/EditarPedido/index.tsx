@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import {
   Button,
   TableHead,
@@ -25,8 +25,8 @@ import { Container, AddOrderContainer, WrapperCliente, WrapperButtons } from './
 
 import ModalClientes from '../../__Modais/ListaClientes';
 import ModalProdutos from '../../__Modais/ListaOfertas';
-import { Cliente, Oferta, OfertaPedido } from '../../../Types';
-import { postPedido } from '../../../Api/Pedido';
+import { Cliente, Oferta, OfertaPedido, Pedido, Produto, TipoPagamento } from '../../../Types';
+import { getTiposPagamento, postPedido } from '../../../Api/Pedido';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -35,20 +35,40 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+interface IState {
+  item: Pedido;
+}
+
 const index = () => {
+  const location = useLocation<IState>();
   const history = useHistory();
   const classes = useStyles();
+  const [pedido, setPedido] = useState(location.state.item);
   const [cliente, setCliente] = useState<Cliente>();
   const [produtos, setProdutos] = useState<Oferta[]>([]);
   const [openModalCliente, setOpenModalCliente] = useState(false);
   const [openModalProduto, setOpenModalProduto] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [type, setType] = useState('');
+  const [type, setType] = useState<TipoPagamento>();
   const [open, setOpen] = useState(false);
-  const options = ['Dinheiro', 'Cartão de Débito'];
+  const [tiposPagamento, setTiposPagamento] = useState<TipoPagamento[]>([]);
+
+  const fetchPagamentos = async () => {
+    try {
+      setLoading(true);
+
+      const response = await getTiposPagamento();
+
+      setTiposPagamento(response.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleChange = (event: any) => {
-    setType(event.target.value);
+    setType(tiposPagamento[event.target.value]);
   };
 
   const handleClose = () => {
@@ -69,10 +89,10 @@ const index = () => {
         } as OfertaPedido;
       });
 
-      if (cliente) {
+      if (cliente && type) {
         await postPedido({
           cliente_id: cliente.id,
-          tipo_pagamento_id: 1,
+          tipo_pagamento_id: type.id,
           valor_frete: 5,
           ofertas: ofertasAux,
           tipo_frete_id: 1,
@@ -94,6 +114,47 @@ const index = () => {
 
     setProdutos([...prodAux]);
   };
+
+  const organizeData = () => {
+    if (pedido) {
+      setCliente({
+        ...pedido.clientes,
+      });
+
+      const auxProdutos = pedido.ofertas.map((value) => {
+        const produto: Produto = {
+          categorias: [],
+          descricao: value.produtos.descricao,
+          id: value.produtos.id,
+          imagem: { id: value.produtos.imagem_id, ...value.produtos.imagem },
+          nome: value.produtos.nome,
+        };
+
+        return {
+          id: value.id,
+          produtos: produto,
+          quantidade: value.oferta_pedidos.quantidade,
+          valor_unitario: value.valor_unitario,
+        } as Oferta;
+      });
+
+      setProdutos([...auxProdutos]);
+
+      const pagamento = tiposPagamento.findIndex((value) => value.id === pedido.tipo_pagamento_id);
+
+      if (pagamento >= 0) {
+        setType(tiposPagamento[pagamento]);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchPagamentos();
+  }, []);
+
+  useEffect(() => {
+    organizeData();
+  }, [pedido]);
 
   const removeProd = (pos: number) => {
     const prodAux = [...produtos];
@@ -125,12 +186,11 @@ const index = () => {
             value={type}
             onChange={handleChange}
           >
-            {options &&
-              options.map((op, i) => (
-                <MenuItem value={op} key={op}>
-                  {op}
-                </MenuItem>
-              ))}
+            {tiposPagamento.map((op, i) => (
+              <MenuItem value={i} key={op.id}>
+                {op.titulo}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
 

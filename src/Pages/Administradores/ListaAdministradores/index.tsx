@@ -16,24 +16,24 @@ import {
 } from '@material-ui/core';
 import { Add, DeleteOutline, Edit } from '@material-ui/icons';
 import { Container, AddProductContainer } from './styles';
-import { Produto } from '../../../Types';
+import { Administrador } from '../../../Types';
 
-import { getProduto, deleteProduto } from '../../../Api/Produtos';
+import { getAdministradores, deleteAdministrador } from '../../../Api/Administradores';
 
 const index = () => {
-  const [produtos, setProdutos] = useState<Produto[]>([]);
+  const [administradores, setAdministradores] = useState<Administrador[]>([]);
   const [loading, setLoading] = useState(false);
 
   const history = useHistory();
 
-  const edit = (prod: Produto) => {
-    history.push('/produtos/editar', prod);
+  const edit = (adm: Administrador) => {
+    history.push('/administradores/editar', adm);
   };
 
   const remove = async (id: number) => {
     try {
       setLoading(true);
-      const response = await deleteProduto(id);
+      const response = await deleteAdministrador(id);
 
       list();
     } catch (e) {
@@ -46,9 +46,9 @@ const index = () => {
   const list = async () => {
     try {
       setLoading(true);
-      const response = await getProduto();
+      const response = await getAdministradores();
 
-      setProdutos(response.data.produtos);
+      setAdministradores(response.data);
     } catch (error) {
       console.log(error);
     } finally {
@@ -63,8 +63,13 @@ const index = () => {
   return (
     <Container>
       <AddProductContainer>
-        <Button variant="contained" onClick={() => history.push('/produtos/novo')} color="inherit" startIcon={<Add />}>
-          Novo Produto
+        <Button
+          variant="contained"
+          onClick={() => history.push('/administradores/novo')}
+          color="inherit"
+          startIcon={<Add />}
+        >
+          Novo Administrador
         </Button>
         <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
       </AddProductContainer>
@@ -75,30 +80,22 @@ const index = () => {
             <TableRow>
               <TableCell>Código</TableCell>
               <TableCell>Nome</TableCell>
-              <TableCell>Descrição</TableCell>
-              <TableCell>Categorias</TableCell>
-              <TableCell>Editar</TableCell>
-              <TableCell>Excluir</TableCell>
+              <TableCell>Email</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {produtos.map((prod) => (
-              <TableRow hover tabIndex={-1} key={`cod${prod.id}`}>
-                <TableCell>{prod.id}</TableCell>
-                <TableCell>{prod.nome}</TableCell>
-                <TableCell>{prod.descricao}</TableCell>
+            {administradores.map((adm) => (
+              <TableRow hover tabIndex={-1} key={`cod${adm.id}`}>
+                <TableCell>{adm.id}</TableCell>
+                <TableCell>{adm.nome}</TableCell>
+                <TableCell>{adm.email}</TableCell>
                 <TableCell>
-                  {prod.categorias.map((category) => (
-                    <Chip key={category.id} label={category.nome} />
-                  ))}
-                </TableCell>
-                <TableCell>
-                  <Button variant="contained" startIcon={<Edit />} onClick={() => edit(prod)}>
+                  <Button variant="contained" startIcon={<Edit />} onClick={() => edit(adm)}>
                     Editar
                   </Button>
                 </TableCell>
                 <TableCell>
-                  <Button variant="contained" startIcon={<DeleteOutline />} onClick={() => remove(prod.id)}>
+                  <Button variant="contained" startIcon={<DeleteOutline />} onClick={() => remove(adm.id)}>
                     Excluir
                   </Button>
                 </TableCell>
