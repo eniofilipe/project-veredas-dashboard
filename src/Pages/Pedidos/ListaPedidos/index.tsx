@@ -84,7 +84,6 @@ const index = () => {
               <TableCell>Data</TableCell>
               <TableCell />
               <TableCell />
-              {/* <TableCell /> */}
             </TableRow>
           </TableHead>
           <TableBody>

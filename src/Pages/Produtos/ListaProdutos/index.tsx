@@ -77,8 +77,8 @@ const index = () => {
               <TableCell>Nome</TableCell>
               <TableCell>Descrição</TableCell>
               <TableCell>Categorias</TableCell>
-              <TableCell>Editar</TableCell>
-              <TableCell>Excluir</TableCell>
+              <TableCell />
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>

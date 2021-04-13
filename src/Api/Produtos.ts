@@ -1,5 +1,5 @@
 import api from './Api';
-import { Produto, PostProdutoProps, ResponseProduto, PutProdutoProps } from '../Types';
+import { PostProdutoProps, ResponseProduto, PutProdutoProps } from '../Types';
 
 export const getProduto = async () => api.get<ResponseProduto>('/produto');
 

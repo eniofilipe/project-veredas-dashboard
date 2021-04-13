@@ -206,6 +206,7 @@ const index = () => {
               <TableCell>Nome</TableCell>
               <TableCell>Descrição</TableCell>
               <TableCell>Preço</TableCell>
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
