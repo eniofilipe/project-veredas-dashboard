@@ -17,7 +17,7 @@ import { useHistory } from 'react-router-dom';
 import { DeleteOutline, Add, Edit } from '@material-ui/icons';
 import { AddCategoryContainer, InputCategoria } from './styles';
 
-import { getCategorias, postCategoria, deleteCategoria, putCategoria } from '../../Api/Categorias';
+import { getCategorias, postCategoria, deleteCategoria, editCategoria } from '../../Api/Categorias';
 
 import { Categoria } from '../../Types';
 
@@ -106,7 +106,11 @@ const index = () => {
                 <TableCell>{item.id}</TableCell>
                 <TableCell>{item.nome}</TableCell>
                 <TableCell>
-                  <Button variant="contained" startIcon={<Edit />} onClick={() => history.push('/categoria', { item })}>
+                  <Button
+                    variant="contained"
+                    startIcon={<Edit />}
+                    onClick={() => history.push('/categoria/editar', { item })}
+                  >
                     Editar
                   </Button>
                 </TableCell>
