@@ -3,21 +3,21 @@ import { useHistory } from 'react-router-dom';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { DevTool } from '@hookform/devtools';
+// import { DevTool } from '@hookform/devtools';
 import {
   Button,
   Paper,
   TextField,
   Grid,
-  IconButton,
-  Modal,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Chip,
+  // IconButton,
+  // Modal,
+  // Table,
+  // TableBody,
+  // TableCell,
+  // TableContainer,
+  // TableHead,
+  // TableRow,
+  // Chip,
   Backdrop,
   CircularProgress,
 } from '@material-ui/core';
@@ -25,12 +25,12 @@ import {
 import { ArrowBackIos, Done } from '@material-ui/icons';
 import {
   Container,
-  PictureContainer,
   WrapperButtons,
   FormWrapper,
-  WrapperContentModal,
-  StyledModal,
-  LabelError,
+  // PictureContainer,
+  // WrapperContentModal,
+  // StyledModal,
+  // LabelError,
 } from './styles';
 
 import { postAdministriador } from '../../../Api/Administradores';

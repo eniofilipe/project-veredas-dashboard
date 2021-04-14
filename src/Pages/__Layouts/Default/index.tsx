@@ -8,6 +8,7 @@ import {
   BarChart as ReportsIcon,
   ExitToApp as LogoutIcon,
   Face as FaceIcon,
+  Category as CategoryIcon,
   ShoppingBasket,
   Storefront,
   VerifiedUser,
@@ -185,13 +186,13 @@ const Default: React.FC = ({ children }) => {
           </ListItem>
           <ListItem button onClick={() => goToCategorias()}>
             <ListItemIcon>
-              <CustomersIcon />
+              <CategoryIcon />
             </ListItemIcon>
             <ListItemText primary="Categorias" />
           </ListItem>
           <ListItem button onClick={() => goToUsuarios()}>
             <ListItemIcon>
-              <ReportsIcon />
+              <CustomersIcon />
             </ListItemIcon>
             <ListItemText primary="Usuários" />
           </ListItem>

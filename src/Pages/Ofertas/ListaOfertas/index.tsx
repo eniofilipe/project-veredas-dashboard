@@ -62,7 +62,7 @@ const index = () => {
               <TableCell align="center">Status</TableCell>
               <TableCell align="center">Validade</TableCell>
               <TableCell />
-              {/* <TableCell /> */}
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
@@ -76,7 +76,7 @@ const index = () => {
                     <Button
                       variant="contained"
                       startIcon={<Edit />}
-                      onClick={() => history.push(`/ofertas/editar`, item)}
+                      // onClick={() => history.push(`/ofertas/editar`, item)}
                     >
                       Editar
                     </Button>

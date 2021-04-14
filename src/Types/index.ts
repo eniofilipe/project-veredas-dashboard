@@ -14,7 +14,6 @@ export interface PutCategoriaProps {
   isvalid: boolean;
   nome: string;
 }
-
 export interface Imagem {
   url: string;
   path: string;

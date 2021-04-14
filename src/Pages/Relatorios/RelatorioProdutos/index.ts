@@ -34,7 +34,7 @@ const gerarRelatorio = async () => {
 
       let innerElement = `<thead>
           <tr>
-            <th >#id</th>
+            <th >Código</th>
             <th>Produto</th>
             <th >Quantidade</th>
           </tr>

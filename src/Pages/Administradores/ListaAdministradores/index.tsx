@@ -81,6 +81,8 @@ const index = () => {
               <TableCell>Código</TableCell>
               <TableCell>Nome</TableCell>
               <TableCell>Email</TableCell>
+              <TableCell />
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>

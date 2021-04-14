@@ -13,10 +13,11 @@ import {
   Backdrop,
   CircularProgress,
 } from '@material-ui/core';
-import { DeleteOutline, Add } from '@material-ui/icons';
+import { useHistory } from 'react-router-dom';
+import { DeleteOutline, Add, Edit } from '@material-ui/icons';
 import { AddCategoryContainer, InputCategoria } from './styles';
 
-import { getCategorias, postCategoria, deleteCategoria } from '../../Api/Categorias';
+import { getCategorias, postCategoria, deleteCategoria, editCategoria } from '../../Api/Categorias';
 
 import { Categoria } from '../../Types';
 
@@ -24,6 +25,7 @@ const index = () => {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [nomeCategoria, setNomeCategoria] = useState<string>('');
   const [loading, setLoading] = useState(false);
+  const history = useHistory();
 
   const remove = async (id: number) => {
     try {
@@ -36,6 +38,11 @@ const index = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const edit = (categoria: Categoria) => {
+    console.log(categoria);
+    history.push('/categoria/editar', categoria);
   };
 
   const cadastroCategoria = async () => {
@@ -95,6 +102,7 @@ const index = () => {
               <TableCell>Código</TableCell>
               <TableCell>Categoria</TableCell>
               <TableCell />
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
@@ -102,6 +110,11 @@ const index = () => {
               <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
                 <TableCell>{item.id}</TableCell>
                 <TableCell>{item.nome}</TableCell>
+                <TableCell>
+                  <Button variant="contained" startIcon={<Edit />} onClick={() => edit(item)}>
+                    Editar
+                  </Button>
+                </TableCell>
                 <TableCell>
                   <Button variant="contained" startIcon={<DeleteOutline />} onClick={() => remove(item.id)}>
                     Excluir
