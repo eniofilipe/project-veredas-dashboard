@@ -11,9 +11,11 @@ import {
   TableRow,
 } from '@material-ui/core';
 
+import { Check } from '@material-ui/icons';
 import { Cliente } from '../../Types';
 
 import { getClientes } from '../../Api/Clientes';
+import { StyledModal, WrapperContentModal } from './styles';
 
 interface ListaClientesProps {
   selection: (cliente: Cliente) => void;
@@ -39,43 +41,47 @@ const ListaClientes = ({ selection, isOpen, setModalClose }: ListaClientesProps)
   }, []);
 
   return (
-    <Modal open={isOpen} onClose={setModalClose}>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Cód</TableCell>
-              <TableCell>Nome</TableCell>
-              <TableCell>Endereço</TableCell>
-              <TableCell />
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {listClientes.map((item) => (
-              <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
-                <TableCell>{item.id}</TableCell>
-
-                <TableCell>{item.nome}</TableCell>
-
-                <TableCell>{item.enderecos.logradouro}</TableCell>
-
-                <TableCell>
-                  <Button
-                    onClick={() => {
-                      selection(item);
-                      setModalClose();
-                    }}
-                  >
-                    Selecionar
-                  </Button>
-                </TableCell>
+    <StyledModal open={isOpen} onClose={setModalClose}>
+      <WrapperContentModal>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Cód</TableCell>
+                <TableCell>Nome</TableCell>
+                <TableCell>Endereço</TableCell>
+                <TableCell />
               </TableRow>
-            ))}
-            <TableRow />
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Modal>
+            </TableHead>
+            <TableBody>
+              {listClientes.map((item) => (
+                <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
+                  <TableCell>{item.id}</TableCell>
+
+                  <TableCell>{item.nome}</TableCell>
+
+                  <TableCell>{item.enderecos.logradouro}</TableCell>
+
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      startIcon={<Check />}
+                      onClick={() => {
+                        selection(item);
+                        setModalClose();
+                      }}
+                    >
+                      Selecionar
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+              <TableRow />
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </WrapperContentModal>
+    </StyledModal>
   );
 };
 

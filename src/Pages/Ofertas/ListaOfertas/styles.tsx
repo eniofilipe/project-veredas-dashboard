@@ -7,4 +7,5 @@ export const AddOfferContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin: 10px 0;
 `;

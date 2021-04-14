@@ -8,6 +8,11 @@ import {
   BarChart as ReportsIcon,
   ExitToApp as LogoutIcon,
   Face as FaceIcon,
+  Category as CategoryIcon,
+  ShoppingBasket,
+  Storefront,
+  VerifiedUser,
+  Description,
 } from '@material-ui/icons';
 
 import {
@@ -86,6 +91,11 @@ const Default: React.FC = ({ children }) => {
   function goToProdutos() {
     History.push('/produtos');
   }
+
+  function goToAdministradores() {
+    History.push('/administradores');
+  }
+
   const openPopover = Boolean(anchorEl);
   const id = openPopover ? 'simple-popover' : undefined;
 
@@ -158,7 +168,7 @@ const Default: React.FC = ({ children }) => {
           </ListItem>
           <ListItem button onClick={() => goToOfertas()}>
             <ListItemIcon>
-              <ShoppingCartIcon />
+              <Storefront />
             </ListItemIcon>
             <ListItemText primary="Ofertas" />
           </ListItem>
@@ -170,21 +180,33 @@ const Default: React.FC = ({ children }) => {
           </ListItem>
           <ListItem button onClick={() => goToProdutos()}>
             <ListItemIcon>
-              <ShoppingCartIcon />
+              <ShoppingBasket />
             </ListItemIcon>
             <ListItemText primary="Produtos" />
           </ListItem>
           <ListItem button onClick={() => goToCategorias()}>
             <ListItemIcon>
-              <CustomersIcon />
+              <CategoryIcon />
             </ListItemIcon>
             <ListItemText primary="Categorias" />
           </ListItem>
           <ListItem button onClick={() => goToUsuarios()}>
             <ListItemIcon>
-              <ReportsIcon />
+              <CustomersIcon />
             </ListItemIcon>
             <ListItemText primary="Usuários" />
+          </ListItem>
+          <ListItem button onClick={() => goToAdministradores()}>
+            <ListItemIcon>
+              <VerifiedUser />
+            </ListItemIcon>
+            <ListItemText primary="Administradores" />
+          </ListItem>
+          <ListItem button onClick={() => goToRelatorios()}>
+            <ListItemIcon>
+              <Description />
+            </ListItemIcon>
+            <ListItemText primary="Relatórios" />
           </ListItem>
         </List>
       </MenuDrawer>

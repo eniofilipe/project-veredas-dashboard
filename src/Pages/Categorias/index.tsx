@@ -10,19 +10,44 @@ import {
   Table,
   Paper,
   TextField,
+  Backdrop,
+  CircularProgress,
 } from '@material-ui/core';
-import { AddCategoryContainer } from './styles';
+import { useHistory } from 'react-router-dom';
+import { DeleteOutline, Add, Edit } from '@material-ui/icons';
+import { AddCategoryContainer, InputCategoria } from './styles';
 
-import { getCategorias, postCategoria } from '../../Api/Categorias';
+import { getCategorias, postCategoria, deleteCategoria, editCategoria } from '../../Api/Categorias';
 
 import { Categoria } from '../../Types';
 
 const index = () => {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [nomeCategoria, setNomeCategoria] = useState<string>('');
+  const [loading, setLoading] = useState(false);
+  const history = useHistory();
+
+  const remove = async (id: number) => {
+    try {
+      setLoading(true);
+      const response = await deleteCategoria(id);
+
+      listCategorias();
+    } catch (e) {
+      console.log(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const edit = (categoria: Categoria) => {
+    console.log(categoria);
+    history.push('/categoria/editar', categoria);
+  };
 
   const cadastroCategoria = async () => {
     try {
+      setLoading(true);
       if (nomeCategoria !== '') {
         await postCategoria({
           nome: nomeCategoria,
@@ -33,16 +58,21 @@ const index = () => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const listCategorias = async () => {
     try {
+      setLoading(true);
       const response = await getCategorias();
 
       setCategorias(response.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -54,13 +84,16 @@ const index = () => {
     <div style={{ width: '100%' }}>
       <AddCategoryContainer>
         <span>Categoria: </span>
-        <TextField
+        <InputCategoria
           id="outlined-basic"
           variant="outlined"
+          size="small"
           value={nomeCategoria}
           onChange={(e) => setNomeCategoria(e.target.value)}
         />
-        <Button onClick={cadastroCategoria}>Adicionar</Button>
+        <Button variant="contained" startIcon={<Add />} onClick={cadastroCategoria}>
+          Adicionar
+        </Button>
       </AddCategoryContainer>
       <TableContainer component={Paper}>
         <Table>
@@ -68,6 +101,7 @@ const index = () => {
             <TableRow>
               <TableCell>Código</TableCell>
               <TableCell>Categoria</TableCell>
+              <TableCell />
               <TableCell />
             </TableRow>
           </TableHead>
@@ -77,13 +111,23 @@ const index = () => {
                 <TableCell>{item.id}</TableCell>
                 <TableCell>{item.nome}</TableCell>
                 <TableCell>
-                  <Button>Excluir</Button>
+                  <Button variant="contained" startIcon={<Edit />} onClick={() => edit(item)}>
+                    Editar
+                  </Button>
+                </TableCell>
+                <TableCell>
+                  <Button variant="contained" startIcon={<DeleteOutline />} onClick={() => remove(item.id)}>
+                    Excluir
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
             <TableRow />
           </TableBody>
         </Table>
+        <Backdrop open={loading} style={{ zIndex: 10 }}>
+          <CircularProgress color="primary" />
+        </Backdrop>
       </TableContainer>
     </div>
   );

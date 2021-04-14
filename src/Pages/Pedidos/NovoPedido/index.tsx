@@ -15,9 +15,14 @@ import {
   Select,
   FormControl,
   InputLabel,
+  Backdrop,
+  CircularProgress,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, AddOrderContainer, ButtonsContainer } from './styles';
+
+import { AddShoppingCart, ArrowBack, DeleteOutline, PersonAdd, Save } from '@material-ui/icons';
+import { Container, AddOrderContainer, WrapperCliente, WrapperButtons } from './styles';
+
 import ModalClientes from '../../__Modais/ListaClientes';
 import ModalProdutos from '../../__Modais/ListaOfertas';
 import { Cliente, Oferta, OfertaPedido } from '../../../Types';
@@ -37,7 +42,7 @@ const index = () => {
   const [produtos, setProdutos] = useState<Oferta[]>([]);
   const [openModalCliente, setOpenModalCliente] = useState(false);
   const [openModalProduto, setOpenModalProduto] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const [type, setType] = useState('');
   const [open, setOpen] = useState(false);
   const options = ['Dinheiro', 'Cartão de Débito'];
@@ -56,6 +61,7 @@ const index = () => {
 
   const cadastraPedido = async () => {
     try {
+      setLoading(true);
       const ofertasAux = produtos.map((item) => {
         return {
           oferta_id: item.id,
@@ -76,6 +82,8 @@ const index = () => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -87,42 +95,48 @@ const index = () => {
     setProdutos([...prodAux]);
   };
 
+  const removeProd = (pos: number) => {
+    const prodAux = [...produtos];
+
+    prodAux.splice(pos, 1);
+
+    setProdutos(prodAux);
+  };
+
   return (
     <Container>
       <AddOrderContainer>
-        <AddOrderContainer>
-          Cliente:&emsp;
-          <TextField disabled id="outlined-basic" variant="outlined" value={cliente?.nome} />
-          <FormControl className={classes.formControl}>
-            <InputLabel id="demo-controlled-open-select-label">Tipo de Pagamento</InputLabel>
-            <Select
-              labelId="demo-controlled-open-select-label"
-              id="demo-controlled-open-select"
-              open={open}
-              onClose={handleClose}
-              onOpen={handleOpen}
-              value={type}
-              onChange={handleChange}
-            >
-              {options &&
-                options.map((op, i) => (
-                  <MenuItem value={op} key={op}>
-                    {op}
-                  </MenuItem>
-                ))}
-            </Select>
-          </FormControl>
-        </AddOrderContainer>
-        <AddOrderContainer>
-          <Button variant="contained" onClick={() => setOpenModalCliente(true)}>
+        <WrapperCliente>
+          <span>Cliente:</span>
+          <TextField size="small" disabled id="outlined-basic" variant="outlined" value={cliente?.nome} />
+          <Button variant="contained" startIcon={<PersonAdd />} onClick={() => setOpenModalCliente(true)}>
             Adicionar Cliente
           </Button>
-          &emsp;
-          <p />
-          <Button variant="contained" onClick={() => setOpenModalProduto(true)}>
-            Adicionar Produto
-          </Button>
-        </AddOrderContainer>
+        </WrapperCliente>
+
+        <FormControl className={classes.formControl}>
+          <InputLabel id="demo-controlled-open-select-label">Tipo de Pagamento</InputLabel>
+          <Select
+            labelId="demo-controlled-open-select-label"
+            id="demo-controlled-open-select"
+            open={open}
+            onClose={handleClose}
+            onOpen={handleOpen}
+            value={type}
+            onChange={handleChange}
+          >
+            {options &&
+              options.map((op, i) => (
+                <MenuItem value={op} key={op}>
+                  {op}
+                </MenuItem>
+              ))}
+          </Select>
+        </FormControl>
+
+        <Button variant="contained" startIcon={<AddShoppingCart />} onClick={() => setOpenModalProduto(true)}>
+          Adicionar Produto
+        </Button>
       </AddOrderContainer>
       <TableContainer component={Paper}>
         <Table>
@@ -142,7 +156,13 @@ const index = () => {
                     InputLabelProps={{ shrink: true }}
                     type="number"
                     value={item.quantidade}
-                    onChange={(e) => changeProduto(Number(e.target.value), pos)}
+                    onChange={(e) => changeProduto(Math.trunc(Number(e.target.value)), pos)}
+                    inputProps={{
+                      'aria-disabled': true,
+                      min: 1,
+                      step: 1,
+                      pattern: /\d/,
+                    }}
                   />
                 </TableCell>
                 <TableCell>{item.produtos.nome}</TableCell>
@@ -152,23 +172,27 @@ const index = () => {
                     item.quantidade * item.valor_unitario
                   )}
                 </TableCell>
-                <TableCell />
+                <TableCell>
+                  <Button variant="contained" onClick={() => removeProd(pos)} startIcon={<DeleteOutline />}>
+                    Remover
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
             <TableRow />
           </TableBody>
         </Table>
       </TableContainer>
-      <p />
-      <ButtonsContainer>
-        <Button variant="contained" onClick={() => history.goBack()}>
-          Voltar
-        </Button>
-        &emsp;
-        <Button variant="contained" onClick={cadastraPedido}>
+
+      <WrapperButtons>
+        <Button variant="contained" startIcon={<Save />} onClick={cadastraPedido}>
           Salvar
         </Button>
-      </ButtonsContainer>
+        <Button variant="contained" startIcon={<ArrowBack />} onClick={() => history.goBack()}>
+          Voltar
+        </Button>
+      </WrapperButtons>
+
       <ModalClientes
         isOpen={openModalCliente}
         setModalClose={() => setOpenModalCliente(false)}
@@ -179,6 +203,9 @@ const index = () => {
         setModalClose={() => setOpenModalProduto(false)}
         selection={(prod) => setProdutos(produtos.concat({ ...prod, quantidade: 1 }))}
       />
+      <Backdrop open={loading} style={{ zIndex: 10 }}>
+        <CircularProgress color="primary" />
+      </Backdrop>
     </Container>
   );
 };

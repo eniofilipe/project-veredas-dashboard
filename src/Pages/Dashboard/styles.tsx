@@ -29,4 +29,5 @@ export const CardInformacao = styled(Card)`
 
 export const Titulo = styled.p`
   font-weight: bold;
+  text-align: center;
 `;

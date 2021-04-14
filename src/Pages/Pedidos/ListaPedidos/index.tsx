@@ -11,10 +11,15 @@ import {
   Table,
   Paper,
   TextField,
+  Checkbox,
+  Backdrop,
+  CircularProgress,
   makeStyles,
   createStyles,
   Theme,
 } from '@material-ui/core';
+
+import { Add, Close, Edit } from '@material-ui/icons';
 import { Container, SearchOrderContainer } from './styles';
 import { Pedido } from '../../../Types';
 import { getPedidos } from '../../../Api/Pedido';
@@ -35,18 +40,22 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const index = () => {
+  const [pedidos, setPedidos] = useState<Pedido[]>([]);
+  const [loading, setLoading] = useState(false);
   const classes = useStyles();
 
-  const [pedidos, setPedidos] = useState<Pedido[]>([]);
   const history = useHistory();
 
   const listPedidos = async () => {
     try {
+      setLoading(true);
       const response = await getPedidos();
 
       setPedidos(response.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -57,42 +66,65 @@ const index = () => {
   return (
     <Container>
       <SearchOrderContainer>
-        <Button variant="contained" onClick={() => history.push('/pedidos/novo')}>
+        <Button startIcon={<Add />} variant="contained" onClick={() => history.push('/pedidos/novo')}>
           Novo Pedido
         </Button>
-        {/* <TextField className={classes.busca} id="outlined-basic" variant="outlined" placeholder="Buscar" /> */}
+        <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
       </SearchOrderContainer>
       <p />
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
+              <TableCell />
               <TableCell>Código</TableCell>
               <TableCell>Cliente</TableCell>
-              <TableCell align="center">Status</TableCell>
-              <TableCell align="center">Total</TableCell>
-              <TableCell align="center">Data</TableCell>
-              {/* <TableCell /> */}
+              <TableCell>Status</TableCell>
+              <TableCell>Total</TableCell>
+              <TableCell>Data</TableCell>
+              <TableCell />
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
             {pedidos.map((item) => (
               <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
-                {/* <TableCell>
-                  <Checkbox />
-                </TableCell> */}
+                <TableCell>
+                  <Checkbox color="primary" />
+                </TableCell>
                 <TableCell>{item.id}</TableCell>
                 <TableCell>{item.clientes.nome}</TableCell>
-                <TableCell align="center">{item.status}</TableCell>
-                <TableCell align="center">{viewMoney(item.total)}</TableCell>
-                <TableCell align="center">{dayjs(item.createdAt).format('DD/MM/YYYY')}</TableCell>
-                {/* <TableCell>
-                  <Button>Cancelar</Button>
-                </TableCell> */}
+                <TableCell>{item.status}</TableCell>
+                <TableCell>
+                  {Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(
+                    item.ofertas
+                      .map((value) => value.valor_unitario * value.oferta_pedidos.quantidade)
+                      .reduce((prev, next) => prev + next, 0)
+                  )}
+                </TableCell>{' '}
+                {/* Calcular Total */}
+                <TableCell>{dayjs(item.createdAt).format('DD/MM/YYYY')}</TableCell>
+                <TableCell>
+                  <Button
+                    startIcon={<Edit />}
+                    variant="contained"
+                    onClick={() => history.push('/pedidos/editar', { item })}
+                  >
+                    Editar
+                  </Button>
+                </TableCell>
+                <TableCell>
+                  <Button startIcon={<Close />} variant="contained">
+                    Cancelar
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
+        <Backdrop open={loading} style={{ zIndex: 10 }}>
+          <CircularProgress color="primary" />
+        </Backdrop>
       </TableContainer>
     </Container>
   );

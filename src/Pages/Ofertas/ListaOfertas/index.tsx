@@ -10,10 +10,13 @@ import {
   TableBody,
   Table,
   Paper,
-  // Checkbox,
+  Checkbox,
+  Backdrop,
+  CircularProgress,
 } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
+
+import { Add, DeleteOutline, Edit, FileCopy } from '@material-ui/icons';
+
 import { Container, AddOfferContainer } from './styles';
 
 import { Validade } from '../../../Types';
@@ -23,15 +26,19 @@ import { getOfertas } from '../../../Api/Ofertas';
 const index = () => {
   const history = useHistory();
   const [ofertas, setOfertas] = useState<Validade[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const listOfertas = async () => {
     try {
+      setLoading(true);
       const response = await getOfertas();
 
       setOfertas(response.data);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -42,7 +49,7 @@ const index = () => {
   return (
     <Container>
       <AddOfferContainer>
-        <Button variant="contained" onClick={() => history.push('/ofertas/novo')}>
+        <Button variant="contained" startIcon={<Add />} onClick={() => history.push('/ofertas/novo')}>
           Nova Oferta
         </Button>
       </AddOfferContainer>
@@ -55,7 +62,7 @@ const index = () => {
               <TableCell align="center">Status</TableCell>
               <TableCell align="center">Validade</TableCell>
               <TableCell />
-              {/* <TableCell /> */}
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
@@ -66,19 +73,38 @@ const index = () => {
                 <TableCell align="center">{dayjs(item.validade).format('DD/MM/YYYY')}</TableCell>
                 <TableCell align="center">
                   {item.status === 'ativa' ? (
-                    <Button startIcon={<EditIcon />} onClick={() => history.push(`/ofertas/id/${item.id}`)}>
+                    <Button
+                      variant="contained"
+                      startIcon={<Edit />}
+                      // onClick={() => history.push(`/ofertas/editar`, item)}
+                    >
                       Editar
                     </Button>
                   ) : (
-                    <Button startIcon={<DeleteIcon />}> Remover </Button>
+                    <Button variant="contained" startIcon={<DeleteOutline />}>
+                      Remover
+                    </Button>
                   )}
                 </TableCell>
-                {/* <TableCell>{item.status !== 'ativa' && <Button>Copiar</Button>}</TableCell> */}
+                <TableCell>
+                  {item.status !== 'ativa' && (
+                    <Button
+                      variant="contained"
+                      startIcon={<FileCopy />}
+                      onClick={() => history.push('/ofertas/novo', { id: item.id })}
+                    >
+                      Copiar
+                    </Button>
+                  )}
+                </TableCell>
               </TableRow>
             ))}
             <TableRow />
           </TableBody>
         </Table>
+        <Backdrop open={loading} style={{ zIndex: 10 }}>
+          <CircularProgress color="primary" />
+        </Backdrop>
       </TableContainer>
     </Container>
   );

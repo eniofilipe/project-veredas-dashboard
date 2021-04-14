@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import {
   Button,
   TableHead,
@@ -10,16 +10,19 @@ import {
   Table,
   Paper,
   TextField,
-  Input,
   InputAdornment,
+  Backdrop,
+  CircularProgress,
+  Input,
 } from '@material-ui/core';
 import dayjs from 'dayjs';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, AddOrderContainer, ValidateContainer, OptionsContainer } from './styles';
+import { AddShoppingCart, ArrowBack, DeleteOutline, Save } from '@material-ui/icons';
+import { Container, AddOrderContainer, WrapperButtons, WrapperValidade } from './styles';
 
 import ModalProdutos from '../../__Modais/ListaProdutos';
 import { Produto } from '../../../Types';
-import { setOferta, setValidadeOferta } from '../../../Api/Ofertas';
+import { getOfertasOfValidade, getProdutosOfertas, setOferta, setValidadeOferta } from '../../../Api/Ofertas';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -27,6 +30,10 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 200,
   },
 }));
+
+interface IState {
+  id?: number;
+}
 
 interface OfertaProd {
   produto: Produto;
@@ -36,12 +43,44 @@ interface OfertaProd {
 
 const NovaOferta = () => {
   const history = useHistory();
+  const location = useLocation<IState | undefined>();
   const [selectedDate, setSelectedDate] = useState('');
+  const [idOfertaAntiga, setIdOfertaAntiga] = useState(location.state?.id);
   const [produtos, setProdutos] = useState<OfertaProd[]>([]);
   const [openModalProduto, setOpenModalProduto] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const carregaOfertaAntiga = async () => {
+    if (idOfertaAntiga) {
+      try {
+        setLoading(true);
+
+        const response = await getOfertasOfValidade(idOfertaAntiga);
+
+        const arrayAux = response.data.map((value) => {
+          return {
+            produto: value.produtos,
+            quantidade: value.quantidade,
+            valor: value.valor_unitario,
+          } as OfertaProd;
+        });
+
+        setProdutos(arrayAux);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    carregaOfertaAntiga();
+  }, [idOfertaAntiga]);
 
   const cadastraOferta = async () => {
     try {
+      setLoading(true);
       const responseValidade = await setValidadeOferta({ validade: selectedDate });
 
       const idOferta = responseValidade.data.id;
@@ -58,6 +97,8 @@ const NovaOferta = () => {
       history.goBack();
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -77,11 +118,20 @@ const NovaOferta = () => {
     setProdutos([...prodAux]);
   };
 
+  const removeOferta = (pos: number) => {
+    const prodAux = [...produtos];
+
+    prodAux.splice(pos, 1);
+
+    setProdutos(prodAux);
+  };
+
   return (
     <Container>
       <AddOrderContainer>
-        <ValidateContainer>
-          Validade:&emsp;
+        <WrapperValidade>
+          <span>Validade:</span>
+
           <TextField
             type="date"
             value={dayjs(selectedDate).format('YYYY-MM-DD')}
@@ -92,8 +142,9 @@ const NovaOferta = () => {
               shrink: true,
             }}
           />
-        </ValidateContainer>
-        <Button variant="contained" onClick={() => setOpenModalProduto(true)}>
+        </WrapperValidade>
+
+        <Button variant="contained" startIcon={<AddShoppingCart />} onClick={() => setOpenModalProduto(true)}>
           Adicionar Produto
         </Button>
       </AddOrderContainer>
@@ -119,7 +170,13 @@ const NovaOferta = () => {
                     type="number"
                     style={{ width: 60 }}
                     value={item.quantidade}
-                    onChange={(e) => changeQuantidade(Number(e.target.value), pos)}
+                    onChange={(e) => changeQuantidade(Math.trunc(Number(e.target.value)), pos)}
+                    inputProps={{
+                      'aria-disabled': true,
+                      min: 1,
+                      step: 1,
+                      pattern: /\d/,
+                    }}
                   />
                 </TableCell>
                 <TableCell align="center">
@@ -130,25 +187,31 @@ const NovaOferta = () => {
                     value={item.valor}
                     style={{ width: 100 }}
                     onChange={(e) => changeValor(Number(e.target.value), pos)}
+                    inputProps={{
+                      startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+                    }}
                   />
                 </TableCell>
-                <TableCell />
+                <TableCell>
+                  <Button variant="contained" onClick={() => removeOferta(pos)} startIcon={<DeleteOutline />}>
+                    Remover
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
             <TableRow />
           </TableBody>
         </Table>
       </TableContainer>
-      <p />
-      <OptionsContainer>
-        <Button variant="contained" onClick={() => history.goBack()}>
-          Voltar
-        </Button>
-        &emsp;
-        <Button variant="contained" onClick={() => cadastraOferta()}>
+
+      <WrapperButtons>
+        <Button variant="contained" startIcon={<Save />} onClick={cadastraOferta}>
           Salvar
         </Button>
-      </OptionsContainer>
+        <Button variant="contained" startIcon={<ArrowBack />} onClick={() => history.goBack()}>
+          Voltar
+        </Button>
+      </WrapperButtons>
 
       <ModalProdutos
         isOpen={openModalProduto}
@@ -162,6 +225,9 @@ const NovaOferta = () => {
           setProdutos(produtos.concat(prodOferta));
         }}
       />
+      <Backdrop open={loading} style={{ zIndex: 10 }}>
+        <CircularProgress color="primary" />
+      </Backdrop>
     </Container>
   );
 };

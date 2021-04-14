@@ -7,20 +7,20 @@ export const AddOrderContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  font-size: 16px;
+  margin-bottom: 10px;
 `;
 
-export const ValidateContainer = styled.div`
+export const WrapperButtons = styled.div`
+  width: 100%;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: row-reverse;
+  padding: 10px;
+  gap: 20px;
+`;
+
+export const WrapperValidade = styled.div`
+  display: flex;
   align-items: center;
-  font-size: 16px;
-`;
-
-export const OptionsContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  font-size: 16px;
+  gap: 10px;
+  margin-right: auto;
 `;

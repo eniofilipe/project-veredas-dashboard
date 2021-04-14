@@ -1,0 +1,73 @@
+Updates (método PUT)
+    Perfil Administrador
+        Rota(/administrador)
+        atributos: 
+            -nome
+            -email
+            -password
+            -oldPassword
+        OBS: O atributo password, se refere a uma nova senha. Para alterá-la o campo oldPassword será obrigatório.
+
+
+    Categoria
+        Rota(/categoria)
+        atributos:   
+            - nome: string 
+            - isvalid: boolean
+            - categoria_id: number: ID da catergoria a ser alterada.
+        OBS: Rota restrita ao adminsitrador
+
+    Cliente
+        Rota(/cliente)
+        atributos: 
+            - id: number,
+            - nome
+            - email
+            - cpf
+            - telefone
+            - oldPassword
+            - password
+            - logradouro
+            - bairro
+            - cidade
+            - estado
+            - numero
+            - complemento
+            - cep
+            - referencia
+        OBS: Caso um administrador chame essa rota, o ID do cliente que será editado deve ser passado.
+        Se for um cliente, o perfil dele que será editado. 
+
+    Validade Oferta
+        Rota(/validade-oferta)
+        atributos: 
+           - validade_id: number
+           - status: 'ativa' || 'inativa'
+           - validade
+        OBS: Rota restrita ao adminsitrador. 
+        validade_id é obrigatório. 
+
+    Produto
+        Rota(/produto)
+        atributos: 
+            - id: ID do produto que será editado 
+            - descricao
+            - imagem_id: number
+            - categorias: array com ids das categorias
+
+
+    Oferta
+        Rota(/oferta)
+        atributos: 
+            - id:  ID da oferta que será editada ,
+            - quantidade: number,
+            - valor_unitario: number ,
+            - validade_oferta_id: number,
+
+DELETE(método: delete)
+    Produto
+        Rota(/produto/:id)
+    Categoria
+        Rota(/categoria/:id)
+    oferta
+        Rota(/oferta/:id)
