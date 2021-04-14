@@ -17,6 +17,7 @@ import EditarPedido from '../Pages/Pedidos/EditarPedido';
 import ListarAdministradores from '../Pages/Administradores/ListaAdministradores';
 import NovoAdministrador from '../Pages/Administradores/NovoAdministrador';
 import EditarAdministrador from '../Pages/Administradores/EditarAdministrador';
+import EditarCategoria from '../Pages/Categorias/EditarCategoria';
 import Relatorios from '../Pages/Relatorios';
 import Route from './route';
 
@@ -42,6 +43,7 @@ const index = () => {
       <Route path="/administradores/novo" exact component={NovoAdministrador} isPrivate signed={signed} />
       <Route path="/administradores/editar" exact component={EditarAdministrador} isPrivate signed={signed} />
       <Route path="/relatorios" exact component={Relatorios} isPrivate signed={signed} />
+      <Route path="/categoria/editar" exact component={EditarCategoria} isPrivate signed={signed} />
     </Switch>
   );
 };

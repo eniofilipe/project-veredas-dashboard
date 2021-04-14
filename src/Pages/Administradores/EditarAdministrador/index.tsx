@@ -23,15 +23,7 @@ import {
 } from '@material-ui/core';
 
 import { ArrowBackIos, Done } from '@material-ui/icons';
-import {
-  Container,
-  PictureContainer,
-  WrapperButtons,
-  FormWrapper,
-  WrapperContentModal,
-  StyledModal,
-  LabelError,
-} from './styles';
+import { Container, WrapperButtons, FormWrapper } from './styles';
 
 import { putAdministriador } from '../../../Api/Administradores';
 

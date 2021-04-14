@@ -40,6 +40,11 @@ const index = () => {
     }
   };
 
+  const edit = (categoria: Categoria) => {
+    console.log(categoria);
+    history.push('/categoria/editar', categoria);
+  };
+
   const cadastroCategoria = async () => {
     try {
       setLoading(true);
@@ -106,11 +111,7 @@ const index = () => {
                 <TableCell>{item.id}</TableCell>
                 <TableCell>{item.nome}</TableCell>
                 <TableCell>
-                  <Button
-                    variant="contained"
-                    startIcon={<Edit />}
-                    onClick={() => history.push('/categoria/editar', { item })}
-                  >
+                  <Button variant="contained" startIcon={<Edit />} onClick={() => edit(item)}>
                     Editar
                   </Button>
                 </TableCell>
