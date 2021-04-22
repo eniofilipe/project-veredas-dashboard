@@ -26,7 +26,7 @@ import { Container, AddOrderContainer, WrapperCliente, WrapperButtons } from './
 import ModalClientes from '../../__Modais/ListaClientes';
 import ModalProdutos from '../../__Modais/ListaOfertas';
 import { Cliente, Oferta, OfertaPedido, Pedido, Produto, TipoPagamento } from '../../../Types';
-import { getTiposPagamento, postPedido } from '../../../Api/Pedido';
+import { getTiposPagamento, postPedido, putPedido } from '../../../Api/Pedido';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -53,20 +53,6 @@ const index = () => {
   const [open, setOpen] = useState(false);
   const [tiposPagamento, setTiposPagamento] = useState<TipoPagamento[]>([]);
 
-  const fetchPagamentos = async () => {
-    try {
-      setLoading(true);
-
-      const response = await getTiposPagamento();
-
-      setTiposPagamento(response.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleChange = (event: any) => {
     setType(tiposPagamento[event.target.value]);
   };
@@ -79,7 +65,7 @@ const index = () => {
     setOpen(true);
   };
 
-  const cadastraPedido = async () => {
+  const editPedido = async () => {
     try {
       setLoading(true);
       const ofertasAux = produtos.map((item) => {
@@ -89,17 +75,11 @@ const index = () => {
         } as OfertaPedido;
       });
 
-      if (cliente && type) {
-        await postPedido({
-          cliente_id: cliente.id,
-          tipo_pagamento_id: type.id,
-          valor_frete: 5,
-          ofertas: ofertasAux,
-          tipo_frete_id: 1,
-        });
+      console.log('chegou aqui');
 
-        history.goBack();
-      }
+      await putPedido(pedido.id, ofertasAux);
+
+      history.goBack();
     } catch (error) {
       console.log(error);
     } finally {
@@ -115,11 +95,31 @@ const index = () => {
     setProdutos([...prodAux]);
   };
 
-  const organizeData = () => {
+  const organizeData = async () => {
     if (pedido) {
       setCliente({
         ...pedido.clientes,
       });
+
+      console.log(pedido);
+      try {
+        setLoading(true);
+        const responsePagamentos = await getTiposPagamento();
+
+        setTiposPagamento(responsePagamentos.data);
+
+        const pagamento = responsePagamentos.data.findIndex((value) => value.id === pedido.tipo_pagamento_id);
+
+        console.log(pagamento);
+
+        if (pagamento >= 0) {
+          setType(tiposPagamento[pagamento]);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
 
       const auxProdutos = pedido.ofertas.map((value) => {
         const produto: Produto = {
@@ -139,18 +139,8 @@ const index = () => {
       });
 
       setProdutos([...auxProdutos]);
-
-      const pagamento = tiposPagamento.findIndex((value) => value.id === pedido.tipo_pagamento_id);
-
-      if (pagamento >= 0) {
-        setType(tiposPagamento[pagamento]);
-      }
     }
   };
-
-  useEffect(() => {
-    fetchPagamentos();
-  }, []);
 
   useEffect(() => {
     organizeData();
@@ -246,7 +236,7 @@ const index = () => {
       </TableContainer>
 
       <WrapperButtons>
-        <Button variant="contained" startIcon={<Save />} onClick={cadastraPedido}>
+        <Button variant="contained" startIcon={<Save />} onClick={editPedido}>
           Salvar
         </Button>
         <Button variant="contained" startIcon={<ArrowBack />} onClick={() => history.goBack()}>

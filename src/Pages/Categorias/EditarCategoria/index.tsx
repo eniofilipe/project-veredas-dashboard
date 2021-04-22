@@ -33,7 +33,7 @@ const EditarCategoria = () => {
     try {
       setLoading(true);
 
-      await editCategoria(nomeCategoria, location.state.id, false);
+      await editCategoria(nomeCategoria, location.state.id, true);
 
       history.goBack();
     } catch (error) {

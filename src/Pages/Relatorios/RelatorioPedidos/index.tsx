@@ -134,7 +134,7 @@ const gerarRelatorio = async () => {
       </tr>
       <tr>
         <th colspan="8"">
-          <strong>Tipo de frete:</strong> ${item.pedido.frete}
+          <strong>Tipo de Entrega:</strong> ${item.pedido.frete}
         </th>
       </tr>
       </tbody>

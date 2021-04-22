@@ -76,7 +76,7 @@ const index = () => {
                     <Button
                       variant="contained"
                       startIcon={<Edit />}
-                      // onClick={() => history.push(`/ofertas/editar`, item)}
+                      onClick={() => history.push(`/ofertas/editar`, item)}
                     >
                       Editar
                     </Button>
