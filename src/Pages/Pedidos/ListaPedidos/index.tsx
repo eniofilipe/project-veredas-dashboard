@@ -22,8 +22,9 @@ import {
 import { Add, Close, Edit } from '@material-ui/icons';
 import { Container, SearchOrderContainer } from './styles';
 import { Pedido } from '../../../Types';
-import { getPedidos } from '../../../Api/Pedido';
+import { getPedidos, cancelPedido } from '../../../Api/Pedido';
 import { viewMoney } from '../../../Utilities/masks';
+import toasts from '../../../Utilities/toasts';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -54,6 +55,19 @@ const index = () => {
       setPedidos(response.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const cancel = async (id: number) => {
+    try {
+      setLoading(true);
+      await cancelPedido(id);
+
+      await listPedidos();
+    } catch (error) {
+      toasts.error('Erro ao cancelar pedido');
     } finally {
       setLoading(false);
     }
@@ -114,7 +128,7 @@ const index = () => {
                   </Button>
                 </TableCell>
                 <TableCell>
-                  <Button startIcon={<Close />} variant="contained">
+                  <Button startIcon={<Close />} variant="contained" onClick={() => cancel(item.id)}>
                     Cancelar
                   </Button>
                 </TableCell>
