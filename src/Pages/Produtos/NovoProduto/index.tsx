@@ -23,6 +23,7 @@ import {
 } from '@material-ui/core';
 
 import { PhotoCamera, Add, Clear, ArrowBackIos, Done } from '@material-ui/icons';
+import { inherits } from 'util';
 import {
   Container,
   PictureContainer,
@@ -164,7 +165,13 @@ const index = () => {
             <Grid item xs={3}>
               <PictureContainer>
                 {imagem ? (
-                  <img src={`${imagem.url}`} alt="" />
+                  <img
+                    src={`http://${imagem.url}`}
+                    alt=""
+                    style={{
+                      width: 'inherit',
+                    }}
+                  />
                 ) : (
                   <>
                     <input
@@ -181,6 +188,8 @@ const index = () => {
                     </label>
                   </>
                 )}
+
+                {!!errors.imagem && <LabelError>Selecione uma imagem</LabelError>}
               </PictureContainer>
             </Grid>
             <Grid item xs={9}>
@@ -188,7 +197,7 @@ const index = () => {
                 <TextField
                   placeholder="Nome"
                   fullWidth
-                  ref={register}
+                  inputRef={register}
                   name="nome"
                   error={!!errors.nome}
                   helperText={errors.nome?.message}
@@ -196,7 +205,7 @@ const index = () => {
                 <TextField
                   placeholder="Descrição"
                   fullWidth
-                  ref={register}
+                  inputRef={register}
                   name="descricao"
                   error={!!errors.descricao}
                   helperText={errors.descricao?.message}

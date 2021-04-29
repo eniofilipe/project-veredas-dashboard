@@ -14,18 +14,29 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-import { DeleteOutline, Add, Edit } from '@material-ui/icons';
+import { DeleteOutline, Add, Edit, ErrorSharp } from '@material-ui/icons';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
 import { AddCategoryContainer, InputCategoria } from './styles';
 
 import { getCategorias, postCategoria, deleteCategoria, editCategoria } from '../../Api/Categorias';
 
 import { Categoria } from '../../Types';
+import { CategoriaValidation } from './validation';
+
+interface FormShape {
+  categoria: string;
+}
 
 const index = () => {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
-  const [nomeCategoria, setNomeCategoria] = useState<string>('');
+
   const [loading, setLoading] = useState(false);
   const history = useHistory();
+
+  const { register, handleSubmit, errors, setValue } = useForm<FormShape>({
+    resolver: yupResolver(CategoriaValidation),
+  });
 
   const remove = async (id: number) => {
     try {
@@ -45,17 +56,16 @@ const index = () => {
     history.push('/categoria/editar', categoria);
   };
 
-  const cadastroCategoria = async () => {
+  const cadastroCategoria = async (categoria: string) => {
     try {
       setLoading(true);
-      if (nomeCategoria !== '') {
-        await postCategoria({
-          nome: nomeCategoria,
-        });
 
-        listCategorias();
-        setNomeCategoria('');
-      }
+      await postCategoria({
+        nome: categoria,
+      });
+
+      listCategorias();
+      setValue('categoria', '');
     } catch (error) {
       console.log(error);
     } finally {
@@ -80,20 +90,31 @@ const index = () => {
     listCategorias();
   }, []);
 
+  const onSubmit = handleSubmit(async (data) => {
+    if (loading) return;
+
+    await cadastroCategoria(data.categoria);
+  });
+
   return (
     <div style={{ width: '100%' }}>
       <AddCategoryContainer>
-        <span>Categoria: </span>
-        <InputCategoria
-          id="outlined-basic"
-          variant="outlined"
-          size="small"
-          value={nomeCategoria}
-          onChange={(e) => setNomeCategoria(e.target.value)}
-        />
-        <Button variant="contained" startIcon={<Add />} onClick={cadastroCategoria}>
-          Adicionar
-        </Button>
+        <form onSubmit={(e) => onSubmit(e)}>
+          <span>Categoria: </span>
+          <InputCategoria
+            id="outlined-basic"
+            placeholder="Nome categoria"
+            variant="outlined"
+            inputRef={register}
+            size="small"
+            name="categoria"
+            error={!!errors.categoria?.message}
+            helperText={errors.categoria?.message}
+          />
+          <Button type="submit" variant="contained" startIcon={<Add />}>
+            Adicionar
+          </Button>
+        </form>
       </AddCategoryContainer>
       <TableContainer component={Paper}>
         <Table>
