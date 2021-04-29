@@ -23,6 +23,7 @@ import {
 } from '@material-ui/core';
 
 import { PhotoCamera, Add, Clear, ArrowBackIos, Done } from '@material-ui/icons';
+import { inherits } from 'util';
 import {
   Container,
   PictureContainer,
@@ -164,7 +165,13 @@ const index = () => {
             <Grid item xs={3}>
               <PictureContainer>
                 {imagem ? (
-                  <img src={`${imagem.url}`} alt="" />
+                  <img
+                    src={`http://${imagem.url}`}
+                    alt=""
+                    style={{
+                      width: 'inherit',
+                    }}
+                  />
                 ) : (
                   <>
                     <input

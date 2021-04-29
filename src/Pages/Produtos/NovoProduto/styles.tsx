@@ -11,7 +11,7 @@ export const PictureContainer = styled.div`
   justify-content: center;
   height: 100%;
   margin: 0 10px;
-  width: 300px;
+  width: 100%;
 `;
 
 export const WrapperButtons = styled.div`
