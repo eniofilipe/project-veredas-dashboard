@@ -22,5 +22,5 @@ export const ProductValidation = yup.object({
     .of(CategoriaShape)
     .min(1, 'Selecione ao menos 1 categoria')
     .required('Selecione alguma categoria'),
-  imagem: ImagemShape,
+  // imagem: ImagemShape,
 });

@@ -75,16 +75,23 @@ const index = () => {
     try {
       setLoading(true);
       const idCategorias = data.categorias.map((cat) => cat.id);
-      if (data.imagem) {
+
+      if (data.imagem === undefined) {
+        const response = await postProduto({
+          categorias: idCategorias,
+          descricao: data.descricao,
+          nome: data.nome,
+          imagem_id: undefined,
+        });
+      } else if (data.imagem) {
         const response = await postProduto({
           categorias: idCategorias,
           descricao: data.descricao,
           nome: data.nome,
           imagem_id: data.imagem.id,
         });
-
-        history.goBack();
       }
+      history.goBack();
     } catch (error) {
       console.log(error);
     } finally {
@@ -188,8 +195,7 @@ const index = () => {
                     </label>
                   </>
                 )}
-
-                {!!errors.imagem && <LabelError>Selecione uma imagem</LabelError>}
+                {/* {!!errors.imagem && <LabelError>Selecione uma imagem</LabelError>} */}
               </PictureContainer>
             </Grid>
             <Grid item xs={9}>
