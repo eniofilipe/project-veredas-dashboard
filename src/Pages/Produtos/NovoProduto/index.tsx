@@ -166,7 +166,7 @@ const index = () => {
               <PictureContainer>
                 {imagem ? (
                   <img
-                    src={`http://${imagem.url}`}
+                    src={`${imagem.url}`}
                     alt=""
                     style={{
                       width: 'inherit',
