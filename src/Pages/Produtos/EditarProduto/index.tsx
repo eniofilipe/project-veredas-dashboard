@@ -180,7 +180,7 @@ const index = () => {
                     src={`http://${imagem.url}`}
                     alt=""
                     style={{
-                      width: 'inherit',
+                      width: '100%',
                     }}
                   />
                 ) : (
