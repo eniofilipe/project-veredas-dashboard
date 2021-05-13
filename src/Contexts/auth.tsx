@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 
+import { CircularProgress } from '@material-ui/core';
 import history from '../Services/history';
 import { getLogin, getValidaToken } from '../Api/Login';
 import { Administrador, Login } from '../Types';
@@ -9,11 +10,13 @@ interface IAuthContext {
   admin: Administrador | null;
   signIn: (data: Login) => Promise<void>;
   signOut: () => void;
+  loading: boolean;
 }
 
 const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 export const AuthProvider: React.FC = ({ children }) => {
+  const [loading, setLoading] = useState(false);
   const [admin, setAdmin] = useState<Administrador | null>(null);
   const [token, setToken] = useState<string | null>(
     localStorage.getItem('token') ? localStorage.getItem('token') : null
@@ -21,6 +24,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   const handleToken = async () => {
     if (token) {
+      setLoading(true);
       try {
         const response = await getValidaToken(token);
 
@@ -33,6 +37,8 @@ export const AuthProvider: React.FC = ({ children }) => {
         console.log(error);
         setAdmin(null);
         setToken(null);
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -67,13 +73,14 @@ export const AuthProvider: React.FC = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
+        loading,
         signed: !!admin,
         admin,
         signIn,
         signOut,
       }}
     >
-      {children}
+      {loading ? <CircularProgress /> : children}
     </AuthContext.Provider>
   );
 };

@@ -81,9 +81,16 @@ const index = () => {
           id: location.state.id,
           imagem_id: data.imagem.id,
         });
-
-        history.goBack();
+      } else {
+        const response = await editProduto({
+          categorias: idCategorias,
+          descricao: data.descricao,
+          nome: data.nome,
+          id: location.state.id,
+        });
       }
+
+      history.goBack();
     } catch (error) {
       console.log(error);
     } finally {
@@ -129,6 +136,7 @@ const index = () => {
   const onSubmit = handleSubmit(async (data) => {
     if (isLoading) return;
 
+    console.log(data);
     await salvarProduto(data);
   });
 
@@ -168,7 +176,13 @@ const index = () => {
             <Grid item xs={3}>
               <PictureContainer>
                 {imagem ? (
-                  <img src={`${imagem.url}`} alt="" />
+                  <img
+                    src={`http://${imagem.url}`}
+                    alt=""
+                    style={{
+                      width: '100%',
+                    }}
+                  />
                 ) : (
                   <>
                     <input

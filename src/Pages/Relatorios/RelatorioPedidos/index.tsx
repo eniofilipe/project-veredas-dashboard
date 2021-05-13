@@ -83,16 +83,16 @@ const gerarRelatorio = async () => {
         </td>
       </tr>
         <tr>
-          <th colspan="4">
+          <th colspan="5">
             <strong>PRODUTOS</strong>
           </th>
           <th colspan="1">
             <strong >QTD</strong>
           </th>
-          <th colspan="2">
+          <th colspan="1">
             <strong >V. Unit</strong>
           </th>
-          <th colspan="2">
+          <th colspan="1">
             <strong>V. Total</strong>
           </th>
         </tr>
@@ -104,16 +104,16 @@ const gerarRelatorio = async () => {
 
           const rowProduct = `
           <tr>
-            <td colspan="4">
+            <td colspan="5">
               ${prod.nome}
             </td>
             <td colspan="1">
               ${prod.quantidade}
             </td>
-            <td colspan="2">
+            <td colspan="1">
               ${valueUnit}
             </td>
-            <td colspan="2">
+            <td colspan="1">
               ${valueTotal}
             </td>
           </tr>
@@ -133,7 +133,7 @@ const gerarRelatorio = async () => {
         </td>
       </tr>
       <tr>
-        <th colspan="8"">
+        <th colspan="8">
           <strong>Tipo de Entrega:</strong> ${item.pedido.frete}
         </th>
       </tr>

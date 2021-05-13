@@ -35,7 +35,7 @@ export interface ResponseProduto {
 export interface PostProdutoProps {
   nome: string;
   descricao: string;
-  imagem_id: number;
+  imagem_id?: number;
   categorias: number[];
 }
 
@@ -43,7 +43,7 @@ export interface PutProdutoProps {
   id: number;
   descricao: string;
   nome: string;
-  imagem_id: number;
+  imagem_id?: number | null | undefined;
   categorias: number[];
 }
 

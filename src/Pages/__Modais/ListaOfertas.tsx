@@ -73,6 +73,7 @@ const ListaOfertas = ({ selection, isOpen, setModalClose }: ListaOfertasProps) =
                   <TableCell>
                     <Button
                       variant="contained"
+                      disabled={item.quantidade <= 0}
                       startIcon={<Check />}
                       onClick={() => {
                         selection(item);
