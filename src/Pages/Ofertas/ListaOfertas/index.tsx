@@ -72,17 +72,13 @@ const index = () => {
                 <TableCell align="center">{item.status}</TableCell>
                 <TableCell align="center">{dayjs(item.validade).format('DD/MM/YYYY')}</TableCell>
                 <TableCell align="center">
-                  {item.status === 'ativa' ? (
+                  {item.status === 'ativa' && (
                     <Button
                       variant="contained"
                       startIcon={<Edit />}
                       onClick={() => history.push(`/ofertas/editar`, item)}
                     >
                       Editar
-                    </Button>
-                  ) : (
-                    <Button variant="contained" startIcon={<DeleteOutline />}>
-                      Remover
                     </Button>
                   )}
                 </TableCell>
