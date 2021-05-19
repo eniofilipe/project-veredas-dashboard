@@ -83,7 +83,6 @@ const index = () => {
         <Button startIcon={<Add />} variant="contained" onClick={() => history.push('/pedidos/novo')}>
           Novo Pedido
         </Button>
-        <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
       </SearchOrderContainer>
       <p />
       <TableContainer component={Paper}>
