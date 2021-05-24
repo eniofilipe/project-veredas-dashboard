@@ -71,7 +71,6 @@ const index = () => {
         >
           Novo Administrador
         </Button>
-        <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
       </AddProductContainer>
       <p />
       <TableContainer component={Paper}>

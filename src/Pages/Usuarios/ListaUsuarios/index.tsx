@@ -40,9 +40,6 @@ const index = () => {
 
   return (
     <Container>
-      <SearchUsersContainer>
-        <TextField id="outlined-basic" variant="outlined" placeholder="Buscar" />
-      </SearchUsersContainer>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
