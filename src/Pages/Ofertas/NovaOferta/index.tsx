@@ -126,6 +126,8 @@ const NovaOferta = () => {
     setProdutos(prodAux);
   };
 
+  const minDate = dayjs(new Date()).add(1, 'day').format('YYYY-MM-DD');
+
   return (
     <Container>
       <AddOrderContainer>
@@ -140,6 +142,9 @@ const NovaOferta = () => {
             }}
             InputLabelProps={{
               shrink: true,
+            }}
+            inputProps={{
+              min: minDate,
             }}
           />
         </WrapperValidade>
@@ -188,6 +193,7 @@ const NovaOferta = () => {
                     style={{ width: 100 }}
                     onChange={(e) => changeValor(Number(e.target.value), pos)}
                     inputProps={{
+                      min: 0,
                       startAdornment: <InputAdornment position="start">R$</InputAdornment>,
                     }}
                   />

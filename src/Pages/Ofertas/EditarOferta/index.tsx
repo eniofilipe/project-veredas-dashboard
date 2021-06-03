@@ -44,16 +44,21 @@ interface OfertaProd {
   valor: number;
 }
 
+interface LocationState {
+  validade: Validade;
+  visualizationMode?: boolean;
+}
+
 const EditarOferta = () => {
   const history = useHistory();
-  const location = useLocation<Validade>();
+  const location = useLocation<LocationState>();
   const [selectedDate, setSelectedDate] = useState('');
   const [produtos, setProdutos] = useState<Oferta[]>([]);
   const [novosProdutos, setNovosProdutos] = useState<OfertaProd[]>([]);
   const [prodToDelete, setProdToDelete] = useState<Oferta[]>([]);
   const [openModalProduto, setOpenModalProduto] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [validade, setValidade] = useState(location.state);
+  const [validade, setValidade] = useState(location.state.validade);
 
   const carregaOfertas = async () => {
     try {
@@ -173,6 +178,7 @@ const EditarOferta = () => {
     setNovosProdutos([...prodAux]);
   };
 
+  const minDate = dayjs(new Date()).add(1, 'day').format('YYYY-MM-DD');
   return (
     <Container>
       <AddOrderContainer>
@@ -181,6 +187,7 @@ const EditarOferta = () => {
 
           <TextField
             type="date"
+            disabled={location.state.visualizationMode}
             value={dayjs(selectedDate).format('YYYY-MM-DD')}
             onChange={(e) => {
               setSelectedDate(e.target.value);
@@ -188,10 +195,18 @@ const EditarOferta = () => {
             InputLabelProps={{
               shrink: true,
             }}
+            inputProps={{
+              min: minDate,
+            }}
           />
         </WrapperValidade>
 
-        <Button variant="contained" startIcon={<AddShoppingCart />} onClick={() => setOpenModalProduto(true)}>
+        <Button
+          disabled={location.state.visualizationMode}
+          variant="contained"
+          startIcon={<AddShoppingCart />}
+          onClick={() => setOpenModalProduto(true)}
+        >
           Adicionar Produto
         </Button>
       </AddOrderContainer>
@@ -214,6 +229,7 @@ const EditarOferta = () => {
                 <TableCell align="center">
                   <Input
                     id="standard-number"
+                    disabled={location.state.visualizationMode}
                     type="number"
                     style={{ width: 60 }}
                     value={item.quantidade}
@@ -230,17 +246,24 @@ const EditarOferta = () => {
                   <Input
                     id="standard-start-adornment"
                     type="number"
+                    disabled={location.state.visualizationMode}
                     startAdornment={<InputAdornment position="start">R$</InputAdornment>}
                     value={item.valor_unitario}
                     style={{ width: 100 }}
                     onChange={(e) => changeValor(Number(e.target.value), pos)}
                     inputProps={{
+                      min: 0,
                       startAdornment: <InputAdornment position="start">R$</InputAdornment>,
                     }}
                   />
                 </TableCell>
                 <TableCell>
-                  <Button variant="contained" startIcon={<DeleteOutline />} onClick={() => deleteFromApi(pos)}>
+                  <Button
+                    disabled={location.state.visualizationMode}
+                    variant="contained"
+                    startIcon={<DeleteOutline />}
+                    onClick={() => deleteFromApi(pos)}
+                  >
                     Remover
                   </Button>
                 </TableCell>
@@ -256,6 +279,7 @@ const EditarOferta = () => {
                     type="number"
                     style={{ width: 60 }}
                     value={item.quantidade}
+                    disabled={location.state.visualizationMode}
                     onChange={(e) => changeQuantidadeNovos(Math.trunc(Number(e.target.value)), pos)}
                     inputProps={{
                       'aria-disabled': true,
@@ -270,6 +294,7 @@ const EditarOferta = () => {
                     id="standard-start-adornment"
                     type="number"
                     startAdornment={<InputAdornment position="start">R$</InputAdornment>}
+                    disabled={location.state.visualizationMode}
                     value={item.valor}
                     style={{ width: 100 }}
                     onChange={(e) => changeValorNovos(Number(e.target.value), pos)}
@@ -279,7 +304,12 @@ const EditarOferta = () => {
                   />
                 </TableCell>
                 <TableCell>
-                  <Button variant="contained" startIcon={<DeleteOutline />} onClick={() => deleteFromNovos(pos)}>
+                  <Button
+                    disabled={location.state.visualizationMode}
+                    variant="contained"
+                    startIcon={<DeleteOutline />}
+                    onClick={() => deleteFromNovos(pos)}
+                  >
                     Remover
                   </Button>
                 </TableCell>
@@ -290,7 +320,12 @@ const EditarOferta = () => {
       </TableContainer>
 
       <WrapperButtons>
-        <Button variant="contained" startIcon={<Save />} onClick={editaOferta}>
+        <Button
+          disabled={location.state.visualizationMode}
+          variant="contained"
+          startIcon={<Save />}
+          onClick={editaOferta}
+        >
           Salvar
         </Button>
         <Button variant="contained" startIcon={<ArrowBack />} onClick={() => history.goBack()}>
