@@ -16,7 +16,7 @@ const CategoriaShape = yup
 
 export const ProductValidation = yup.object({
   nome: yup.string().required('Por favor, insira um nome para o produto!'),
-  descricao: yup.string().required('Por favor, insira uma descricao para o produto!'),
+  descricao: yup.string().required('Por favor, insira uma descrição para o produto!'),
   categorias: yup
     .array()
     .of(CategoriaShape)

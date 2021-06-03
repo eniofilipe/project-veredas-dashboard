@@ -19,7 +19,7 @@ import {
   Theme,
 } from '@material-ui/core';
 
-import { Add, Close, Edit } from '@material-ui/icons';
+import { Add, Close, Edit, Visibility } from '@material-ui/icons';
 import { Container, SearchOrderContainer } from './styles';
 import { Pedido } from '../../../Types';
 import { getPedidos, cancelPedido } from '../../../Api/Pedido';
@@ -97,6 +97,7 @@ const index = () => {
               <TableCell>Data</TableCell>
               <TableCell />
               <TableCell />
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
@@ -117,6 +118,15 @@ const index = () => {
                 </TableCell>{' '}
                 {/* Calcular Total */}
                 <TableCell>{dayjs(item.createdAt).format('DD/MM/YYYY')}</TableCell>
+                <TableCell align="center">
+                  <Button
+                    variant="contained"
+                    startIcon={<Visibility />}
+                    onClick={() => history.push('/pedidos/editar', { item, visualizationMode: true })}
+                  >
+                    Ver
+                  </Button>
+                </TableCell>
                 <TableCell>
                   <Button
                     startIcon={<Edit />}
@@ -127,9 +137,11 @@ const index = () => {
                   </Button>
                 </TableCell>
                 <TableCell>
-                  <Button startIcon={<Close />} variant="contained" onClick={() => cancel(item.id)}>
-                    Cancelar
-                  </Button>
+                  {item.status !== 'cancelado' && (
+                    <Button startIcon={<Close />} variant="contained" onClick={() => cancel(item.id)}>
+                      Cancelar
+                    </Button>
+                  )}
                 </TableCell>
               </TableRow>
             ))}

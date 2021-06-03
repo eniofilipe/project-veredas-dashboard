@@ -38,9 +38,9 @@ export const StyledModal = styled(Modal)`
 
 export const WrapperContentModal = styled.div`
   width: 60vw;
-  height: 80vh;
-
-  overflow: scroll;
+  max-height: 80vh;
+  height: 100%;
+  overflow: auto;
 `;
 
 export const LabelError = styled.p`
