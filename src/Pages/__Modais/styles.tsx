@@ -10,6 +10,6 @@ export const StyledModal = styled(Modal)`
 export const WrapperContentModal = styled.div`
   width: 60vw;
   max-height: 80vh;
-
-  overflow: scroll;
+  height: 100%;
+  overflow: auto;
 `;

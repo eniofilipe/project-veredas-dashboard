@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 interface IState {
   item: Pedido;
+  visualizationMode?: boolean;
 }
 
 const index = () => {
@@ -160,7 +161,12 @@ const index = () => {
         <WrapperCliente>
           <span>Cliente:</span>
           <TextField size="small" disabled id="outlined-basic" variant="outlined" value={cliente?.nome} />
-          <Button variant="contained" startIcon={<PersonAdd />} onClick={() => setOpenModalCliente(true)}>
+          <Button
+            disabled={location.state.visualizationMode}
+            variant="contained"
+            startIcon={<PersonAdd />}
+            onClick={() => setOpenModalCliente(true)}
+          >
             Adicionar Cliente
           </Button>
         </WrapperCliente>
@@ -175,6 +181,7 @@ const index = () => {
             onOpen={handleOpen}
             value={type}
             onChange={handleChange}
+            disabled={location.state.visualizationMode}
           >
             {tiposPagamento.map((op, i) => (
               <MenuItem value={i} key={op.id}>
@@ -184,7 +191,12 @@ const index = () => {
           </Select>
         </FormControl>
 
-        <Button variant="contained" startIcon={<AddShoppingCart />} onClick={() => setOpenModalProduto(true)}>
+        <Button
+          disabled={location.state.visualizationMode}
+          variant="contained"
+          startIcon={<AddShoppingCart />}
+          onClick={() => setOpenModalProduto(true)}
+        >
           Adicionar Produto
         </Button>
       </AddOrderContainer>
@@ -204,6 +216,7 @@ const index = () => {
               <TableRow hover tabIndex={-1} key={`cod${item.id}`}>
                 <TableCell>
                   <TextField
+                    disabled={location.state.visualizationMode}
                     InputLabelProps={{ shrink: true }}
                     type="number"
                     value={item.quantidade}
@@ -224,7 +237,12 @@ const index = () => {
                   )}
                 </TableCell>
                 <TableCell>
-                  <Button variant="contained" onClick={() => removeProd(pos)} startIcon={<DeleteOutline />}>
+                  <Button
+                    disabled={location.state.visualizationMode}
+                    variant="contained"
+                    onClick={() => removeProd(pos)}
+                    startIcon={<DeleteOutline />}
+                  >
                     Remover
                   </Button>
                 </TableCell>
@@ -236,7 +254,12 @@ const index = () => {
       </TableContainer>
 
       <WrapperButtons>
-        <Button variant="contained" startIcon={<Save />} onClick={editPedido}>
+        <Button
+          disabled={location.state.visualizationMode}
+          variant="contained"
+          startIcon={<Save />}
+          onClick={editPedido}
+        >
           Salvar
         </Button>
         <Button variant="contained" startIcon={<ArrowBack />} onClick={() => history.goBack()}>

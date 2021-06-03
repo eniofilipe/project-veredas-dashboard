@@ -15,7 +15,7 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 
-import { Add, DeleteOutline, Edit, FileCopy } from '@material-ui/icons';
+import { Add, DeleteOutline, Edit, FileCopy, Visibility } from '@material-ui/icons';
 
 import { Container, AddOfferContainer } from './styles';
 
@@ -63,6 +63,7 @@ const index = () => {
               <TableCell align="center">Validade</TableCell>
               <TableCell />
               <TableCell />
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
@@ -75,8 +76,19 @@ const index = () => {
                   {item.status === 'ativa' && (
                     <Button
                       variant="contained"
+                      startIcon={<Visibility />}
+                      onClick={() => history.push(`/ofertas/editar`, { validade: item, visualizationMode: true })}
+                    >
+                      Ver
+                    </Button>
+                  )}
+                </TableCell>
+                <TableCell align="center">
+                  {item.status === 'ativa' && (
+                    <Button
+                      variant="contained"
                       startIcon={<Edit />}
-                      onClick={() => history.push(`/ofertas/editar`, item)}
+                      onClick={() => history.push(`/ofertas/editar`, { validade: item })}
                     >
                       Editar
                     </Button>
