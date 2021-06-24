@@ -12,8 +12,10 @@ const success = (message: string, onClose?: () => void) =>
     onClose,
   });
 
-const error = (message: string, errorMessage?: any) =>
-  toast.error(message, {
+const error = (message: string, errorMessage?: any) => {
+  const fullMessage = errorMessage ? `${message}\t${errorMessage}` : message;
+
+  toast.error(fullMessage, {
     position: 'top-center',
     autoClose: 5000,
     hideProgressBar: false,
@@ -22,6 +24,7 @@ const error = (message: string, errorMessage?: any) =>
     draggable: true,
     progress: undefined,
   });
+};
 
 const dismiss = () => toast.dismiss();
 

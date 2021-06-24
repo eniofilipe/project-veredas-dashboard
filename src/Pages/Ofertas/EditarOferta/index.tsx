@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import React, { useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import {
@@ -30,6 +31,7 @@ import {
   getOfertasOfValidade,
   editValidadeOferta,
 } from '../../../Api/Ofertas';
+import toasts from '../../../Utilities/toasts';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -111,36 +113,32 @@ const EditarOferta = () => {
         status: validade.status,
       });
 
-      produtos.map(async (prod) => {
+      for await (const prod of produtos) {
         await editOferta({
           id: prod.id,
           quantidade: prod.quantidade,
           validade_oferta_id: validade.id,
           valor_unitario: Number(prod.valor_unitario),
         });
-      });
+      }
 
-      if (novosProdutos.length > 0) {
-        novosProdutos.map(async (prod) => {
-          await setOferta({
-            produto_id: prod.produto.id,
-            quantidade: prod.quantidade,
-            validade_oferta_id: validade.id,
-            valor_unitario: Number(prod.valor),
-          });
+      for await (const newProd of novosProdutos) {
+        await setOferta({
+          produto_id: newProd.produto.id,
+          quantidade: newProd.quantidade,
+          validade_oferta_id: validade.id,
+          valor_unitario: Number(newProd.valor),
         });
       }
 
-      if (prodToDelete.length > 0) {
-        prodToDelete.map(async (prod) => {
-          await deleteOferta(prod.id);
-        });
+      for await (const prodRemove of prodToDelete) {
+        await deleteOferta(prodRemove.id);
       }
 
       setLoading(false);
       history.goBack();
     } catch (error) {
-      console.log(error);
+      toasts.error('Erro ao editar oferta, verifique os dados inseridos!');
     } finally {
       setLoading(false);
     }

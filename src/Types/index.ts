@@ -118,6 +118,7 @@ export interface Oferta {
   quantidade: number;
   valor_unitario: number;
   produtos: Produto;
+  max_qtd?: number;
   validade?: Validade;
 }
 
