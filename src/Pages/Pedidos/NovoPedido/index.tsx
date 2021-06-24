@@ -27,6 +27,7 @@ import ModalClientes from '../../__Modais/ListaClientes';
 import ModalProdutos from '../../__Modais/ListaOfertas';
 import { Cliente, Oferta, OfertaPedido } from '../../../Types';
 import { postPedido } from '../../../Api/Pedido';
+import toasts from '../../../Utilities/toasts';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -81,7 +82,7 @@ const index = () => {
         history.goBack();
       }
     } catch (error) {
-      console.log(error);
+      toasts.error('Erro ao cadastrar pedido, verifique os dados inseridos!');
     } finally {
       setLoading(false);
     }
@@ -101,6 +102,14 @@ const index = () => {
     prodAux.splice(pos, 1);
 
     setProdutos(prodAux);
+  };
+
+  const addProduto = (prod: Oferta) => {
+    const isItem = produtos.find((value) => value.id === prod.id);
+
+    if (!isItem) {
+      setProdutos(produtos.concat({ ...prod, max_qtd: prod.quantidade, quantidade: 1 }));
+    }
   };
 
   return (
@@ -161,6 +170,7 @@ const index = () => {
                       'aria-disabled': true,
                       min: 1,
                       step: 1,
+                      max: item.max_qtd,
                       pattern: /\d/,
                     }}
                   />
@@ -201,7 +211,7 @@ const index = () => {
       <ModalProdutos
         isOpen={openModalProduto}
         setModalClose={() => setOpenModalProduto(false)}
-        selection={(prod) => setProdutos(produtos.concat({ ...prod, quantidade: 1 }))}
+        selection={addProduto}
       />
       <Backdrop open={loading} style={{ zIndex: 10 }}>
         <CircularProgress color="primary" />

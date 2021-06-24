@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import React, { useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import {
@@ -23,6 +24,7 @@ import { Container, AddOrderContainer, WrapperButtons, WrapperValidade } from '.
 import ModalProdutos from '../../__Modais/ListaProdutos';
 import { Produto } from '../../../Types';
 import { getOfertasOfValidade, getProdutosOfertas, setOferta, setValidadeOferta } from '../../../Api/Ofertas';
+import toasts from '../../../Utilities/toasts';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -85,18 +87,23 @@ const NovaOferta = () => {
 
       const idOferta = responseValidade.data.id;
 
-      produtos.map(async (prod) => {
+      for await (const newProd of produtos) {
         await setOferta({
-          produto_id: prod.produto.id,
-          quantidade: prod.quantidade,
+          produto_id: newProd.produto.id,
+          quantidade: newProd.quantidade,
           validade_oferta_id: idOferta,
-          valor_unitario: Number(prod.valor),
+          valor_unitario: Number(newProd.valor),
         });
-      });
+      }
 
       history.goBack();
     } catch (error) {
-      console.log(error);
+      if (error.response.data.error) {
+        console.log(error.response.data.error);
+        toasts.error('Erro ao adicionar oferta, verifique os dados inseridos!', error.response.data.error);
+      } else {
+        toasts.error('Erro ao adicionar oferta, verifique os dados inseridos!');
+      }
     } finally {
       setLoading(false);
     }
