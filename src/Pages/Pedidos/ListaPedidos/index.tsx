@@ -137,7 +137,7 @@ const index = () => {
                   </Button>
                 </TableCell>
                 <TableCell>
-                  {item.status !== 'cancelado' && (
+                  {item.status !== 'cancelado' && item.status !== 'fechado' && (
                     <Button startIcon={<Close />} variant="contained" onClick={() => cancel(item.id)}>
                       Cancelar
                     </Button>
