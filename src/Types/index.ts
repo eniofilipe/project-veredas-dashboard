@@ -286,3 +286,8 @@ export interface DataRelatorioPedidos {
     produtos: ItemPedido[];
   };
 }
+
+export interface Frete {
+  nome: string;
+  valor_frete: number;
+}
